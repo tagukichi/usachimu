@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lossi Creative Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a href="#top" class="logo" aria-label="Lossi ホームへ戻る">
+          <span class="logo__symbol">L</span>
+          <span class="logo__text">Lossi</span>
+        </a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav">
+          <span class="nav-toggle__line"></span>
+          <span class="nav-toggle__line"></span>
+          <span class="nav-toggle__line"></span>
+          <span class="sr-only">ナビゲーションを開く</span>
+        </button>
+        <nav id="main-nav" class="site-nav" aria-label="メインメニュー">
+          <ul>
+            <li><a href="#services">サービス</a></li>
+            <li><a href="#works">制作実績</a></li>
+            <li><a href="#process">制作の流れ</a></li>
+            <li><a href="#contact">お問い合わせ</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+          <div class="hero__copy">
+            <p class="hero__tag">ブランドとユーザーをつなぐデザイン</p>
+            <h1>印象に残るWEBサイトで、事業のストーリーを届ける。</h1>
+            <p>
+              Lossi Creative Studio は、ビジネスの個性と価値を丁寧に引き出し、
+              世界観を伝えるデジタル体験をデザインします。
+            </p>
+            <a class="button" href="#contact">無料相談を予約</a>
+          </div>
+          <div class="hero__visual" role="presentation">
+            <div class="hero__glow"></div>
+            <img src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=1200&q=80" alt="デザインコンセプトを表現した抽象的な図形" />
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="section services">
+        <div class="container">
+          <h2>サービス</h2>
+          <p class="section__lead">企画から運用までワンストップでサポートします。</p>
+          <div class="grid grid--3">
+            <article class="card">
+              <h3>ブランドサイト制作</h3>
+              <p>
+                ブランドの世界観を可視化し、魅力を最大限に引き出すデザインと
+                UX を提供します。
+              </p>
+            </article>
+            <article class="card">
+              <h3>UI/UX デザイン</h3>
+              <p>
+                ユーザーリサーチとデータに基づいた体験設計で、成果につながる
+                プロダクトを構築します。
+              </p>
+            </article>
+            <article class="card">
+              <h3>継続的な改善サポート</h3>
+              <p>
+                サイト公開後の分析・改善提案まで伴走。効果検証を行いながら
+                成長を加速させます。
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="works" class="section works">
+        <div class="container">
+          <h2>制作実績</h2>
+          <p class="section__lead">様々な業界のクライアントを支援してきました。</p>
+          <div class="grid grid--3">
+            <article class="card card--image">
+              <img src="https://images.unsplash.com/photo-1483478550801-ceba5fe50e8e?auto=format&fit=crop&w=800&q=80" alt="スタートアップ向けのウェブサイト" />
+              <h3>Startline</h3>
+              <p>スタートアップ向けに洗練されたブランドサイトを制作。</p>
+            </article>
+            <article class="card card--image">
+              <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80" alt="教育プラットフォームのダッシュボード" />
+              <h3>EduConnect</h3>
+              <p>教育プラットフォームの UX 改善と UI リニューアルを実施。</p>
+            </article>
+            <article class="card card--image">
+              <img src="https://images.unsplash.com/photo-1454165205744-3b78555e5572?auto=format&fit=crop&w=800&q=80" alt="オンラインストア" />
+              <h3>Urban Green</h3>
+              <p>サステナブルブランドの EC サイトをフルリニューアル。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="process" class="section process">
+        <div class="container">
+          <h2>制作の流れ</h2>
+          <div class="timeline">
+            <div class="timeline__step">
+              <span class="timeline__number">01</span>
+              <div>
+                <h3>ヒアリング &amp; 調査</h3>
+                <p>目的や課題を整理し、競合調査やユーザー分析を行います。</p>
+              </div>
+            </div>
+            <div class="timeline__step">
+              <span class="timeline__number">02</span>
+              <div>
+                <h3>コンセプト設計</h3>
+                <p>ブランドの価値を伝えるストーリーとビジュアルを設計します。</p>
+              </div>
+            </div>
+            <div class="timeline__step">
+              <span class="timeline__number">03</span>
+              <div>
+                <h3>デザイン &amp; 実装</h3>
+                <p>モックアップ制作から開発、CMS 構築まで一貫して対応します。</p>
+              </div>
+            </div>
+            <div class="timeline__step">
+              <span class="timeline__number">04</span>
+              <div>
+                <h3>公開 &amp; 運用支援</h3>
+                <p>公開後は効果測定と改善提案を継続的に行います。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section contact">
+        <div class="container">
+          <div class="contact__content">
+            <h2>お問い合わせ</h2>
+            <p>
+              相談は無料です。お気軽にご連絡ください。2 営業日以内に返信いたします。
+            </p>
+            <form class="contact__form" action="#" method="post">
+              <div class="form-field">
+                <label for="name">お名前</label>
+                <input id="name" name="name" type="text" placeholder="山田 太郎" required />
+              </div>
+              <div class="form-field">
+                <label for="email">メールアドレス</label>
+                <input id="email" name="email" type="email" placeholder="hello@example.com" required />
+              </div>
+              <div class="form-field">
+                <label for="message">ご相談内容</label>
+                <textarea id="message" name="message" rows="4" placeholder="ご要望や課題をお聞かせください"></textarea>
+              </div>
+              <button type="submit" class="button button--secondary">送信する</button>
+            </form>
+          </div>
+          <aside class="contact__aside">
+            <h3>オフィス情報</h3>
+            <ul>
+              <li><strong>所在地:</strong> 東京都渋谷区恵比寿 4-20-4</li>
+              <li><strong>営業時間:</strong> 平日 10:00 - 19:00</li>
+              <li><strong>メール:</strong> hello@lossi.studio</li>
+              <li><strong>電話:</strong> 03-1234-5678</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; <span id="year"></span> Lossi Creative Studio. All rights reserved.</p>
+        <div class="social-links" aria-label="ソーシャルメディアリンク">
+          <a href="#" aria-label="Instagram">Instagram</a>
+          <a href="#" aria-label="Behance">Behance</a>
+          <a href="#" aria-label="Dribbble">Dribbble</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
