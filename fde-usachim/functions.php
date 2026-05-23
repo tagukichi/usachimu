@@ -23,6 +23,7 @@ $fde_usachim_includes = [
 	'inc/acf-fields.php',
 	'inc/cf7-customizations.php',
 	'inc/seo.php',
+	'inc/migrations.php',
 ];
 
 foreach ( $fde_usachim_includes as $fde_usachim_file ) {
