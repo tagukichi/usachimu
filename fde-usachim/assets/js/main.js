@@ -1,1 +1,13 @@
-// Entry point — Phase 4 で nav.js / reveal.js を読み込む。
+import { initNav } from './nav.js';
+import { initReveal } from './reveal.js';
+
+const boot = () => {
+  initNav();
+  initReveal();
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}

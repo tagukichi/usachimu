@@ -1,6 +1,6 @@
 <?php
 /**
- * Header navigation.
+ * Header navigation (desktop + mobile overlay).
  *
  * @package fde-usachim
  */
@@ -9,7 +9,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<nav class="site-nav" aria-label="<?php esc_attr_e( 'プライマリ', 'fde-usachim' ); ?>">
+<button
+	type="button"
+	class="site-nav__toggle"
+	aria-expanded="false"
+	aria-controls="site-nav-panel"
+	aria-label="<?php esc_attr_e( 'メニューを開く', 'fde-usachim' ); ?>"
+	data-nav-toggle
+>
+	<span class="site-nav__toggle-bar" aria-hidden="true"></span>
+	<span class="site-nav__toggle-bar" aria-hidden="true"></span>
+</button>
+
+<nav
+	id="site-nav-panel"
+	class="site-nav"
+	aria-label="<?php esc_attr_e( 'プライマリ', 'fde-usachim' ); ?>"
+	data-nav-panel
+>
 	<?php
 	if ( has_nav_menu( 'primary' ) ) {
 		wp_nav_menu(

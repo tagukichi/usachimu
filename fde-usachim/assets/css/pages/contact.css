@@ -1,0 +1,149 @@
+/* Contact page + Contact Form 7 overrides. */
+
+.contact-form {
+  padding-top: 0;
+}
+
+.contact-form__wrap {
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.contact-form__notice {
+  padding: 24px;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius);
+  color: var(--color-fg-muted);
+  background: var(--color-bg-elevated);
+}
+
+/* ============================================================
+   Contact Form 7 overrides (reset CF7 default look)
+   ============================================================ */
+.wpcf7 form {
+  display: grid;
+  gap: 24px;
+}
+
+.wpcf7 label {
+  display: grid;
+  gap: 8px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-fg);
+}
+
+.wpcf7 input[type="text"],
+.wpcf7 input[type="email"],
+.wpcf7 input[type="tel"],
+.wpcf7 input[type="url"],
+.wpcf7 textarea,
+.wpcf7 select {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: var(--text-base);
+  color: var(--color-fg);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  transition: border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+
+.wpcf7 textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: var(--leading-base);
+}
+
+.wpcf7 input:focus,
+.wpcf7 textarea:focus,
+.wpcf7 select:focus {
+  outline: 0;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.wpcf7 input[type="checkbox"],
+.wpcf7 input[type="radio"] {
+  accent-color: var(--color-accent);
+  width: 16px;
+  height: 16px;
+}
+
+.wpcf7-list-item {
+  margin: 0 16px 0 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wpcf7-list-item-label {
+  font-weight: 400;
+  font-size: var(--text-base);
+}
+
+.wpcf7 .wpcf7-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--color-accent-fg);
+  background: var(--color-accent);
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--dur-base) var(--ease-out);
+  justify-self: start;
+}
+
+.wpcf7 .wpcf7-submit:hover {
+  background: var(--color-accent-hover);
+}
+
+.wpcf7 .wpcf7-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wpcf7-not-valid-tip {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  margin-top: 4px;
+}
+
+.wpcf7 .wpcf7-response-output,
+.wpcf7-response-output {
+  margin: 24px 0 0;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+}
+
+.wpcf7 form.invalid .wpcf7-response-output,
+.wpcf7 form.unaccepted .wpcf7-response-output,
+.wpcf7 form.payment-required .wpcf7-response-output {
+  border-color: var(--color-error);
+  color: var(--color-error);
+  background: color-mix(in srgb, var(--color-error) 6%, transparent);
+}
+
+.wpcf7 form.sent .wpcf7-response-output {
+  border-color: var(--color-success);
+  color: var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 6%, transparent);
+}
+
+.wpcf7-spinner {
+  background: var(--color-fg-subtle);
+}
+
+.wpcf7 .required-mark {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  margin-left: 4px;
+}

@@ -1,0 +1,288 @@
+/* Front page sections. */
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero {
+  padding-block: 96px 80px;
+  background:
+    radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-elevated) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding-block: 160px 120px;
+  }
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-fg) 4%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+}
+
+.hero > .container {
+  position: relative;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero__title {
+  font-size: var(--text-hero);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  max-width: 16ch;
+}
+
+.hero__lead {
+  font-size: var(--text-lg);
+  color: var(--color-fg-muted);
+  max-width: 48ch;
+  line-height: var(--leading-base);
+  margin-bottom: 40px;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ============================================================
+   Positioning
+   ============================================================ */
+.positioning__title {
+  font-size: var(--text-h2);
+  margin-bottom: 32px;
+  max-width: 18ch;
+}
+
+.positioning__body p {
+  font-size: var(--text-lg);
+  color: var(--color-fg);
+  line-height: var(--leading-base);
+}
+
+.positioning__body p + p {
+  margin-top: 1em;
+}
+
+.positioning__values {
+  display: grid;
+  gap: 24px;
+  margin-top: 64px;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .positioning__values {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+.positioning__values li {
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.positioning__values h3 {
+  font-size: var(--text-xl);
+  margin-bottom: 12px;
+}
+
+.positioning__values p {
+  font-size: var(--text-base);
+  color: var(--color-fg-muted);
+  line-height: var(--leading-base);
+}
+
+/* ============================================================
+   Services excerpt
+   ============================================================ */
+.services-excerpt__list {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 768px) {
+  .services-excerpt__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.service-card {
+  display: grid;
+  gap: 12px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+@media (min-width: 768px) {
+  .service-card {
+    padding: 40px;
+  }
+  .services-excerpt__list .service-card:nth-child(odd) {
+    border-right: 1px solid var(--color-border);
+  }
+}
+
+.service-card__no {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-fg-subtle);
+  letter-spacing: 0.08em;
+}
+
+.service-card__title {
+  font-size: var(--text-xl);
+}
+
+.service-card__desc {
+  color: var(--color-fg-muted);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+}
+
+/* ============================================================
+   Approach (4 phases)
+   ============================================================ */
+.approach__list {
+  display: grid;
+  gap: 24px;
+  list-style: none;
+  counter-reset: approach;
+}
+
+@media (min-width: 768px) {
+  .approach__list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+}
+
+.approach__item {
+  display: grid;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 2px solid var(--color-fg);
+  position: relative;
+}
+
+.approach__step {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+}
+
+.approach__label {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.approach__desc {
+  color: var(--color-fg-muted);
+  font-size: var(--text-base);
+  line-height: var(--leading-base);
+}
+
+/* ============================================================
+   Works excerpt (uses .works-grid from works.css)
+   ============================================================ */
+
+/* ============================================================
+   About excerpt
+   ============================================================ */
+.about-excerpt__body {
+  display: grid;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .about-excerpt__body {
+    grid-template-columns: 280px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+}
+
+.about-excerpt__photo img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.about-excerpt__name {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.about-excerpt__tagline {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  margin-bottom: 24px;
+}
+
+.about-excerpt__bio {
+  color: var(--color-fg-muted);
+  line-height: var(--leading-base);
+  margin-bottom: 32px;
+}
+
+.about-excerpt__bio p + p {
+  margin-top: 1em;
+}
+
+/* ============================================================
+   Front bottom CTA
+   ============================================================ */
+.front-cta {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
+.front-cta__title {
+  font-size: var(--text-h2);
+  margin-bottom: 24px;
+  max-width: 22ch;
+}
+
+.front-cta__lead {
+  color: color-mix(in srgb, var(--color-bg) 80%, transparent);
+  font-size: var(--text-lg);
+  margin-bottom: 40px;
+}
+
+.front-cta .button--primary {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+.front-cta .button--primary:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+}
