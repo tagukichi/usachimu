@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $fde_top_l   = (string) fde_field( 'hero_eyebrow_left',  'CHIM WORKS — INDEX' );
 $fde_top_r   = (string) fde_field( 'hero_eyebrow_right', 'EST. 2021 · TOKYO, JP' );
-$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '書類で動くAIではなく、' );
-$fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場で動く' );
+$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '資料の中のAIではなく、' );
+$fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場の手の中で動く' );
 $fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', 'AIを。' );
 $fde_lede    = (string) fde_field(
 	'hero_lede',

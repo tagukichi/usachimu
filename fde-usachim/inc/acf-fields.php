@@ -152,8 +152,8 @@ add_action(
 		$top_fields[] = fde_acf_tab( 'hero', __( 'Hero', 'fde-usachim' ) );
 		$top_fields[] = fde_acf_text( 'hero_eyebrow_l',     'hero_eyebrow_left',  __( 'Hero 上左', 'fde-usachim' ), 'CHIM WORKS — INDEX' );
 		$top_fields[] = fde_acf_text( 'hero_eyebrow_r',     'hero_eyebrow_right', __( 'Hero 上右', 'fde-usachim' ), 'EST. 2021 · TOKYO, JP' );
-		$top_fields[] = fde_acf_text( 'hero_stmt_l1',       'hero_statement_l1', __( 'Hero ステートメント 1行目', 'fde-usachim' ), '書類で動くAIではなく、' );
-		$top_fields[] = fde_acf_text( 'hero_stmt_l2_a',     'hero_statement_l2_a', __( 'Hero 2行目（薄色部分）', 'fde-usachim' ), '現場で動く' );
+		$top_fields[] = fde_acf_text( 'hero_stmt_l1',       'hero_statement_l1', __( 'Hero ステートメント 1行目', 'fde-usachim' ), '資料の中のAIではなく、' );
+		$top_fields[] = fde_acf_text( 'hero_stmt_l2_a',     'hero_statement_l2_a', __( 'Hero 2行目（薄色部分）', 'fde-usachim' ), '現場の手の中で動く' );
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_b',     'hero_statement_l2_b', __( 'Hero 2行目（強調部分）', 'fde-usachim' ), 'AIを。' );
 		$top_fields[] = fde_acf_textarea( 'hero_lede',      'hero_lede', __( 'Hero リード文', 'fde-usachim' ), 4, '**強調** で太字（白）にできます。' );
 
