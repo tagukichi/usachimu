@@ -494,6 +494,27 @@
   .why__dataflow-note { font-size: 14px; line-height: 1.9; }
 }
 
+.why__dataflow-figure {
+  margin: 0;
+  padding: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 1101px) {
+  .why__dataflow-figure { padding: 24px; }
+}
+
+.why__dataflow-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
 .why__dataflow-diagram {
   font-family: var(--font-mono);
   font-size: 10.5px;

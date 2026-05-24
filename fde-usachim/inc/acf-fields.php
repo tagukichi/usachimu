@@ -338,8 +338,17 @@ add_action(
 						'new_lines'   => '',
 					],
 					[
+						'key'           => 'field_fde_why_dataflow_image',
+						'label'         => __( 'Dataflow 画像（右側）', 'fde-usachim' ),
+						'name'          => 'why_dataflow_image',
+						'type'          => 'image',
+						'return_format' => 'array',
+						'preview_size'  => 'medium',
+						'instructions'  => __( 'アップロードすると、ASCIIダイアグラムの代わりにこの画像を表示します。推奨：横長、最大幅 1600px、PNG（背景透過）または JPG。', 'fde-usachim' ),
+					],
+					[
 						'key'         => 'field_fde_why_dataflow_diagram',
-						'label'       => __( 'Dataflow ダイアグラム（等幅プリ）', 'fde-usachim' ),
+						'label'       => __( 'Dataflow ダイアグラム（等幅プリ・画像未設定時のフォールバック）', 'fde-usachim' ),
 						'name'        => 'why_dataflow_diagram',
 						'type'        => 'textarea',
 						'rows'        => 12,

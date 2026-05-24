@@ -28,6 +28,7 @@ $fde_df_note  = (string) fde_option(
 	'why_dataflow_note',
 	"FDEが引き受けるのは、「データがある」から「現場で使われる」までの全長。\n片方の端だけでは、現場は変わりません。"
 );
+$fde_df_image = fde_option( 'why_dataflow_image' );
 $fde_df_diag  = (string) fde_option(
 	'why_dataflow_diagram',
 	"  ┌────────────┐    ┌────────────┐    ┌────────────┐    ┌────────────┐\n  │  社内資産  │ →  │   整える   │ →  │ AI で活かす │ →  │ 現場で使う │\n  │  scattered │    │  organized │    │   AI/LLM   │    │  in-field  │\n  └────────────┘    └────────────┘    └────────────┘    └────────────┘\n       PDF              schema              RAG               UI/Slack\n       議事録           pipeline            eval              業務に\n       設備ログ         BigQuery            Dify              直接組込\n       問合せ           dbt                 LangGraph         運用 + 改善\n   \n   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─\n   ※ ふつう、左寄りはエンジニア／右寄りは事業側の仕事として\n     切り分けられる。CHIM はその切れ目を跨ぐところを引き受ける。"
@@ -82,7 +83,19 @@ $fde_def_note = (string) fde_option(
 					<h3 class="why__dataflow-title"><?php echo nl2br( esc_html( $fde_df_title ) ); ?></h3>
 					<p class="why__dataflow-note"><?php echo nl2br( esc_html( $fde_df_note ) ); ?></p>
 				</div>
-				<pre class="why__dataflow-diagram"><?php echo esc_html( $fde_df_diag ); ?></pre>
+				<?php if ( is_array( $fde_df_image ) && ! empty( $fde_df_image['url'] ) ) : ?>
+					<figure class="why__dataflow-figure">
+						<img
+							src="<?php echo esc_url( $fde_df_image['url'] ); ?>"
+							alt="<?php echo esc_attr( $fde_df_image['alt'] ?: 'Data flow — scattered → organized → AI/LLM → in-field' ); ?>"
+							loading="lazy"
+							<?php if ( ! empty( $fde_df_image['width'] ) ) : ?>width="<?php echo esc_attr( $fde_df_image['width'] ); ?>"<?php endif; ?>
+							<?php if ( ! empty( $fde_df_image['height'] ) ) : ?>height="<?php echo esc_attr( $fde_df_image['height'] ); ?>"<?php endif; ?>
+						>
+					</figure>
+				<?php else : ?>
+					<pre class="why__dataflow-diagram"><?php echo esc_html( $fde_df_diag ); ?></pre>
+				<?php endif; ?>
 			</div>
 			<span class="why__dataflow-tick why__dataflow-tick--tl" aria-hidden="true"></span>
 			<span class="why__dataflow-tick why__dataflow-tick--tr" aria-hidden="true"></span>
