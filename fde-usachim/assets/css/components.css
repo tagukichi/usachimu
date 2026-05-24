@@ -331,6 +331,8 @@ body.is-nav-open { overflow: hidden; }
   display: block;
   max-height: 40px;
   width: auto;
+  /* 黒/濃色ロゴをそのまま白塗りにする */
+  filter: brightness(0) invert(1);
 }
 
 @media (min-width: 720px) {

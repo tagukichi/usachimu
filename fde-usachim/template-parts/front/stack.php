@@ -13,10 +13,10 @@ $fde_meta = (string) fde_field( 'stack_meta', 'REVIEWED ' . date_i18n( 'Y.m' ) )
 
 $fde_group_defaults = [
 	[ 'g' => 'AI / LLM',            'items' => 'OpenAI, Anthropic, Local LLM, RAG, Eval, LangGraph' ],
-	[ 'g' => 'Workflow / Low-code', 'items' => 'Dify, n8n, GAS, Zapier' ],
+	[ 'g' => 'Workflow / Low-code', 'items' => 'Dify, n8n, kintone, Salesforce, GAS, Zapier' ],
 	[ 'g' => 'Language',            'items' => 'Python, TypeScript, SQL, Go (sub)' ],
 	[ 'g' => 'Data',                'items' => 'BigQuery, Snowflake, dbt, Airbyte, Fivetran' ],
-	[ 'g' => 'Cloud / Ops',         'items' => 'GCP, AWS, Cloudflare, GWS, Terraform' ],
+	[ 'g' => 'Cloud / Ops',         'items' => 'GCP, AWS, Vercel, Cloudflare, GWS, Terraform' ],
 	[ 'g' => 'Product',             'items' => 'Next.js, Hono, FastAPI, Supabase' ],
 ];
 $fde_groups = [];
