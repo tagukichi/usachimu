@@ -9,16 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_home = home_url( '/' );
-$fde_items = [
-	[ 'label' => 'About',    'url' => $fde_home . '#about' ],
-	[ 'label' => 'Services', 'url' => $fde_home . '#services' ],
-	[ 'label' => 'Process',  'url' => $fde_home . '#process' ],
-	[ 'label' => 'Work',     'url' => $fde_home . '#work' ],
-	[ 'label' => 'Stack',    'url' => $fde_home . '#stack' ],
-	[ 'label' => 'Writing',  'url' => $fde_home . '#writing' ],
-	[ 'label' => 'Contact',  'url' => $fde_home . '#contact' ],
-];
+$fde_items = fde_main_nav_items();
+$fde_items[] = [ 'label' => 'Contact', 'url' => home_url( '/' ) . '#contact' ];
 $fde_cta_label = (string) fde_option( 'cta_label', '相談を始める →' );
 ?>
 <div
@@ -32,7 +24,7 @@ $fde_cta_label = (string) fde_option( 'cta_label', '相談を始める →' );
 			<li><a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a></li>
 		<?php endforeach; ?>
 	</ul>
-	<a class="nav-panel__cta" href="<?php echo esc_url( $fde_home . '#contact' ); ?>">
+	<a class="nav-panel__cta" href="<?php echo esc_url( home_url( '/' ) . '#contact' ); ?>">
 		<?php echo esc_html( $fde_cta_label ); ?>
 	</a>
 </div>

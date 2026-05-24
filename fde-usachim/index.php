@@ -13,7 +13,7 @@ get_header();
 		<header class="sec-head">
 			<div class="sec-head__l">
 				<span class="sec-head__num">§ 07</span>
-				<h2 class="sec-head__title">Writing</h2>
+				<h2 class="sec-head__title">Blog</h2>
 			</div>
 			<span class="sec-head__meta">ARCHIVE</span>
 		</header>

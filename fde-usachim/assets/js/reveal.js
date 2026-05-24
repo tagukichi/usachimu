@@ -17,7 +17,7 @@ export function initReveal() {
     '.stack-row',
     '.writing-card',
     '.contact__grid',
-    '.site-footer__mark',
+    '.site-footer__top',
   ].join(',');
 
   const els = document.querySelectorAll(candidates);

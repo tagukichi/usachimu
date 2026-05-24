@@ -16,26 +16,8 @@ $fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場で動く' );
 $fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', 'AIを。' );
 $fde_lede    = (string) fde_field(
 	'hero_lede',
-	"CHIM WORKSは、AI/データ領域の **Forward Deployed Engineer** です。\n発注をいただいてから作るのではなく、現場に入り、何を作るべきかを一緒に決めるところから始めます。\n作るのも、運用するのも、引き継ぐのも、ひとり。"
+	"CHIM WORKSは、AI/データ領域の **Forward Deployed Engineer** です。\n発注をいただいてから作るのではなく、現場に入り、何を作るべきかを一緒に決めるところから始めます。"
 );
-
-$fde_stat_defaults = [
-	[ 'k' => 'SINCE',     'v' => '2021',    'sub' => '個人事業として' ],
-	[ 'k' => 'DELIVERED', 'v' => '23',      'sub' => '案件 (NDA含む)' ],
-	[ 'k' => 'NEXT SLOT', 'v' => '2026.07', 'sub' => '相談スロット' ],
-];
-$fde_stats = [];
-foreach ( [ 1, 2, 3 ] as $n ) {
-	$i = $n - 1;
-	$fde_stats[] = [
-		'k'   => (string) fde_field( "hero_stat_{$n}_k",   $fde_stat_defaults[ $i ]['k'] ),
-		'v'   => (string) fde_field( "hero_stat_{$n}_v",   $fde_stat_defaults[ $i ]['v'] ),
-		'sub' => (string) fde_field( "hero_stat_{$n}_sub", $fde_stat_defaults[ $i ]['sub'] ),
-	];
-}
-
-$fde_cta_p = (string) fde_field( 'hero_cta_primary',   '案件を相談する →' );
-$fde_cta_s = (string) fde_field( 'hero_cta_secondary', '実績を見る' );
 
 /**
  * News list — latest posts in the "お知らせ" category.
@@ -129,23 +111,6 @@ if ( ! $fde_news_link ) {
 					</div>
 				</div>
 			<?php endif; ?>
-		</div>
-
-		<div class="hero__bar">
-			<div class="hero__stats">
-				<?php foreach ( $fde_stats as $stat ) : ?>
-					<div class="hero__stat">
-						<span class="hero__stat-k"><?php echo esc_html( $stat['k'] ); ?></span>
-						<span class="hero__stat-v serif"><?php echo esc_html( $stat['v'] ); ?></span>
-						<span class="hero__stat-sub"><?php echo esc_html( $stat['sub'] ); ?></span>
-					</div>
-				<?php endforeach; ?>
-			</div>
-
-			<div class="hero__cta">
-				<a class="btn btn--invert" href="#contact"><?php echo esc_html( $fde_cta_p ); ?></a>
-				<a class="btn btn--ghost is-on-dark" href="#work"><?php echo esc_html( $fde_cta_s ); ?></a>
-			</div>
 		</div>
 
 	</div>

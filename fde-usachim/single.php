@@ -15,7 +15,7 @@ while ( have_posts() ) :
 	?>
 	<article <?php post_class( 'single-work' ); ?>>
 		<header>
-			<p class="page-head__eyebrow">§ 07 Writing</p>
+			<p class="page-head__eyebrow">§ 07 Blog</p>
 			<h1 class="single-work__title"><?php the_title(); ?></h1>
 			<div class="writing-card__head" style="margin-bottom:24px;">
 				<span class="writing-card__date"><?php echo esc_html( get_the_date( 'Y.m.d' ) ); ?></span>

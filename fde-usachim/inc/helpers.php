@@ -110,6 +110,23 @@ function fde_paragraphs( string $text ): string {
 }
 
 /**
+ * Shared main navigation items — used by header, mobile panel, and footer.
+ *
+ * @return array<int,array{label:string,url:string}>
+ */
+function fde_main_nav_items(): array {
+	$home = home_url( '/' );
+	return [
+		[ 'label' => 'About',    'url' => $home . '#about' ],
+		[ 'label' => 'Services', 'url' => $home . '#services' ],
+		[ 'label' => 'Process',  'url' => $home . '#process' ],
+		[ 'label' => 'Work',     'url' => $home . '#work' ],
+		[ 'label' => 'Stack',    'url' => $home . '#stack' ],
+		[ 'label' => 'Blog',     'url' => $home . '#writing' ],
+	];
+}
+
+/**
  * Split a comma (or 、) separated string into trimmed items.
  *
  * @return array<int,string>

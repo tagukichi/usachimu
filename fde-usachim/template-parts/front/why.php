@@ -12,7 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 $fde_title   = (string) fde_field( 'why_title', 'AIを味方につけ、次の10年に備える。' );
 $fde_premise = (string) fde_field(
 	'why_premise',
-	'これからの10年、勝ち負けを分けるのは「どんなAIを買ったか」ではなく、**自社のデータを、自社の業務に、自社の手で活かせる状態を作れたか**です。'
+	'自社のデータ、有効活用できていますか？'
+);
+$fde_premise_sub = (string) fde_field(
+	'why_premise_sub',
+	'これからの10年、勝ち負けを分けるのは「どんなAIを買ったか」ではなく、自社のデータを、自社の業務に、自社の手で活かせる状態を作れたかです。'
 );
 
 $fde_pillar_defaults = [
@@ -56,7 +60,12 @@ $fde_df_diag  = (string) fde_field(
 				<div class="why__premise-label">// Premise</div>
 				<div class="why__premise-quote serif">&ldquo;</div>
 			</div>
-			<p class="why__premise-text"><?php echo wp_kses( str_replace( "\n", '<br>', fde_inline_text( $fde_premise ) ), [ 'b' => [], 'br' => [] ] ); ?></p>
+			<div>
+				<p class="why__premise-text"><?php echo wp_kses( str_replace( "\n", '<br>', fde_inline_text( $fde_premise ) ), [ 'b' => [], 'br' => [] ] ); ?></p>
+				<?php if ( $fde_premise_sub ) : ?>
+					<p class="why__premise-sub jp"><?php echo wp_kses( str_replace( "\n", '<br>', fde_inline_text( $fde_premise_sub ) ), [ 'b' => [], 'br' => [] ] ); ?></p>
+				<?php endif; ?>
+			</div>
 		</div>
 
 		<div class="why__pillars">

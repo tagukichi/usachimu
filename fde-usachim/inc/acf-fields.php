@@ -157,19 +157,11 @@ add_action(
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_b',     'hero_statement_l2_b', __( 'Hero 2行目（強調部分）', 'fde-usachim' ), 'AIを。' );
 		$top_fields[] = fde_acf_textarea( 'hero_lede',      'hero_lede', __( 'Hero リード文', 'fde-usachim' ), 4, '**強調** で太字（白）にできます。' );
 
-		// Hero stats 3列
-		foreach ( [ 1, 2, 3 ] as $n ) {
-			$top_fields[] = fde_acf_text( "hero_stat_{$n}_k",   "hero_stat_{$n}_k",   sprintf( __( 'Hero 統計 %d — ラベル', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_text( "hero_stat_{$n}_v",   "hero_stat_{$n}_v",   sprintf( __( 'Hero 統計 %d — 値', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_text( "hero_stat_{$n}_sub", "hero_stat_{$n}_sub", sprintf( __( 'Hero 統計 %d — 注釈', 'fde-usachim' ), $n ) );
-		}
-		$top_fields[] = fde_acf_text( 'hero_cta_p', 'hero_cta_primary',   __( 'Hero CTA Primary ラベル', 'fde-usachim' ), '案件を相談する →' );
-		$top_fields[] = fde_acf_text( 'hero_cta_s', 'hero_cta_secondary', __( 'Hero CTA Secondary ラベル', 'fde-usachim' ), '実績を見る' );
-
 		// ---------- §01 Why ----------
 		$top_fields[] = fde_acf_tab( 'why', __( '§01 Why', 'fde-usachim' ) );
 		$top_fields[] = fde_acf_text( 'why_title', 'why_title', __( 'セクション タイトル', 'fde-usachim' ), 'AIを味方につけ、次の10年に備える。' );
-		$top_fields[] = fde_acf_textarea( 'why_premise', 'why_premise', __( 'Premise（大文字引用）', 'fde-usachim' ), 3, '**強調** で太字。' );
+		$top_fields[] = fde_acf_textarea( 'why_premise', 'why_premise', __( 'Premise（大見出し）', 'fde-usachim' ), 2, '**強調** で太字。' );
+		$top_fields[] = fde_acf_textarea( 'why_premise_sub', 'why_premise_sub', __( 'Premise サブテキスト', 'fde-usachim' ), 3, '大見出しの下に小さく表示。' );
 
 		// 3つの柱
 		foreach ( [ 1, 2, 3 ] as $n ) {
@@ -203,15 +195,8 @@ add_action(
 		];
 		$top_fields[] = fde_acf_text( 'about_portrait_fig', 'about_portrait_fig', __( 'FIG ラベル', 'fde-usachim' ), 'FIG. 01 — CHIM' );
 
-		// About stats 4組
-		foreach ( [ 1, 2, 3, 4 ] as $n ) {
-			$top_fields[] = fde_acf_text( "about_stat_{$n}_k", "about_stat_{$n}_k", sprintf( __( 'About 統計 %d — ラベル', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_text( "about_stat_{$n}_v", "about_stat_{$n}_v", sprintf( __( 'About 統計 %d — 値', 'fde-usachim' ), $n ) );
-		}
-
 		$top_fields[] = fde_acf_textarea( 'about_lead', 'about_lead', __( 'About リード（明朝大）', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_textarea( 'about_body', 'about_body', __( 'About 本文', 'fde-usachim' ), 8, '段落区切りは空行。**強調** で太字。' );
-		$top_fields[] = fde_acf_text( 'about_tags', 'about_tags', __( 'About タグ（カンマ区切り）', 'fde-usachim' ), 'Forward Deployed, AI / LLM, Data Engineering, Solo, NDA OK' );
 
 		// ---------- §03 Services ----------
 		$top_fields[] = fde_acf_tab( 'services', __( '§03 Services', 'fde-usachim' ) );
@@ -294,7 +279,6 @@ add_action(
 
 					// ---------- Footer ----------
 					fde_acf_tab( 'footer', __( 'Footer', 'fde-usachim' ) ),
-					fde_acf_text( 'footer_suffix', 'footer_suffix', __( '大ロゴ末尾（mono 小さく）', 'fde-usachim' ), '/fde' ),
 					fde_acf_textarea( 'footer_meta_l', 'footer_meta_left', __( 'Footer メタ 左', 'fde-usachim' ), 3 ),
 					fde_acf_textarea( 'footer_meta_r', 'footer_meta_right', __( 'Footer メタ 右', 'fde-usachim' ), 3 ),
 

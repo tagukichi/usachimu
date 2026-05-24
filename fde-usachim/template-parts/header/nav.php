@@ -9,17 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_home = home_url( '/' );
-$fde_nav  = [
-	[ 'label' => 'About',    'url' => $fde_home . '#about' ],
-	[ 'label' => 'Services', 'url' => $fde_home . '#services' ],
-	[ 'label' => 'Process',  'url' => $fde_home . '#process' ],
-	[ 'label' => 'Work',     'url' => $fde_home . '#work' ],
-	[ 'label' => 'Stack',    'url' => $fde_home . '#stack' ],
-	[ 'label' => 'Writing',  'url' => $fde_home . '#writing' ],
-];
-$fde_cta_url   = $fde_home . '#contact';
+$fde_cta_url   = home_url( '/' ) . '#contact';
 $fde_cta_label = (string) fde_option( 'cta_label', '相談を始める →' );
+$fde_nav       = fde_main_nav_items();
 ?>
 <nav class="site-nav" aria-label="<?php esc_attr_e( 'プライマリ', 'fde-usachim' ); ?>">
 	<?php foreach ( $fde_nav as $item ) : ?>
