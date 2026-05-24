@@ -1,6 +1,6 @@
 <?php
 /**
- * Hero section (dark).
+ * Hero section (dark). Editable via the front page editor.
  *
  * @package fde-usachim
  */
@@ -9,30 +9,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_top_l   = (string) fde_option( 'hero_eyebrow_left',  'CHIM WORKS — INDEX' );
-$fde_top_r   = (string) fde_option( 'hero_eyebrow_right', 'EST. 2021 · TOKYO, JP' );
-$fde_stmt_l1 = (string) fde_option( 'hero_statement_l1', '書類で動くAIではなく、' );
-$fde_stmt_la = (string) fde_option( 'hero_statement_l2_a', '現場で動く' );
-$fde_stmt_lb = (string) fde_option( 'hero_statement_l2_b', 'AIを。' );
-$fde_lede    = (string) fde_option(
+$fde_top_l   = (string) fde_field( 'hero_eyebrow_left',  'CHIM WORKS — INDEX' );
+$fde_top_r   = (string) fde_field( 'hero_eyebrow_right', 'EST. 2021 · TOKYO, JP' );
+$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '書類で動くAIではなく、' );
+$fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場で動く' );
+$fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', 'AIを。' );
+$fde_lede    = (string) fde_field(
 	'hero_lede',
 	"CHIM WORKSは、AI/データ領域の **Forward Deployed Engineer** です。\n発注をいただいてから作るのではなく、現場に入り、何を作るべきかを一緒に決めるところから始めます。\n作るのも、運用するのも、引き継ぐのも、ひとり。"
 );
 
-$fde_stats = fde_option(
-	'hero_stats',
-	[
-		[ 'k' => 'SINCE',     'v' => '2021',    'sub' => '個人事業として' ],
-		[ 'k' => 'DELIVERED', 'v' => '23',      'sub' => '案件 (NDA含む)' ],
-		[ 'k' => 'NEXT SLOT', 'v' => '2026.07', 'sub' => '相談スロット' ],
-	]
-);
-$fde_cta_p = (string) fde_option( 'hero_cta_primary',   '案件を相談する →' );
-$fde_cta_s = (string) fde_option( 'hero_cta_secondary', '実績を見る' );
+$fde_stat_defaults = [
+	[ 'k' => 'SINCE',     'v' => '2021',    'sub' => '個人事業として' ],
+	[ 'k' => 'DELIVERED', 'v' => '23',      'sub' => '案件 (NDA含む)' ],
+	[ 'k' => 'NEXT SLOT', 'v' => '2026.07', 'sub' => '相談スロット' ],
+];
+$fde_stats = [];
+foreach ( [ 1, 2, 3 ] as $n ) {
+	$i = $n - 1;
+	$fde_stats[] = [
+		'k'   => (string) fde_field( "hero_stat_{$n}_k",   $fde_stat_defaults[ $i ]['k'] ),
+		'v'   => (string) fde_field( "hero_stat_{$n}_v",   $fde_stat_defaults[ $i ]['v'] ),
+		'sub' => (string) fde_field( "hero_stat_{$n}_sub", $fde_stat_defaults[ $i ]['sub'] ),
+	];
+}
+
+$fde_cta_p = (string) fde_field( 'hero_cta_primary',   '案件を相談する →' );
+$fde_cta_s = (string) fde_field( 'hero_cta_secondary', '実績を見る' );
 
 /**
- * Pull latest posts from the news category.
- * Try slug "news" first, then term name "お知らせ".
+ * News list — latest posts in the "お知らせ" category.
  */
 $fde_news_term = get_term_by( 'slug', 'news', 'category' );
 if ( ! $fde_news_term || is_wp_error( $fde_news_term ) ) {
@@ -58,8 +64,7 @@ if ( $fde_news_term && ! is_wp_error( $fde_news_term ) ) {
 		while ( $fde_news_query->have_posts() ) {
 			$fde_news_query->the_post();
 
-			// Tag: first post tag (uppercased) → fallback to "NOTE".
-			$fde_news_tag = 'NOTE';
+			$fde_news_tag  = 'NOTE';
 			$fde_post_tags = get_the_tags();
 			if ( ! empty( $fde_post_tags ) ) {
 				$fde_news_tag = mb_strtoupper( $fde_post_tags[0]->name );
@@ -76,7 +81,6 @@ if ( $fde_news_term && ! is_wp_error( $fde_news_term ) ) {
 	}
 }
 
-// Fallback demo content when the category or posts don't exist.
 if ( empty( $fde_news ) ) {
 	$fde_news = [
 		[ 'date' => '2026.05.20', 'tag' => 'NOTE',    'body' => '個人事業として5年目に入りました。新規相談は引き続き受付中。', 'url' => '#' ],
@@ -128,17 +132,15 @@ if ( ! $fde_news_link ) {
 		</div>
 
 		<div class="hero__bar">
-			<?php if ( is_array( $fde_stats ) && ! empty( $fde_stats ) ) : ?>
-				<div class="hero__stats">
-					<?php foreach ( $fde_stats as $stat ) : ?>
-						<div class="hero__stat">
-							<span class="hero__stat-k"><?php echo esc_html( $stat['k'] ?? '' ); ?></span>
-							<span class="hero__stat-v serif"><?php echo esc_html( $stat['v'] ?? '' ); ?></span>
-							<span class="hero__stat-sub"><?php echo esc_html( $stat['sub'] ?? '' ); ?></span>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			<?php endif; ?>
+			<div class="hero__stats">
+				<?php foreach ( $fde_stats as $stat ) : ?>
+					<div class="hero__stat">
+						<span class="hero__stat-k"><?php echo esc_html( $stat['k'] ); ?></span>
+						<span class="hero__stat-v serif"><?php echo esc_html( $stat['v'] ); ?></span>
+						<span class="hero__stat-sub"><?php echo esc_html( $stat['sub'] ); ?></span>
+					</div>
+				<?php endforeach; ?>
+			</div>
 
 			<div class="hero__cta">
 				<a class="btn btn--invert" href="#contact"><?php echo esc_html( $fde_cta_p ); ?></a>

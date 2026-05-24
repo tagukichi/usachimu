@@ -1,6 +1,6 @@
 <?php
 /**
- * §02 — About.
+ * §02 — About. Editable via the front page editor.
  *
  * @package fde-usachim
  */
@@ -9,26 +9,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_portrait     = fde_option( 'about_portrait' );
-$fde_portrait_fig = (string) fde_option( 'about_portrait_fig', 'FIG. 01 — CHIM' );
-$fde_stats        = fde_option(
-	'about_stats',
-	[
-		[ 'k' => 'BASED',     'v' => 'Tokyo, JP' ],
-		[ 'k' => 'SINCE',     'v' => '2021' ],
-		[ 'k' => 'DELIVERED', 'v' => '23 案件' ],
-		[ 'k' => 'CURRENT',   'v' => '3 件 稼働中' ],
-	]
-);
-$fde_lead = (string) fde_option(
+$fde_portrait     = fde_field( 'about_portrait' );
+$fde_portrait_fig = (string) fde_field( 'about_portrait_fig', 'FIG. 01 — CHIM' );
+
+$fde_stat_defaults = [
+	[ 'k' => 'BASED',     'v' => 'Tokyo, JP' ],
+	[ 'k' => 'SINCE',     'v' => '2021' ],
+	[ 'k' => 'DELIVERED', 'v' => '23 案件' ],
+	[ 'k' => 'CURRENT',   'v' => '3 件 稼働中' ],
+];
+$fde_stats = [];
+foreach ( [ 1, 2, 3, 4 ] as $n ) {
+	$i = $n - 1;
+	$fde_stats[] = [
+		'k' => (string) fde_field( "about_stat_{$n}_k", $fde_stat_defaults[ $i ]['k'] ),
+		'v' => (string) fde_field( "about_stat_{$n}_v", $fde_stat_defaults[ $i ]['v'] ),
+	];
+}
+
+$fde_lead = (string) fde_field(
 	'about_lead',
 	"「コンサルが書いた絵を、別の誰かが実装し、また別の誰かが運用する」\n——その分業の継ぎ目で、AIプロジェクトはよく失敗します。"
 );
-$fde_body = (string) fde_option(
+$fde_body = (string) fde_field(
 	'about_body',
 	"CHIM WORKSは、ヒアリングから設計、実装、評価、本番運用、内製化までを **一人称で連続的に** 引き受けます。元はWeb受託の開発者として5年、その後事業会社で社内データ基盤を3年担当。「現場の言葉」と「コードの言葉」を行き来する型を、長く練習してきました。\n\n個人でやっているのは、規模を求めていないからです。同時に動かす案件は3件まで。その代わり、関わる案件には深く入り、止まらないところまで持っていく ── それが屋号の意味です。"
 );
-$fde_tags = fde_split_tags( (string) fde_option( 'about_tags', 'Forward Deployed, AI / LLM, Data Engineering, Solo, NDA OK' ) );
+$fde_tags = fde_split_tags( (string) fde_field( 'about_tags', 'Forward Deployed, AI / LLM, Data Engineering, Solo, NDA OK' ) );
 ?>
 <section class="section" id="about" data-section="about">
 	<div class="section__inner">
@@ -60,16 +67,14 @@ $fde_tags = fde_split_tags( (string) fde_option( 'about_tags', 'Forward Deployed
 					<?php endif; ?>
 				</figure>
 
-				<?php if ( is_array( $fde_stats ) && ! empty( $fde_stats ) ) : ?>
-					<dl class="about__stats">
-						<?php foreach ( $fde_stats as $stat ) : ?>
-							<div class="about__stat">
-								<dt class="about__stat-k"><?php echo esc_html( $stat['k'] ?? '' ); ?></dt>
-								<dd class="about__stat-v"><?php echo esc_html( $stat['v'] ?? '' ); ?></dd>
-							</div>
-						<?php endforeach; ?>
-					</dl>
-				<?php endif; ?>
+				<dl class="about__stats">
+					<?php foreach ( $fde_stats as $stat ) : ?>
+						<div class="about__stat">
+							<dt class="about__stat-k"><?php echo esc_html( $stat['k'] ); ?></dt>
+							<dd class="about__stat-v"><?php echo esc_html( $stat['v'] ); ?></dd>
+						</div>
+					<?php endforeach; ?>
+				</dl>
 			</aside>
 
 			<div class="about__body">

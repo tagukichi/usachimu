@@ -59,6 +59,29 @@ function fde_option( string $key, $default = '' ) {
 }
 
 /**
+ * Fetch an ACF field from the page set as the front page (設定 → 表示設定).
+ * Falls back to $default when ACF is unavailable, the option is unset,
+ * or the field is empty. Use for editing TOP page copy via the page editor.
+ *
+ * @param mixed $default Fallback when no value is found.
+ * @return mixed
+ */
+function fde_field( string $key, $default = '' ) {
+	if ( ! function_exists( 'get_field' ) ) {
+		return $default;
+	}
+	$page_id = (int) get_option( 'page_on_front' );
+	if ( $page_id <= 0 ) {
+		return $default;
+	}
+	$value = get_field( $key, $page_id );
+	if ( null !== $value && '' !== $value && [] !== $value ) {
+		return $value;
+	}
+	return $default;
+}
+
+/**
  * Convert author-friendly **bold** markers to <b> tags, escaping the rest.
  * Allows simple <br> for explicit line breaks.
  */

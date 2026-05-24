@@ -9,13 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_meta  = (string) fde_option( 'contact_meta', 'RESPONSE WITHIN 1 BIZ DAY' );
-$fde_lead  = (string) fde_option( 'contact_lead', '初回60分はオンラインで無料です。' );
-$fde_note  = (string) fde_option( 'contact_note', "「これは自分の領域ではない」と判断したら、その場で正直にお伝えします。\n紹介できる方がいれば、紹介します。" );
+$fde_meta  = (string) fde_field( 'contact_meta', 'RESPONSE WITHIN 1 BIZ DAY' );
+$fde_lead  = (string) fde_field( 'contact_lead', '初回60分はオンラインで無料です。' );
+$fde_note  = (string) fde_field( 'contact_note', "「これは自分の領域ではない」と判断したら、その場で正直にお伝えします。\n紹介できる方がいれば、紹介します。" );
+$fde_cf7   = (string) fde_field( 'cf7_shortcode', '' );
+
+// Contact channels remain in theme settings (shared across the site).
 $fde_email = (string) fde_option( 'contact_email', '' );
 $fde_x_url = (string) fde_option( 'sns_x_url', '' );
 $fde_x_h   = (string) fde_option( 'sns_x_handle', '' );
-$fde_cf7   = (string) fde_option( 'cf7_shortcode', '' );
 ?>
 <section class="section section--dark" id="contact" data-section="contact">
 	<div class="section__inner">

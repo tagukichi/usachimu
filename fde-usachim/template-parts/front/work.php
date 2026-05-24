@@ -21,7 +21,7 @@ $fde_query = new WP_Query(
 );
 
 $fde_total = $fde_query->found_posts ?: $fde_query->post_count;
-$fde_disc  = (string) fde_option( 'work_disclaimer', '※ クライアント名は伏せています。詳細は商談の場で。NDA下での共有が可能なものもあります。' );
+$fde_disc  = (string) fde_field( 'work_disclaimer', '※ クライアント名は伏せています。詳細は商談の場で。NDA下での共有が可能なものもあります。' );
 ?>
 <section class="section" id="work" data-section="work">
 	<div class="section__inner">
@@ -70,7 +70,16 @@ $fde_disc  = (string) fde_option( 'work_disclaimer', '※ クライアント名�
 					$year          = function_exists( 'get_field' ) ? (string) get_field( 'year' ) : '';
 					$scale         = function_exists( 'get_field' ) ? (string) get_field( 'scale' ) : '';
 					$role          = function_exists( 'get_field' ) ? (string) get_field( 'role' ) : '';
-					$kpi           = function_exists( 'get_field' ) ? (array) get_field( 'kpi' ) : [];
+					$kpi           = [];
+					if ( function_exists( 'get_field' ) ) {
+						foreach ( [ 1, 2, 3, 4 ] as $kpi_n ) {
+							$k = (string) get_field( "kpi_{$kpi_n}_k" );
+							$v = (string) get_field( "kpi_{$kpi_n}_v" );
+							if ( '' !== $k || '' !== $v ) {
+								$kpi[] = [ 'k' => $k, 'v' => $v ];
+							}
+						}
+					}
 					$tags_raw      = function_exists( 'get_field' ) ? (string) get_field( 'tags' ) : '';
 					$tags          = fde_split_tags( $tags_raw );
 					$title         = get_the_title();

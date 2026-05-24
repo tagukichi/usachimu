@@ -24,6 +24,7 @@ $fde_usachim_includes = [
 	'inc/cf7-customizations.php',
 	'inc/seo.php',
 	'inc/migrations.php',
+	'inc/admin-notices.php',
 ];
 
 foreach ( $fde_usachim_includes as $fde_usachim_file ) {

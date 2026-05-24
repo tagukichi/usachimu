@@ -18,7 +18,16 @@ while ( have_posts() ) :
 	$year         = function_exists( 'get_field' ) ? (string) get_field( 'year' ) : '';
 	$scale        = function_exists( 'get_field' ) ? (string) get_field( 'scale' ) : '';
 	$role         = function_exists( 'get_field' ) ? (string) get_field( 'role' ) : '';
-	$kpi          = function_exists( 'get_field' ) ? (array) get_field( 'kpi' ) : [];
+	$kpi          = [];
+	if ( function_exists( 'get_field' ) ) {
+		foreach ( [ 1, 2, 3, 4 ] as $kpi_n ) {
+			$k = (string) get_field( "kpi_{$kpi_n}_k" );
+			$v = (string) get_field( "kpi_{$kpi_n}_v" );
+			if ( '' !== $k || '' !== $v ) {
+				$kpi[] = [ 'k' => $k, 'v' => $v ];
+			}
+		}
+	}
 	$tags         = fde_split_tags( function_exists( 'get_field' ) ? (string) get_field( 'tags' ) : '' );
 	$external     = function_exists( 'get_field' ) ? (string) get_field( 'external_url' ) : '';
 	?>
