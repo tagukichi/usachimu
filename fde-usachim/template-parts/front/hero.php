@@ -9,8 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_top_l   = (string) fde_field( 'hero_eyebrow_left',  'CHIM WORKS — INDEX' );
-$fde_top_r   = (string) fde_field( 'hero_eyebrow_right', 'EST. 2021 · TOKYO, JP' );
 $fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '資料の中のAIではなく、' );
 $fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場の手の中で動く' );
 $fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', 'AIを。' );
@@ -78,16 +76,15 @@ if ( ! $fde_news_link ) {
 	<div class="hero__grid" aria-hidden="true"></div>
 	<div class="hero__inner">
 
-		<div class="hero__top">
-			<span><?php echo esc_html( $fde_top_l ); ?></span>
-			<span><?php echo esc_html( $fde_top_r ); ?></span>
-		</div>
-
 		<h1 class="hero__statement jp">
-			<?php echo esc_html( $fde_stmt_l1 ); ?><br>
-			<?php if ( $fde_stmt_la ) : ?>
-				<span class="hero__statement-mute"><?php echo esc_html( $fde_stmt_la ); ?></span><?php endif; ?>
-			<?php echo esc_html( $fde_stmt_lb ); ?>
+			<span class="hero__statement-line">
+				<?php echo esc_html( $fde_stmt_l1 ); ?>
+			</span>
+			<span class="hero__statement-line">
+				<?php if ( $fde_stmt_la ) : ?>
+					<span class="hero__statement-mute"><?php echo esc_html( $fde_stmt_la ); ?></span><?php endif; ?>
+				<?php echo esc_html( $fde_stmt_lb ); ?>
+			</span>
 		</h1>
 
 		<div class="hero__sub">
