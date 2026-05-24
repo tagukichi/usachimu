@@ -45,15 +45,63 @@ function fde_icon( string $name, array $attrs = [] ): void {
 /**
  * Fetch a theme option from the ACF options page with a fallback.
  *
- * @param mixed $default Fallback when ACF is unavailable.
+ * @param mixed $default Fallback when ACF is unavailable or value is empty.
  * @return mixed
  */
 function fde_option( string $key, $default = '' ) {
 	if ( function_exists( 'get_field' ) ) {
 		$value = get_field( $key, 'option' );
-		if ( null !== $value && '' !== $value ) {
+		if ( null !== $value && '' !== $value && [] !== $value ) {
 			return $value;
 		}
 	}
 	return $default;
+}
+
+/**
+ * Convert author-friendly **bold** markers to <b> tags, escaping the rest.
+ * Allows simple <br> for explicit line breaks.
+ */
+function fde_inline_text( string $text ): string {
+	$escaped = esc_html( $text );
+	$escaped = preg_replace( '/\*\*(.+?)\*\*/u', '<b>$1</b>', $escaped );
+	return $escaped;
+}
+
+/**
+ * Render a paragraph block: split on blank lines, escape, apply **bold**, join with <p>.
+ */
+function fde_paragraphs( string $text ): string {
+	$text = str_replace( "\r\n", "\n", $text );
+	$paragraphs = preg_split( '/\n{2,}/u', trim( $text ) );
+	$out = '';
+	foreach ( $paragraphs as $p ) {
+		if ( '' === trim( $p ) ) {
+			continue;
+		}
+		$line = fde_inline_text( $p );
+		$line = nl2br( $line );
+		$out .= '<p>' . $line . '</p>';
+	}
+	return $out;
+}
+
+/**
+ * Split a comma (or 、) separated string into trimmed items.
+ *
+ * @return array<int,string>
+ */
+function fde_split_tags( string $text ): array {
+	$parts = preg_split( '/[,、]/u', $text );
+	if ( ! is_array( $parts ) ) {
+		return [];
+	}
+	$out = [];
+	foreach ( $parts as $p ) {
+		$p = trim( $p );
+		if ( '' !== $p ) {
+			$out[] = $p;
+		}
+	}
+	return $out;
 }

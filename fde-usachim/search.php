@@ -9,28 +9,29 @@ get_header();
 ?>
 
 <section class="section">
-	<div class="container container--narrow">
-		<header class="page-head">
-			<p class="page-head__eyebrow">Search</p>
-			<h1 class="page-head__title">「<?php echo esc_html( get_search_query() ); ?>」の検索結果</h1>
+	<div class="section__inner">
+		<header class="sec-head">
+			<div class="sec-head__l">
+				<span class="sec-head__num">§ Search</span>
+				<h2 class="sec-head__title">「<?php echo esc_html( get_search_query() ); ?>」</h2>
+			</div>
 		</header>
 
 		<?php get_search_form(); ?>
 
 		<?php if ( have_posts() ) : ?>
-			<ul class="search-results">
+			<ul class="writing__grid" style="margin-top:32px;">
 				<?php while ( have_posts() ) : the_post(); ?>
-					<li class="search-result">
-						<a href="<?php the_permalink(); ?>" class="search-result__link">
-							<h2 class="search-result__title"><?php the_title(); ?></h2>
-							<?php if ( get_the_excerpt() ) : ?>
-								<p class="search-result__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 40 ) ); ?></p>
-							<?php endif; ?>
-						</a>
+					<li class="writing-card">
+						<h3 class="writing-card__title">
+							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+						</h3>
+						<?php if ( get_the_excerpt() ) : ?>
+							<p class="jp" style="font-size:14px; color:var(--ink-3);"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 32 ) ); ?></p>
+						<?php endif; ?>
 					</li>
 				<?php endwhile; ?>
 			</ul>
-
 			<?php
 			the_posts_pagination(
 				[
@@ -41,7 +42,7 @@ get_header();
 			);
 			?>
 		<?php else : ?>
-			<p>該当する結果がありませんでした。</p>
+			<p class="work__disclaimer jp" style="margin-top:32px;">該当する結果がありませんでした。</p>
 		<?php endif; ?>
 	</div>
 </section>

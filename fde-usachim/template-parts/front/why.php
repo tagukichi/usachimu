@@ -1,0 +1,101 @@
+<?php
+/**
+ * §01 — Why Forward Deployed.
+ *
+ * @package fde-usachim
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$fde_title   = (string) fde_option( 'why_title', 'AIを味方につけ、次の10年に備える。' );
+$fde_premise = (string) fde_option(
+	'why_premise',
+	'これからの10年、勝ち負けを分けるのは「どんなAIを買ったか」ではなく、**自社のデータを、自社の業務に、自社の手で活かせる状態を作れたか**です。'
+);
+$fde_pillars = fde_option(
+	'why_pillars',
+	[
+		[ 'no' => '一', 'head' => 'データは「眠っている」。',                'body' => '請求書はPDF、議事録はWord、顧客の声はメール、設備ログはCSV。社内のあらゆる場所にデータはあるのに、横断して使える状態にはなっていない。AIに食わせる以前に、まずそこを揃える必要があります。' ],
+		[ 'no' => '二', 'head' => 'AIは「土台」の上にしか乗らない。',       'body' => '生成AIで業務が変わると言われるけれど、変わるのは下準備ができた現場だけ。データの所在が把握され、整っていて、必要な人が引き出せる ── その地味な土台があって初めて、AIは仕事の役に立ち始めます。' ],
+		[ 'no' => '三', 'head' => '作って終わり、ではなく回り続ける仕組みを。', 'body' => 'PoCを納品して関係が切れると、半年後にはほぼ動いていません。データの形が変わり、業務が変わり、誰も触れなくなるからです。現場の変化に追従できる人が、現場の中にいる状態をつくる必要があります。' ],
+	]
+);
+
+$fde_df_title = (string) fde_option( 'why_dataflow_title', "散らばったデータを、\n現場の判断に届くまで。" );
+$fde_df_note  = (string) fde_option(
+	'why_dataflow_note',
+	"FDEが引き受けるのは、「データがある」から「現場で使われる」までの全長。\n片方の端だけでは、現場は変わりません。"
+);
+$fde_df_diag  = (string) fde_option(
+	'why_dataflow_diagram',
+	"  ┌────────────┐    ┌────────────┐    ┌────────────┐    ┌────────────┐\n  │  社内資産  │ →  │   整える   │ →  │ AI で活かす │ →  │ 現場で使う │\n  │  scattered │    │  organized │    │   AI/LLM   │    │  in-field  │\n  └────────────┘    └────────────┘    └────────────┘    └────────────┘\n       PDF              schema              RAG               UI/Slack\n       議事録           pipeline            eval              業務に\n       設備ログ         BigQuery            Dify              直接組込\n       問合せ           dbt                 LangGraph         運用 + 改善\n   \n   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─\n   ※ ふつう、左寄りはエンジニア／右寄りは事業側の仕事として\n     切り分けられる。CHIM はその切れ目を跨ぐところを引き受ける。"
+);
+
+$fde_def      = (string) fde_option(
+	'why_def',
+	'Forward Deployed Engineer とは、**顧客の現場に出向き、何を作るべきかを共に定義し、自らの手で作り、運用に乗せ、引き継ぐところまで責任を持つ実装者**のこと。'
+);
+$fde_def_note = (string) fde_option(
+	'why_def_note',
+	'米国のAI企業が「自社プロダクトを顧客の業務に組み込みきる」ために置いている職種ですが、日本の中堅企業や自治体の現場には、この役割が決定的に足りていない ── というのが、独立して活動を始めた理由です。一案件にひとり、深く入って、止まらないところまで持っていく。それがCHIM WORKSのやり方です。'
+);
+?>
+<section class="section" id="why" data-section="why">
+	<div class="section__inner">
+		<header class="sec-head">
+			<div class="sec-head__l">
+				<span class="sec-head__num">§ 01</span>
+				<h2 class="sec-head__title jp"><?php echo esc_html( $fde_title ); ?></h2>
+			</div>
+			<span class="sec-head__meta">WHY FORWARD DEPLOYED</span>
+		</header>
+
+		<div class="why__premise">
+			<div>
+				<div class="why__premise-label">// Premise</div>
+				<div class="why__premise-quote serif">&ldquo;</div>
+			</div>
+			<p class="why__premise-text"><?php echo wp_kses( str_replace( "\n", '<br>', fde_inline_text( $fde_premise ) ), [ 'b' => [], 'br' => [] ] ); ?></p>
+		</div>
+
+		<?php if ( is_array( $fde_pillars ) && ! empty( $fde_pillars ) ) : ?>
+			<div class="why__pillars">
+				<?php foreach ( $fde_pillars as $i => $p ) : ?>
+					<div class="why__pillar">
+						<div class="why__pillar-head">
+							<span class="why__pillar-no"><?php echo esc_html( $p['no'] ?? '' ); ?></span>
+							<span class="why__pillar-idx"><?php echo esc_html( sprintf( '%02d / %02d', $i + 1, count( $fde_pillars ) ) ); ?></span>
+						</div>
+						<h3 class="why__pillar-title"><?php echo esc_html( $p['head'] ?? '' ); ?></h3>
+						<p class="why__pillar-body"><?php echo esc_html( $p['body'] ?? '' ); ?></p>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
+
+		<div class="why__dataflow">
+			<div class="why__dataflow-inner">
+				<div>
+					<div class="why__dataflow-label">FIG. 02 — Data, in service of the field</div>
+					<h3 class="why__dataflow-title"><?php echo nl2br( esc_html( $fde_df_title ) ); ?></h3>
+					<p class="why__dataflow-note"><?php echo nl2br( esc_html( $fde_df_note ) ); ?></p>
+				</div>
+				<pre class="why__dataflow-diagram"><?php echo esc_html( $fde_df_diag ); ?></pre>
+			</div>
+			<span class="why__dataflow-tick why__dataflow-tick--tl" aria-hidden="true"></span>
+			<span class="why__dataflow-tick why__dataflow-tick--tr" aria-hidden="true"></span>
+			<span class="why__dataflow-tick why__dataflow-tick--bl" aria-hidden="true"></span>
+			<span class="why__dataflow-tick why__dataflow-tick--br" aria-hidden="true"></span>
+		</div>
+
+		<div class="why__def">
+			<div class="why__def-label">// Definition</div>
+			<div>
+				<p class="why__def-text"><?php echo wp_kses( str_replace( "\n", '<br>', fde_inline_text( $fde_def ) ), [ 'b' => [], 'br' => [] ] ); ?></p>
+				<p class="why__def-note"><?php echo esc_html( $fde_def_note ); ?></p>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,16 +1,16 @@
 /*
-Theme Name: FDE Usachim
+Theme Name: CHIM WORKS
 Theme URI: https://usachim.com/
-Author: うさちむデザイン
+Author: CHIM WORKS
 Author URI: https://usachim.com/
-Description: Forward Deployed Engineer ポジショニングのオリジナルテーマ。WordPress 6.x / PHP 8.1+ / ACF / Contact Form 7。
-Version: 0.1.0
+Description: CHIM WORKS — Forward Deployed Engineer 個人事業の Editorial Manifesto テーマ。WordPress 6.x / PHP 8.1+ / ACF / Contact Form 7。
+Version: 1.0.0
 Requires at least: 6.0
 Requires PHP: 8.1
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: fde-usachim
-Tags: custom, responsive, minimal, business
+Tags: custom, responsive, editorial, monochrome, business
 */
 
 /* テーマ情報用ファイル。実スタイルは assets/css/main.css を enqueue で読み込む。 */

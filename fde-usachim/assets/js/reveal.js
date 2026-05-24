@@ -6,19 +6,19 @@ export function initReveal() {
 
   const candidates = [
     '.hero',
-    '.section-head',
-    '.positioning__values > li',
-    '.service-card',
-    '.approach__item',
-    '.work-card',
-    '.principles__list > li',
-    '.tech-stack__list > div',
-    '.service',
-    '.about-excerpt__body',
-    '.profile__body',
-    '.front-cta',
-    '.cta-block',
-    '.single-work__section',
+    '.sec-head',
+    '.why__premise',
+    '.why__pillars',
+    '.why__dataflow',
+    '.why__def',
+    '.about__grid',
+    '.service-row',
+    '.process-row',
+    '.work-spread',
+    '.stack-row',
+    '.writing-card',
+    '.contact__grid',
+    '.site-footer__mark',
   ].join(',');
 
   const els = document.querySelectorAll(candidates);
@@ -31,7 +31,7 @@ export function initReveal() {
 
   els.forEach((el, i) => {
     el.classList.add('reveal');
-    el.style.transitionDelay = `${Math.min(i * 40, 240)}ms`;
+    el.style.transitionDelay = `${Math.min(i * 30, 180)}ms`;
   });
 
   const observer = new IntersectionObserver(
@@ -43,7 +43,7 @@ export function initReveal() {
         }
       });
     },
-    { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
+    { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
   );
 
   els.forEach((el) => observer.observe(el));

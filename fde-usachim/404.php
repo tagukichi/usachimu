@@ -1,6 +1,6 @@
 <?php
 /**
- * 404 template.
+ * 404.
  *
  * @package fde-usachim
  */
@@ -9,11 +9,12 @@ get_header();
 ?>
 
 <section class="section">
-	<div class="container container--narrow">
-		<h1><?php esc_html_e( 'ページが見つかりませんでした', 'fde-usachim' ); ?></h1>
-		<p><?php esc_html_e( 'URL が変更されたか、削除された可能性があります。', 'fde-usachim' ); ?></p>
-		<p>
-			<a class="button button--ghost" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'トップへ戻る', 'fde-usachim' ); ?></a>
+	<div class="section__inner" style="text-align:center;">
+		<p class="page-head__eyebrow">404</p>
+		<h1 class="page-head__title">ページが見つかりませんでした</h1>
+		<p class="prose" style="margin-top:24px;">URL が変更されたか、削除された可能性があります。</p>
+		<p style="margin-top:32px;">
+			<a class="btn btn--ghost" href="<?php echo esc_url( home_url( '/' ) ); ?>">トップへ戻る</a>
 		</p>
 	</div>
 </section>

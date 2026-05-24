@@ -1,61 +1,69 @@
 <?php
 /**
- * Works archive (and work_category taxonomy fallback).
+ * Works archive (minimal list — main display is the front page §05 Work).
  *
  * @package fde-usachim
  */
 
 get_header();
-
 require FDE_USACHIM_DIR . '/template-parts/common/breadcrumb.php';
-
-$fde_is_tax    = is_tax( 'work_category' );
-$fde_term      = $fde_is_tax ? get_queried_object() : null;
-$fde_title     = $fde_is_tax ? $fde_term->name : '実績';
-$fde_lead      = $fde_is_tax
-	? sprintf( 'カテゴリー「%s」の実績一覧です。', $fde_term->name )
-	: '中小企業の DX 伴走、AI 業務自動化、Web 制作などの実績です。';
 ?>
+<section class="section">
+	<div class="section__inner">
+		<header class="sec-head">
+			<div class="sec-head__l">
+				<span class="sec-head__num">§ 05</span>
+				<h2 class="sec-head__title">
+					<?php
+					if ( is_tax( 'work_category' ) ) {
+						single_term_title();
+					} else {
+						esc_html_e( 'Selected Work', 'fde-usachim' );
+					}
+					?>
+				</h2>
+			</div>
+			<span class="sec-head__meta">ARCHIVE</span>
+		</header>
 
-<article class="page-works">
-	<header class="page-head section">
-		<div class="container">
-			<p class="page-head__eyebrow">Works</p>
-			<h1 class="page-head__title"><?php echo esc_html( $fde_title ); ?></h1>
-			<p class="page-head__lead"><?php echo esc_html( $fde_lead ); ?></p>
-		</div>
-	</header>
+		<?php if ( have_posts() ) : ?>
+			<ul class="writing__grid">
+				<?php while ( have_posts() ) : the_post(); ?>
+					<?php
+					$industry = function_exists( 'get_field' ) ? (string) get_field( 'industry' ) : '';
+					$year     = function_exists( 'get_field' ) ? (string) get_field( 'year' ) : '';
+					?>
+					<li class="writing-card">
+						<div class="writing-card__head">
+							<span class="writing-card__date"><?php echo esc_html( $year ); ?></span>
+							<?php if ( $industry ) : ?>
+								<span class="writing-card__read"><?php echo esc_html( $industry ); ?></span>
+							<?php endif; ?>
+						</div>
+						<h3 class="writing-card__title">
+							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+						</h3>
+						<div class="writing-card__foot">
+							<span></span>
+							<a href="<?php the_permalink(); ?>" class="writing-card__more">read →</a>
+						</div>
+					</li>
+				<?php endwhile; ?>
+			</ul>
 
-	<section class="works section">
-		<div class="container">
-			<?php require FDE_USACHIM_DIR . '/template-parts/works/filter.php'; ?>
-
-			<?php if ( have_posts() ) : ?>
-				<ul class="works-grid">
-					<?php while ( have_posts() ) : the_post(); ?>
-						<li>
-							<?php require FDE_USACHIM_DIR . '/template-parts/works/card.php'; ?>
-						</li>
-					<?php endwhile; ?>
-				</ul>
-
-				<?php
-				the_posts_pagination(
-					[
-						'mid_size'  => 1,
-						'prev_text' => __( '前へ', 'fde-usachim' ),
-						'next_text' => __( '次へ', 'fde-usachim' ),
-					]
-				);
-				?>
-			<?php else : ?>
-				<p class="works__empty">該当する実績はまだありません。</p>
-			<?php endif; ?>
-		</div>
-	</section>
-
-	<?php require FDE_USACHIM_DIR . '/template-parts/common/cta-block.php'; ?>
-</article>
-
+			<?php
+			the_posts_pagination(
+				[
+					'mid_size'  => 1,
+					'prev_text' => __( '前へ', 'fde-usachim' ),
+					'next_text' => __( '次へ', 'fde-usachim' ),
+				]
+			);
+			?>
+		<?php else : ?>
+			<p class="work__disclaimer jp">該当する実績はまだありません。</p>
+		<?php endif; ?>
+	</div>
+</section>
 <?php
 get_footer();
