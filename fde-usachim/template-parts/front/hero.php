@@ -76,16 +76,30 @@ if ( ! $fde_news_link ) {
 	<div class="hero__grid" aria-hidden="true"></div>
 	<div class="hero__inner">
 
-		<h1 class="hero__statement jp">
-			<span class="hero__statement-line">
-				<?php echo esc_html( $fde_stmt_l1 ); ?>
-			</span>
-			<span class="hero__statement-line">
-				<?php if ( $fde_stmt_la ) : ?>
-					<span class="hero__statement-mute"><?php echo esc_html( $fde_stmt_la ); ?></span><?php endif; ?>
-				<?php echo esc_html( $fde_stmt_lb ); ?>
-			</span>
-		</h1>
+		<div class="hero__main">
+			<h1 class="hero__statement jp">
+				<span class="hero__statement-line">
+					<?php echo esc_html( $fde_stmt_l1 ); ?>
+				</span>
+				<span class="hero__statement-line">
+					<?php if ( $fde_stmt_la ) : ?>
+						<span class="hero__statement-mute"><?php echo esc_html( $fde_stmt_la ); ?></span><?php endif; ?>
+					<?php echo esc_html( $fde_stmt_lb ); ?>
+				</span>
+			</h1>
+
+			<aside class="hero__code" aria-hidden="true" data-hero-code>
+				<header class="hero__code-bar">
+					<span class="hero__code-dots">
+						<span class="hero__code-dot"></span>
+						<span class="hero__code-dot"></span>
+						<span class="hero__code-dot"></span>
+					</span>
+					<span class="hero__code-name mono" data-hero-code-name>deploy.py</span>
+				</header>
+				<pre class="hero__code-body mono"><code data-hero-code-target></code><span class="hero__code-caret" aria-hidden="true"></span></pre>
+			</aside>
+		</div>
 
 		<div class="hero__sub">
 			<p class="hero__lede"><?php echo wp_kses( str_replace( "\n", '<br>', fde_inline_text( $fde_lede ) ), [ 'b' => [], 'br' => [], 'strong' => [] ] ); ?></p>
