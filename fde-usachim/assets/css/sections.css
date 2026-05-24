@@ -645,16 +645,16 @@
 }
 
 .about__profile-name {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.1;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
   color: var(--ink);
   margin: 0;
 }
 
 @media (min-width: 1101px) {
-  .about__profile-name { font-size: 28px; }
+  .about__profile-name { font-size: 18px; }
 }
 
 .about__body {
@@ -1568,9 +1568,6 @@
   border-bottom: 1px solid currentColor;
 }
 
-/* Contact Form 7 — dark, underline-input editorial */
-.contact__form { display: block; }
-
 /* Contact Form 7 — dark, underline-input editorial.
    CF7 のデフォルトマークアップ（<p><label>名前<br><span><input></span></label></p>）に
    素直に従う block レイアウト。grid は使わず、各フィールドを縦に積む。 */
@@ -1578,6 +1575,21 @@
 .contact__form { display: block; }
 
 .contact__form .wpcf7 { width: 100%; }
+
+/* fieldset のブラウザ既定枠線を解除 + hidden 用 fieldset は完全非表示。
+   CF7 が <fieldset class="hidden-fields-container"> で hidden input を
+   包む仕様で、白枠として残っていたのを除去。 */
+.contact__form fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.contact__form fieldset.hidden-fields-container,
+.contact__form fieldset[class*="hidden"] {
+  display: none;
+}
 
 /* CF7 がアクセシビリティ用に <form> の直前に出力する空の領域。
    高さを持ってフォームの上に白枠のように見えるのを完全に視覚非表示。 */

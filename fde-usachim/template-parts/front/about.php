@@ -12,10 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 $fde_portrait     = fde_field( 'about_portrait' );
 $fde_portrait_fig = (string) fde_field( 'about_portrait_fig', 'FIG. 01 — CHIM' );
 
-$fde_name     = (string) fde_field( 'about_name',     'CHIM' );
-$fde_position = (string) fde_field( 'about_position', 'Forward Deployed Engineer' );
-$fde_location = (string) fde_field( 'about_location', 'Tokyo, JP' );
-$fde_since    = (string) fde_field( 'about_since',    'SINCE 2021' );
+$fde_name     = (string) fde_field( 'about_name',     '' );
+$fde_position = (string) fde_field( 'about_position', '' );
+$fde_location = (string) fde_field( 'about_location', '' );
+$fde_since    = (string) fde_field( 'about_since',    '' );
 
 $fde_lead = (string) fde_field(
 	'about_lead',
