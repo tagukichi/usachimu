@@ -47,6 +47,7 @@ add_action(
 				// 必要に応じてフロント（本番 / ステージング）の URL を追加してください。
 				$allowed = [
 					'https://usachim.com',
+					'https://claude.ai',
 				];
 
 				$origin = function_exists( 'get_http_origin' ) ? get_http_origin() : '';
