@@ -995,7 +995,6 @@
   flex-direction: column;
   position: relative;
   min-height: 180px;
-  order: 0;
 }
 
 @media (min-width: 720px) {
