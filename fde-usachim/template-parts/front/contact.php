@@ -24,7 +24,7 @@ $fde_x_h   = (string) fde_option( 'sns_x_handle', '' );
 		<header class="sec-head">
 			<div class="sec-head__l">
 				<span class="sec-head__num">§ 08</span>
-				<h2 class="sec-head__title">Contact — まず話を。</h2>
+				<h2 class="sec-head__title">Contact</h2>
 			</div>
 			<span class="sec-head__meta"><?php echo esc_html( $fde_meta ); ?></span>
 		</header>

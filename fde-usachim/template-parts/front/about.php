@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 $fde_portrait     = fde_field( 'about_portrait' );
 $fde_portrait_fig = (string) fde_field( 'about_portrait_fig', 'FIG. 01 — CHIM' );
 
+$fde_name     = (string) fde_field( 'about_name',     'CHIM' );
+$fde_position = (string) fde_field( 'about_position', 'Forward Deployed Engineer' );
+$fde_location = (string) fde_field( 'about_location', 'Tokyo, JP' );
+$fde_since    = (string) fde_field( 'about_since',    'SINCE 2021' );
+
 $fde_lead = (string) fde_field(
 	'about_lead',
 	"エンジニアリングと経営、\n両方の観点からAIプロジェクトを推進する。"
@@ -26,7 +31,7 @@ $fde_body = (string) fde_field(
 		<header class="sec-head">
 			<div class="sec-head__l">
 				<span class="sec-head__num">§ 02</span>
-				<h2 class="sec-head__title">About — 私について。</h2>
+				<h2 class="sec-head__title">About</h2>
 			</div>
 			<span class="sec-head__meta">PROFILE</span>
 		</header>
@@ -50,6 +55,35 @@ $fde_body = (string) fde_field(
 						<figcaption class="about__portrait-fig"><?php echo esc_html( $fde_portrait_fig ); ?></figcaption>
 					<?php endif; ?>
 				</figure>
+
+				<?php if ( $fde_name || $fde_position || $fde_location || $fde_since ) : ?>
+					<dl class="about__profile">
+						<?php if ( $fde_name ) : ?>
+							<div class="about__profile-row about__profile-row--name">
+								<dt class="about__profile-k">NAME</dt>
+								<dd class="about__profile-name serif"><?php echo esc_html( $fde_name ); ?></dd>
+							</div>
+						<?php endif; ?>
+						<?php if ( $fde_position ) : ?>
+							<div class="about__profile-row">
+								<dt class="about__profile-k">ROLE</dt>
+								<dd class="about__profile-v"><?php echo esc_html( $fde_position ); ?></dd>
+							</div>
+						<?php endif; ?>
+						<?php if ( $fde_location ) : ?>
+							<div class="about__profile-row">
+								<dt class="about__profile-k">BASED</dt>
+								<dd class="about__profile-v"><?php echo esc_html( $fde_location ); ?></dd>
+							</div>
+						<?php endif; ?>
+						<?php if ( $fde_since ) : ?>
+							<div class="about__profile-row">
+								<dt class="about__profile-k">SINCE</dt>
+								<dd class="about__profile-v"><?php echo esc_html( $fde_since ); ?></dd>
+							</div>
+						<?php endif; ?>
+					</dl>
+				<?php endif; ?>
 			</aside>
 
 			<div class="about__body">

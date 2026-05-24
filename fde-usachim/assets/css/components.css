@@ -306,7 +306,6 @@ body.is-nav-open { overflow: hidden; }
   gap: 28px;
   margin-bottom: 32px;
   padding-bottom: 28px;
-  border-bottom: 1px solid var(--dark-line);
 }
 
 @media (min-width: 720px) {

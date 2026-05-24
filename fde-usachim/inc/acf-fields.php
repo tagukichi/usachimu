@@ -193,6 +193,12 @@ add_action(
 		];
 		$top_fields[] = fde_acf_text( 'about_portrait_fig', 'about_portrait_fig', __( 'FIG ラベル', 'fde-usachim' ), 'FIG. 01 — CHIM' );
 
+		// Profile 情報（portrait 直下に表示）
+		$top_fields[] = fde_acf_text( 'about_name',     'about_name',     __( '名前', 'fde-usachim' ), 'CHIM' );
+		$top_fields[] = fde_acf_text( 'about_position', 'about_position', __( '肩書', 'fde-usachim' ), 'Forward Deployed Engineer' );
+		$top_fields[] = fde_acf_text( 'about_location', 'about_location', __( '所在地', 'fde-usachim' ), 'Tokyo, JP' );
+		$top_fields[] = fde_acf_text( 'about_since',    'about_since',    __( '開始年', 'fde-usachim' ), 'SINCE 2021' );
+
 		$top_fields[] = fde_acf_textarea( 'about_lead', 'about_lead', __( 'About リード（明朝大）', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_textarea( 'about_body', 'about_body', __( 'About 本文', 'fde-usachim' ), 8, '段落区切りは空行。**強調** で太字。' );
 

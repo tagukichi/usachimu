@@ -27,7 +27,7 @@ $fde_total = $fde_query->found_posts ?: $fde_query->post_count;
 		<header class="sec-head">
 			<div class="sec-head__l">
 				<span class="sec-head__num">§ 05</span>
-				<h2 class="sec-head__title">Selected Work — 仕事の記録。</h2>
+				<h2 class="sec-head__title">Selected Work</h2>
 			</div>
 			<span class="sec-head__meta"><?php echo esc_html( sprintf( '%d CASES · 2024 → %s', $fde_total, date_i18n( 'Y' ) ) ); ?></span>
 		</header>

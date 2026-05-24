@@ -424,10 +424,17 @@
   padding: 28px 18px;
   position: relative;
   margin-bottom: 36px;
+  /* SP では section の左右パディングを打ち消して全幅に */
+  margin-inline: calc(-1 * var(--gutter-sp));
+  padding-inline: var(--gutter-sp);
 }
 
 @media (min-width: 720px) {
-  .why__dataflow { padding: 36px 32px; margin-bottom: 48px; }
+  .why__dataflow {
+    padding: 36px 32px;
+    margin-bottom: 48px;
+    margin-inline: 0;
+  }
 }
 
 @media (min-width: 1101px) {
@@ -598,6 +605,58 @@
   letter-spacing: 0.06em;
 }
 
+.about__profile {
+  margin: 20px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.about__profile-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.about__profile-row--name {
+  grid-template-columns: 60px 1fr;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+
+.about__profile-k {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--mute);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.about__profile-v {
+  font-family: var(--font-jp);
+  font-size: 14px;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+
+.about__profile-name {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0;
+}
+
+@media (min-width: 1101px) {
+  .about__profile-name { font-size: 28px; }
+}
+
 .about__body {
   display: flex;
   flex-direction: column;
@@ -648,8 +707,8 @@
 
 .service-row {
   display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 16px 18px;
+  grid-template-columns: 36px 1fr;
+  gap: 12px 10px;
   padding: 28px 0;
   border-top: 1px solid var(--line);
   align-items: baseline;
@@ -675,10 +734,14 @@
 
 .service-row__no {
   font-family: var(--font-serif);
-  font-size: 36px;
+  font-size: 28px;
   line-height: 1;
   color: var(--ink);
   letter-spacing: -0.02em;
+}
+
+@media (min-width: 720px) {
+  .service-row__no { font-size: 36px; }
 }
 
 @media (min-width: 1101px) {
@@ -1686,9 +1749,17 @@
   letter-spacing: normal;
 }
 
-.contact__form .wpcf7-response-output:empty,
-.contact__form .wpcf7-response-output[aria-hidden="true"]:not(.wpcf7-display-block) {
+/* 通常時はレスポンス枠を完全に非表示。送信後に動的に出るときだけ表示 */
+.contact__form .wpcf7-response-output,
+.contact__form .wpcf7 .wpcf7-response-output,
+.contact__form output.wpcf7-response-output {
   display: none;
+}
+
+.contact__form .wpcf7-response-output.wpcf7-display-block,
+.contact__form .wpcf7 .wpcf7-response-output:not(:empty),
+.contact__form output.wpcf7-response-output:not(:empty) {
+  display: block;
 }
 
 .contact__form .wpcf7-not-valid-tip {

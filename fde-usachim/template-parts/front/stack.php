@@ -33,7 +33,7 @@ foreach ( [ 1, 2, 3, 4, 5, 6 ] as $n ) {
 		<header class="sec-head">
 			<div class="sec-head__l">
 				<span class="sec-head__num">§ 06</span>
-				<h2 class="sec-head__title">Stack — 使える技術。</h2>
+				<h2 class="sec-head__title">Stack</h2>
 			</div>
 			<span class="sec-head__meta"><?php echo esc_html( $fde_meta ); ?></span>
 		</header>

@@ -33,7 +33,7 @@ $fde_count = count( $fde_services );
 		<header class="sec-head">
 			<div class="sec-head__l">
 				<span class="sec-head__num">§ 03</span>
-				<h2 class="sec-head__title">Services — 何を提供するか。</h2>
+				<h2 class="sec-head__title">Services</h2>
 			</div>
 			<span class="sec-head__meta"><?php echo esc_html( sprintf( '%02d OFFERINGS', $fde_count ) ); ?></span>
 		</header>
