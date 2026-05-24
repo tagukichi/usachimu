@@ -1517,6 +1517,22 @@
 
 .contact__form .wpcf7 { width: 100%; }
 
+/* CF7 がアクセシビリティ用に <form> の直前に出力する空の領域。
+   高さを持ってフォームの上に白枠のように見えるのを完全に視覚非表示。 */
+.contact__form .screen-reader-response,
+.contact__form .wpcf7 .screen-reader-response {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .contact__form .wpcf7 form {
   display: flex;
   flex-direction: column;
