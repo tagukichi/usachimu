@@ -34,3 +34,15 @@ foreach ( $fde_usachim_includes as $fde_usachim_file ) {
 	}
 }
 unset( $fde_usachim_includes, $fde_usachim_file, $fde_usachim_path );
+
+add_action(
+	'init',
+	function () {
+		header( 'Access-Control-Allow-Origin: *' );
+		header( 'Access-Control-Allow-Methods: POST, GET, OPTIONS' );
+		header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'OPTIONS' === $_SERVER['REQUEST_METHOD'] ) {
+			exit( 0 );
+		}
+	}
+);
