@@ -286,23 +286,9 @@ add_action(
 						'placeholder' => '実績を見る',
 					],
 
-					// Hero news (latest お知らせ)
-					[
-						'key'        => 'field_fde_hero_news',
-						'label'      => __( 'Hero お知らせ（最大3件）', 'fde-usachim' ),
-						'name'       => 'hero_news',
-						'type'       => 'repeater',
-						'min'        => 0,
-						'max'        => 3,
-						'layout'     => 'block',
-						'button_label' => __( 'お知らせを追加', 'fde-usachim' ),
-						'sub_fields' => [
-							[ 'key' => 'field_fde_news_date', 'label' => '日付',   'name' => 'date', 'type' => 'text', 'placeholder' => '2026.05.20' ],
-							[ 'key' => 'field_fde_news_tag',  'label' => 'タグ',   'name' => 'tag',  'type' => 'text', 'placeholder' => 'NOTE' ],
-							[ 'key' => 'field_fde_news_body', 'label' => '本文',   'name' => 'body', 'type' => 'text' ],
-							[ 'key' => 'field_fde_news_url',  'label' => 'リンク', 'name' => 'url',  'type' => 'url' ],
-						],
-					],
+					// Hero news は「カテゴリー：お知らせ（slug: news）」の最新投稿3件を自動取得します。
+					// 投稿 → カテゴリーで「お知らせ」を作成し、投稿してください。
+					// 1件目の post tag が大文字化されて NOTE / WRITING / CASE の位置に入ります。
 
 					// ---------- Tab: §01 Why ----------
 					[ 'key' => 'tab_why', 'label' => __( '§01 Why', 'fde-usachim' ), 'name' => '', 'type' => 'tab' ],
