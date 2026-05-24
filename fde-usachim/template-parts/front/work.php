@@ -21,7 +21,6 @@ $fde_query = new WP_Query(
 );
 
 $fde_total = $fde_query->found_posts ?: $fde_query->post_count;
-$fde_disc  = (string) fde_field( 'work_disclaimer', '※ クライアント名は伏せています。詳細は商談の場で。NDA下での共有が可能なものもあります。' );
 ?>
 <section class="section" id="work" data-section="work">
 	<div class="section__inner">
@@ -129,7 +128,7 @@ $fde_disc  = (string) fde_field( 'work_disclaimer', '※ クライアント名�
 							</h3>
 
 							<?php if ( $summary ) : ?>
-								<p class="work-spread__summary jp"><?php echo nl2br( esc_html( $summary ) ); ?></p>
+								<p class="work-spread__summary jp"><?php echo esc_html( $summary ); ?></p>
 							<?php endif; ?>
 
 							<div class="work-spread__details">
@@ -162,9 +161,6 @@ $fde_disc  = (string) fde_field( 'work_disclaimer', '※ クライアント名�
 				<?php endwhile; ?>
 			</div>
 
-			<?php if ( $fde_disc ) : ?>
-				<p class="work__disclaimer jp"><?php echo esc_html( $fde_disc ); ?></p>
-			<?php endif; ?>
 		<?php else : ?>
 			<p class="work__disclaimer jp">実績データはまだありません。管理画面 →「実績」から登録してください。</p>
 		<?php endif; ?>

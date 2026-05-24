@@ -217,10 +217,6 @@ add_action(
 			$top_fields[] = fde_acf_textarea( "process_step_{$n}_desc", "process_step_{$n}_desc", sprintf( __( 'ステップ %d — 説明', 'fde-usachim' ), $n ), 3 );
 		}
 
-		// ---------- §05 Work ----------
-		$top_fields[] = fde_acf_tab( 'work', __( '§05 Work', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'work_disclaimer', 'work_disclaimer', __( '実績セクション 注記', 'fde-usachim' ), '※ クライアント名は伏せています。詳細は商談の場で。' );
-
 		// ---------- §06 Stack ----------
 		$top_fields[] = fde_acf_tab( 'stack', __( '§06 Stack', 'fde-usachim' ) );
 		$top_fields[] = fde_acf_text( 'stack_meta', 'stack_meta', __( 'Stack 見直し日', 'fde-usachim' ), 'REVIEWED 2026.04' );
