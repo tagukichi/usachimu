@@ -73,6 +73,12 @@
   margin-bottom: 32px;
 }
 
+/* SP / タブレットでは順序を逆転：上=エディタ、下=タイトル */
+@media (max-width: 1100px) {
+  .hero__code      { order: 1; }
+  .hero__statement { order: 2; }
+}
+
 @media (min-width: 1101px) {
   .hero__main {
     grid-template-columns: minmax(0, 1fr) 420px;
