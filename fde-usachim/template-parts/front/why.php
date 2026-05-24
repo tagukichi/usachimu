@@ -33,15 +33,6 @@ $fde_df_diag  = (string) fde_option(
 	'why_dataflow_diagram',
 	"  ┌────────────┐    ┌────────────┐    ┌────────────┐    ┌────────────┐\n  │  社内資産  │ →  │   整える   │ →  │ AI で活かす │ →  │ 現場で使う │\n  │  scattered │    │  organized │    │   AI/LLM   │    │  in-field  │\n  └────────────┘    └────────────┘    └────────────┘    └────────────┘\n       PDF              schema              RAG               UI/Slack\n       議事録           pipeline            eval              業務に\n       設備ログ         BigQuery            Dify              直接組込\n       問合せ           dbt                 LangGraph         運用 + 改善\n   \n   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─\n   ※ ふつう、左寄りはエンジニア／右寄りは事業側の仕事として\n     切り分けられる。CHIM はその切れ目を跨ぐところを引き受ける。"
 );
-
-$fde_def      = (string) fde_option(
-	'why_def',
-	'Forward Deployed Engineer とは、**顧客の現場に出向き、何を作るべきかを共に定義し、自らの手で作り、運用に乗せ、引き継ぐところまで責任を持つ実装者**のこと。'
-);
-$fde_def_note = (string) fde_option(
-	'why_def_note',
-	'米国のAI企業が「自社プロダクトを顧客の業務に組み込みきる」ために置いている職種ですが、日本の中堅企業や自治体の現場には、この役割が決定的に足りていない ── というのが、独立して活動を始めた理由です。一案件にひとり、深く入って、止まらないところまで持っていく。それがCHIM WORKSのやり方です。'
-);
 ?>
 <section class="section" id="why" data-section="why">
 	<div class="section__inner">
@@ -101,14 +92,6 @@ $fde_def_note = (string) fde_option(
 			<span class="why__dataflow-tick why__dataflow-tick--tr" aria-hidden="true"></span>
 			<span class="why__dataflow-tick why__dataflow-tick--bl" aria-hidden="true"></span>
 			<span class="why__dataflow-tick why__dataflow-tick--br" aria-hidden="true"></span>
-		</div>
-
-		<div class="why__def">
-			<div class="why__def-label">// Definition</div>
-			<div>
-				<p class="why__def-text"><?php echo wp_kses( str_replace( "\n", '<br>', fde_inline_text( $fde_def ) ), [ 'b' => [], 'br' => [] ] ); ?></p>
-				<p class="why__def-note"><?php echo esc_html( $fde_def_note ); ?></p>
-			</div>
 		</div>
 	</div>
 </section>

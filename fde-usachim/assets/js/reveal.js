@@ -10,7 +10,6 @@ export function initReveal() {
     '.why__premise',
     '.why__pillars',
     '.why__dataflow',
-    '.why__def',
     '.about__grid',
     '.service-row',
     '.process-row',

@@ -354,22 +354,6 @@ add_action(
 						'rows'        => 12,
 						'new_lines'   => '',
 					],
-					[
-						'key'         => 'field_fde_why_def',
-						'label'       => __( 'FDE 定義文', 'fde-usachim' ),
-						'name'        => 'why_def',
-						'type'        => 'textarea',
-						'rows'        => 3,
-						'new_lines'   => '',
-					],
-					[
-						'key'         => 'field_fde_why_def_note',
-						'label'       => __( 'FDE 定義 補足', 'fde-usachim' ),
-						'name'        => 'why_def_note',
-						'type'        => 'textarea',
-						'rows'        => 4,
-						'new_lines'   => '',
-					],
 
 					// ---------- Tab: §02 About ----------
 					[ 'key' => 'tab_about', 'label' => __( '§02 About', 'fde-usachim' ), 'name' => '', 'type' => 'tab' ],
