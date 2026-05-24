@@ -46,8 +46,7 @@ add_action(
 				// CORS を許可するオリジンのホワイトリスト。
 				// 必要に応じてフロント（本番 / ステージング）の URL を追加してください。
 				$allowed = [
-					// 'https://app.example.com',
-					// 'https://staging.example.com',
+					'https://usachim.com',
 				];
 
 				$origin = function_exists( 'get_http_origin' ) ? get_http_origin() : '';
