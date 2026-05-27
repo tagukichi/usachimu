@@ -145,3 +145,29 @@ function fde_split_tags( string $text ): array {
 	}
 	return $out;
 }
+
+/**
+ * Split a textarea string into line items.
+ * Strips leading bullet markers (-、・、*、•) and ignores blank lines.
+ *
+ * @return array<int,string>
+ */
+function fde_split_lines( string $text ): array {
+	$lines = preg_split( '/\r\n|\r|\n/u', $text );
+	if ( ! is_array( $lines ) ) {
+		return [];
+	}
+	$out = [];
+	foreach ( $lines as $line ) {
+		// 行頭の bullet マーカーと余白を除去。
+		// ltrim() の mask はバイト単位なので、マルチバイトを含む場合は
+		// 0xE3 のような lead byte が日本語の先頭文字を破壊する。
+		// /u フラグの preg_replace なら codepoint 単位で安全に剥がせる。
+		$line = preg_replace( '/^[\s\-*•・　]+|\s+$/u', '', $line );
+		if ( null === $line || '' === $line ) {
+			continue;
+		}
+		$out[] = $line;
+	}
+	return $out;
+}

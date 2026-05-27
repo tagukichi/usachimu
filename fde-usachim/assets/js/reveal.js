@@ -11,7 +11,7 @@ export function initReveal() {
     '.why__pillars',
     '.why__dataflow',
     '.about__grid',
-    '.service-row',
+    '.service-spread',
     '.process-row',
     '.work-spread',
     '.stack-row',
