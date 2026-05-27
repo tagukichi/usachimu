@@ -34,6 +34,12 @@ foreach ( [ 1, 2, 3 ] as $n ) {
 	];
 }
 
+$fde_pillar_icons = [
+	'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="12" height="18" rx="2"></rect><line x1="8" y1="7" x2="12" y2="7"></line><line x1="8" y1="11" x2="12" y2="11"></line><line x1="8" y1="15" x2="12" y2="15"></line><circle cx="18" cy="18" r="3"></circle></svg>',
+	'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 3 3 8 12 13 21 8 12 3"></polygon><polyline points="3 12 12 17 21 12"></polyline><polyline points="3 16 12 21 21 16"></polyline></svg>',
+	'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15 6.7"></path><polyline points="6 18 6 13 11 13"></polyline><path d="M3 12a9 9 0 0 1 15-6.7"></path><polyline points="18 6 18 11 13 11"></polyline></svg>',
+];
+
 $fde_df_title = (string) fde_field( 'why_dataflow_title', "散らばったデータを、\n現場の判断に届くまで。" );
 $fde_df_note  = (string) fde_field(
 	'why_dataflow_note',
@@ -71,6 +77,9 @@ $fde_df_diag  = (string) fde_field(
 		<div class="why__pillars">
 			<?php foreach ( $fde_pillars as $i => $p ) : ?>
 				<div class="why__pillar">
+					<?php if ( isset( $fde_pillar_icons[ $i ] ) ) : ?>
+						<div class="why__pillar-icon" aria-hidden="true"><?php echo $fde_pillar_icons[ $i ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+					<?php endif; ?>
 					<div class="why__pillar-head">
 						<span class="why__pillar-no"><?php echo esc_html( $p['no'] ); ?></span>
 						<span class="why__pillar-idx"><?php echo esc_html( sprintf( '%02d / %02d', $i + 1, count( $fde_pillars ) ) ); ?></span>

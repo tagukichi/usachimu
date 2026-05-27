@@ -509,6 +509,23 @@
   }
 }
 
+.why__pillar-icon {
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 0;
+}
+
+.why__pillar-icon svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+@media (min-width: 1101px) {
+  .why__pillar-icon { margin-bottom: 16px; }
+  .why__pillar-icon svg { width: 32px; height: 32px; }
+}
+
 .why__pillar-head {
   display: flex;
   align-items: baseline;
