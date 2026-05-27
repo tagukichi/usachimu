@@ -163,7 +163,6 @@ add_action(
 
 		// 3つの柱
 		foreach ( [ 1, 2, 3 ] as $n ) {
-			$top_fields[] = fde_acf_text( "why_pillar_{$n}_no",   "why_pillar_{$n}_no",   sprintf( __( '柱 %d — 番号（一/二/三）', 'fde-usachim' ), $n ) );
 			$top_fields[] = fde_acf_text( "why_pillar_{$n}_head", "why_pillar_{$n}_head", sprintf( __( '柱 %d — 見出し', 'fde-usachim' ), $n ) );
 			$top_fields[] = fde_acf_textarea( "why_pillar_{$n}_body", "why_pillar_{$n}_body", sprintf( __( '柱 %d — 本文', 'fde-usachim' ), $n ), 4 );
 		}

@@ -20,15 +20,14 @@ $fde_premise_sub = (string) fde_field(
 );
 
 $fde_pillar_defaults = [
-	[ 'no' => '一', 'head' => 'データは「眠っている」。',                  'body' => '請求書はPDF、議事録はWord、顧客の声はメール、設備ログはCSV。社内のあらゆる場所にデータはあるのに、横断して使える状態にはなっていない。AIに食わせる以前に、まずそこを揃える必要があります。' ],
-	[ 'no' => '二', 'head' => 'AIは「土台」の上にしか乗らない。',         'body' => '生成AIで業務が変わると言われるけれど、変わるのは下準備ができた現場だけ。データの所在が把握され、整っていて、必要な人が引き出せる ── その地味な土台があって初めて、AIは仕事の役に立ち始めます。' ],
-	[ 'no' => '三', 'head' => '作って終わり、ではなく回り続ける仕組みを。', 'body' => 'PoCを納品して関係が切れると、半年後にはほぼ動いていません。データの形が変わり、業務が変わり、誰も触れなくなるからです。現場の変化に追従できる人が、現場の中にいる状態をつくる必要があります。' ],
+	[ 'head' => 'データは「眠っている」。',                  'body' => '請求書はPDF、議事録はWord、顧客の声はメール、設備ログはCSV。社内のあらゆる場所にデータはあるのに、横断して使える状態にはなっていない。AIに食わせる以前に、まずそこを揃える必要があります。' ],
+	[ 'head' => 'AIは「土台」の上にしか乗らない。',         'body' => '生成AIで業務が変わると言われるけれど、変わるのは下準備ができた現場だけ。データの所在が把握され、整っていて、必要な人が引き出せる ── その地味な土台があって初めて、AIは仕事の役に立ち始めます。' ],
+	[ 'head' => '作って終わり、ではなく回り続ける仕組みを。', 'body' => 'PoCを納品して関係が切れると、半年後にはほぼ動いていません。データの形が変わり、業務が変わり、誰も触れなくなるからです。現場の変化に追従できる人が、現場の中にいる状態をつくる必要があります。' ],
 ];
 $fde_pillars = [];
 foreach ( [ 1, 2, 3 ] as $n ) {
 	$i = $n - 1;
 	$fde_pillars[] = [
-		'no'   => (string) fde_field( "why_pillar_{$n}_no",   $fde_pillar_defaults[ $i ]['no'] ),
 		'head' => (string) fde_field( "why_pillar_{$n}_head", $fde_pillar_defaults[ $i ]['head'] ),
 		'body' => (string) fde_field( "why_pillar_{$n}_body", $fde_pillar_defaults[ $i ]['body'] ),
 	];
@@ -81,7 +80,6 @@ $fde_df_diag  = (string) fde_field(
 						<div class="why__pillar-icon" aria-hidden="true"><?php echo $fde_pillar_icons[ $i ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 					<?php endif; ?>
 					<div class="why__pillar-head">
-						<span class="why__pillar-no"><?php echo esc_html( $p['no'] ); ?></span>
 						<span class="why__pillar-idx"><?php echo esc_html( sprintf( '%02d / %02d', $i + 1, count( $fde_pillars ) ) ); ?></span>
 					</div>
 					<h3 class="why__pillar-title"><?php echo esc_html( $p['head'] ); ?></h3>
