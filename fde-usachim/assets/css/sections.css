@@ -16,11 +16,18 @@
 }
 
 @media (min-width: 1101px) {
-  .hero { padding: 120px 64px 80px; }
+  .hero {
+    padding: 140px 64px 140px;
+    min-height: 86vh;
+    display: flex;
+    align-items: center;
+  }
 }
 
 @media (min-width: 1441px) {
-  .hero { padding: 120px var(--gutter-pc) 80px; }
+  .hero {
+    padding: 160px var(--gutter-pc) 160px;
+  }
 }
 
 .hero__grid {
@@ -101,27 +108,53 @@
   100% { transform: translate(-2%,  3%) rotate(-0.5deg); opacity: 0.8; }
 }
 
-/* ---- Hero visual (SVG network graph) ----------------------------- */
+/* ---- Hero visual (SVG network graph) -----------------------------
+   - SP / tablet (≤1100px) : 大きい方だけをキャッチコピー上にインライン表示
+   - PC (≥1101px)          : 大小2つを絶対配置。大は右中央、小は左上寄り
+*/
 .hero__visual {
-  display: none;
-  position: absolute;
-  top: 50%;
-  right: 4%;
-  transform: translateY(-50%);
-  width: clamp(320px, 36vw, 520px);
-  aspect-ratio: 1 / 1;
   color: var(--dark-fg);
   pointer-events: none;
-  opacity: 0.55;
   filter: drop-shadow(0 0 16px rgba(184, 212, 168, 0.18));
 }
 
+/* --- SP: 大きい方だけインライン、小さい方は非表示 --- */
+@media (max-width: 1100px) {
+  .hero__visual--lg {
+    display: block;
+    position: relative;
+    width: clamp(180px, 48vw, 300px);
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 28px;
+    opacity: 0.7;
+  }
+  .hero__visual--sm { display: none; }
+}
+
+/* --- PC: 両方を絶対配置、大きさに差 --- */
 @media (min-width: 1101px) {
-  .hero__visual { display: block; }
+  .hero__visual {
+    position: absolute;
+    aspect-ratio: 1 / 1;
+  }
+  .hero__visual--lg {
+    top: 50%;
+    right: 4%;
+    transform: translateY(-50%);
+    width: clamp(360px, 38vw, 560px);
+    opacity: 0.55;
+  }
+  .hero__visual--sm {
+    top: 12%;
+    right: 42%;
+    width: clamp(140px, 14vw, 220px);
+    opacity: 0.42;
+  }
 }
 
 @media (min-width: 1441px) {
-  .hero__visual { right: 8%; }
+  .hero__visual--lg { right: 7%; }
+  .hero__visual--sm { right: 44%; top: 14%; }
 }
 
 /* 線：stroke-dasharray で描画 → 削除のループ */
