@@ -20,6 +20,32 @@ $fde_lede    = (string) fde_field(
 <section class="hero" id="top" aria-label="Hero" data-hero-time>
 	<div class="hero__aurora" aria-hidden="true"></div>
 	<div class="hero__grid" aria-hidden="true"></div>
+
+	<svg class="hero__visual" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+		<g class="hero__visual-lines" stroke="currentColor" stroke-width="0.6" fill="none">
+			<line x1="80"  y1="100" x2="220" y2="60"  />
+			<line x1="220" y1="60"  x2="340" y2="140" />
+			<line x1="220" y1="60"  x2="180" y2="220" />
+			<line x1="340" y1="140" x2="300" y2="290" />
+			<line x1="180" y1="220" x2="300" y2="290" />
+			<line x1="80"  y1="100" x2="180" y2="220" />
+			<line x1="180" y1="220" x2="110" y2="330" />
+			<line x1="300" y1="290" x2="110" y2="330" />
+		</g>
+		<g class="hero__visual-nodes" fill="currentColor">
+			<circle cx="80"  cy="100" r="4" />
+			<circle cx="220" cy="60"  r="7" />
+			<circle cx="340" cy="140" r="4" />
+			<circle cx="180" cy="220" r="5" />
+			<circle cx="300" cy="290" r="4" />
+			<circle cx="110" cy="330" r="3" />
+		</g>
+		<g class="hero__visual-pulse" fill="none" stroke="currentColor" stroke-width="0.5">
+			<circle cx="220" cy="60" r="14" />
+			<circle cx="180" cy="220" r="14" />
+		</g>
+	</svg>
+
 	<div class="hero__inner">
 
 		<h1 class="hero__statement jp">

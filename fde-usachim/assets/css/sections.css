@@ -101,9 +101,100 @@
   100% { transform: translate(-2%,  3%) rotate(-0.5deg); opacity: 0.8; }
 }
 
+/* ---- Hero visual (SVG network graph) ----------------------------- */
+.hero__visual {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  transform: translateY(-50%);
+  width: clamp(320px, 36vw, 520px);
+  aspect-ratio: 1 / 1;
+  color: var(--dark-fg);
+  pointer-events: none;
+  opacity: 0.55;
+  filter: drop-shadow(0 0 16px rgba(184, 212, 168, 0.18));
+}
+
+@media (min-width: 1101px) {
+  .hero__visual { display: block; }
+}
+
+@media (min-width: 1441px) {
+  .hero__visual { right: 8%; }
+}
+
+/* 線：stroke-dasharray で描画 → 削除のループ */
+.hero__visual-lines line {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  opacity: 0;
+  animation: heroLineDraw 9s ease-in-out infinite;
+}
+
+.hero__visual-lines line:nth-child(1) { animation-delay: 0s;   }
+.hero__visual-lines line:nth-child(2) { animation-delay: 0.6s; }
+.hero__visual-lines line:nth-child(3) { animation-delay: 1.2s; }
+.hero__visual-lines line:nth-child(4) { animation-delay: 1.8s; }
+.hero__visual-lines line:nth-child(5) { animation-delay: 2.4s; }
+.hero__visual-lines line:nth-child(6) { animation-delay: 3.0s; }
+.hero__visual-lines line:nth-child(7) { animation-delay: 3.6s; }
+.hero__visual-lines line:nth-child(8) { animation-delay: 4.2s; }
+
+@keyframes heroLineDraw {
+  0%   { stroke-dashoffset: 220;  opacity: 0;   }
+  20%  { opacity: 0.75; }
+  45%  { stroke-dashoffset: 0;    opacity: 0.75; }
+  70%  { stroke-dashoffset: 0;    opacity: 0.6;  }
+  100% { stroke-dashoffset: -220; opacity: 0;   }
+}
+
+/* ノード：呼吸する */
+.hero__visual-nodes circle {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: heroNodePulse 4.2s ease-in-out infinite;
+}
+
+.hero__visual-nodes circle:nth-child(1) { animation-delay: 0.0s; }
+.hero__visual-nodes circle:nth-child(2) { animation-delay: 0.7s; }
+.hero__visual-nodes circle:nth-child(3) { animation-delay: 1.4s; }
+.hero__visual-nodes circle:nth-child(4) { animation-delay: 2.1s; }
+.hero__visual-nodes circle:nth-child(5) { animation-delay: 2.8s; }
+.hero__visual-nodes circle:nth-child(6) { animation-delay: 3.5s; }
+
+@keyframes heroNodePulse {
+  0%, 100% { opacity: 0.35; transform: scale(1);   }
+  50%      { opacity: 1;    transform: scale(1.4); }
+}
+
+/* キーノードから広がる同心円のリップル */
+.hero__visual-pulse circle {
+  transform-origin: center;
+  transform-box: fill-box;
+  opacity: 0;
+  animation: heroNodeRipple 5s ease-out infinite;
+}
+
+.hero__visual-pulse circle:nth-child(1) { animation-delay: 0.8s; }
+.hero__visual-pulse circle:nth-child(2) { animation-delay: 3.2s; }
+
+@keyframes heroNodeRipple {
+  0%   { opacity: 0;    transform: scale(0.4); }
+  30%  { opacity: 0.5;  }
+  100% { opacity: 0;    transform: scale(2.4); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero { transition: none; }
   .hero__aurora { animation: none; }
+  .hero__visual-lines line,
+  .hero__visual-nodes circle,
+  .hero__visual-pulse circle {
+    animation: none;
+    opacity: 0.5;
+    stroke-dashoffset: 0;
+  }
 }
 
 .hero__statement {
@@ -158,6 +249,7 @@
 /* ============================================================
    News — list view directly under the Hero
    ============================================================ */
+.news .section__inner { max-width: 800px; }
 .news .sec-head__meta { color: var(--ink); }
 .news .news__more     { transition: opacity var(--dur-base) var(--ease-out); }
 .news .news__more:hover { opacity: 0.6; }
