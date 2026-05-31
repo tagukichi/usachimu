@@ -40,6 +40,11 @@ $fde_lede    = (string) fde_field(
 	</svg>
 
 	<svg class="hero__visual hero__visual--lg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+		<g class="hero__visual-faces" fill="currentColor" stroke="none">
+			<polygon points="80,100 220,60 180,220" />
+			<polygon points="220,60 340,140 180,220" />
+			<polygon points="180,220 300,290 110,330" />
+		</g>
 		<g class="hero__visual-lines" stroke="currentColor" stroke-width="0.6" fill="none">
 			<line x1="80"  y1="100" x2="220" y2="60"  />
 			<line x1="220" y1="60"  x2="340" y2="140" />

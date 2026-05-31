@@ -114,10 +114,31 @@
    - SP / tablet (≤1100px) : 大小2つを同時表示。スピード速め、サイズ大きめ
    - PC (≥1101px)          : 大小2つを絶対配置。大は右中央、小は左上寄り
 */
+.hero {
+  perspective: 1200px;
+}
+
 .hero__visual {
   color: var(--dark-fg);
   pointer-events: none;
   filter: drop-shadow(0 0 16px rgba(184, 212, 168, 0.18));
+  transform-style: preserve-3d;
+}
+
+/* ポリゴンの "面" — 半透明三角形。回転すると面が傾いて見える */
+.hero__visual--lg .hero__visual-faces polygon {
+  fill: currentColor;
+  fill-opacity: 0.06;
+  animation: heroFacePulse 9s ease-in-out infinite;
+}
+
+.hero__visual--lg .hero__visual-faces polygon:nth-child(1) { animation-delay: 0s;   }
+.hero__visual--lg .hero__visual-faces polygon:nth-child(2) { animation-delay: 1.5s; }
+.hero__visual--lg .hero__visual-faces polygon:nth-child(3) { animation-delay: 3.0s; }
+
+@keyframes heroFacePulse {
+  0%, 100% { fill-opacity: 0.04; }
+  50%      { fill-opacity: 0.12; }
 }
 
 /* ===== Base : 線・ノード・リップルのアニメーション ===== */
@@ -196,6 +217,13 @@
     width: clamp(240px, 70vw, 420px);
     margin: 0 auto 24px;
     opacity: 0.8;
+    animation: heroVisualSpinSP 22s linear infinite;
+    transform-origin: center;
+  }
+
+  @keyframes heroVisualSpinSP {
+    0%   { transform: rotateY(0deg)   rotateX(12deg); }
+    100% { transform: rotateY(360deg) rotateX(12deg); }
   }
 
   .hero__visual--sm {
@@ -243,9 +271,15 @@
   .hero__visual--lg {
     top: 50%;
     right: 4%;
-    transform: translateY(-50%);
     width: clamp(360px, 38vw, 560px);
     opacity: 0.55;
+    transform-origin: center;
+    animation: heroVisualSpinPC 28s linear infinite;
+  }
+
+  @keyframes heroVisualSpinPC {
+    0%   { transform: translateY(-50%) rotateY(0deg)   rotateX(10deg); }
+    100% { transform: translateY(-50%) rotateY(360deg) rotateX(10deg); }
   }
   .hero__visual--sm {
     top: 12%;
@@ -263,6 +297,8 @@
 @media (prefers-reduced-motion: reduce) {
   .hero { transition: none; }
   .hero__aurora { animation: none; }
+  .hero__visual--lg,
+  .hero__visual-faces polygon,
   .hero__visual-lines line,
   .hero__visual-nodes circle,
   .hero__visual-pulse circle {
@@ -270,6 +306,7 @@
     opacity: 0.5;
     stroke-dashoffset: 0;
   }
+  .hero__visual--lg { transform: none; }
 }
 
 .hero__statement {
