@@ -108,7 +108,7 @@
   .hero__media {
     margin-inline: 0;
     max-width: none;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 2;
     order: 1; /* タイトル左 / 画像右 */
   }
   .hero__statement { order: 0; }
