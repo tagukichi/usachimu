@@ -154,6 +154,16 @@ add_action(
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_a',     'hero_statement_l2_a', __( 'Hero 2行目（薄色部分）', 'fde-usachim' ), '現場の手の中で動く' );
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_b',     'hero_statement_l2_b', __( 'Hero 2行目（強調部分）', 'fde-usachim' ), 'AIを。' );
 		$top_fields[] = fde_acf_textarea( 'hero_lede',      'hero_lede', __( 'Hero リード文', 'fde-usachim' ), 4, '**強調** で太字（白）にできます。' );
+		$top_fields[] = [
+			'key'           => 'field_fde_hero_image',
+			'label'         => __( 'Hero ビジュアル画像', 'fde-usachim' ),
+			'name'          => 'hero_image',
+			'type'          => 'image',
+			'return_format' => 'array',
+			'preview_size'  => 'medium',
+			'instructions'  => __( 'タイトルの横（SP では上）に表示。横長 4:3 〜 縦長 4:5 を推奨。', 'fde-usachim' ),
+		];
+		$top_fields[] = fde_acf_text( 'hero_image_caption', 'hero_image_caption', __( 'Hero 画像キャプション（任意・小さく表示）', 'fde-usachim' ), 'FIG. 00 — FORWARD DEPLOYED' );
 
 		// ---------- §01 Why ----------
 		$top_fields[] = fde_acf_tab( 'why', __( '§01 Why', 'fde-usachim' ) );

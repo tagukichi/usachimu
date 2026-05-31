@@ -6,6 +6,7 @@ export function initReveal() {
 
   const candidates = [
     '.hero',
+    '.hero__media',
     '.sec-head',
     '.why__premise',
     '.why__pillars',

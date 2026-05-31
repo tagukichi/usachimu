@@ -17,6 +17,10 @@ $fde_lede    = (string) fde_field(
 	"**AIと業務データを、現場で使われる仕組みに変える。**\n発注を受けてから作るのではなく、現場に入り、何を作るべきかを一緒に決めるところから始めます。"
 );
 
+$fde_hero_image   = fde_field( 'hero_image' );
+$fde_hero_caption = (string) fde_field( 'hero_image_caption', 'FIG. 00 — FORWARD DEPLOYED' );
+$fde_has_hero_img = is_array( $fde_hero_image ) && ! empty( $fde_hero_image['url'] );
+
 /**
  * News list — latest posts in the "お知らせ" category.
  */
@@ -77,6 +81,30 @@ if ( ! $fde_news_link ) {
 	<div class="hero__inner">
 
 		<div class="hero__main">
+			<figure class="hero__media<?php echo $fde_has_hero_img ? '' : ' hero__media--placeholder'; ?>">
+				<?php if ( $fde_has_hero_img ) : ?>
+					<img
+						src="<?php echo esc_url( $fde_hero_image['url'] ); ?>"
+						alt="<?php echo esc_attr( ! empty( $fde_hero_image['alt'] ) ? $fde_hero_image['alt'] : 'CHIM WORKS — Hero visual' ); ?>"
+						loading="eager"
+						<?php if ( ! empty( $fde_hero_image['width'] ) ) : ?>width="<?php echo esc_attr( $fde_hero_image['width'] ); ?>"<?php endif; ?>
+						<?php if ( ! empty( $fde_hero_image['height'] ) ) : ?>height="<?php echo esc_attr( $fde_hero_image['height'] ); ?>"<?php endif; ?>
+					>
+				<?php else : ?>
+					<div class="hero__media-placeholder" aria-hidden="true">
+						<span class="hero__media-placeholder-grid"></span>
+						<span class="hero__media-placeholder-note mono">[ HERO IMAGE ]</span>
+					</div>
+				<?php endif; ?>
+				<?php if ( $fde_hero_caption ) : ?>
+					<figcaption class="hero__media-caption mono"><?php echo esc_html( $fde_hero_caption ); ?></figcaption>
+				<?php endif; ?>
+				<span class="hero__media-tick hero__media-tick--tl" aria-hidden="true"></span>
+				<span class="hero__media-tick hero__media-tick--tr" aria-hidden="true"></span>
+				<span class="hero__media-tick hero__media-tick--bl" aria-hidden="true"></span>
+				<span class="hero__media-tick hero__media-tick--br" aria-hidden="true"></span>
+			</figure>
+
 			<h1 class="hero__statement jp">
 				<span class="hero__statement-line">
 					<?php echo esc_html( $fde_stmt_l1 ); ?>
@@ -87,18 +115,6 @@ if ( ! $fde_news_link ) {
 					<?php echo esc_html( $fde_stmt_lb ); ?>
 				</span>
 			</h1>
-
-			<aside class="hero__code" aria-hidden="true" data-hero-code>
-				<header class="hero__code-bar">
-					<span class="hero__code-dots">
-						<span class="hero__code-dot"></span>
-						<span class="hero__code-dot"></span>
-						<span class="hero__code-dot"></span>
-					</span>
-					<span class="hero__code-name mono" data-hero-code-name>deploy.py</span>
-				</header>
-				<pre class="hero__code-body mono"><code data-hero-code-target></code><span class="hero__code-caret" aria-hidden="true"></span></pre>
-			</aside>
 		</div>
 
 		<div class="hero__sub">

@@ -73,10 +73,8 @@
   margin-bottom: 32px;
 }
 
-/* SP / タブレットではエディタを非表示 */
-@media (max-width: 1100px) {
-  .hero__code { display: none; }
-}
+/* SP / タブレットでは DOM 順そのまま（画像 → タイトル）。
+   PC では .hero__media に order:1 を付けて [タイトル | 画像] の2カラム。 */
 
 @media (min-width: 1101px) {
   .hero__main {
@@ -93,118 +91,91 @@
   }
 }
 
-/* ---- Editor window ---- */
-.hero__code {
-  background: rgba(0,0,0,0.32);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 6px;
-  overflow: hidden;
-  font-feature-settings: "ss01", "cv11";
-  box-shadow: 0 24px 60px -24px rgba(0,0,0,0.6);
-  /* SP では少し控えめに */
-  max-width: 540px;
-  width: 100%;
-  margin-inline: auto;
-}
-
-@media (min-width: 1101px) {
-  .hero__code { margin-inline: 0; max-width: none; }
-}
-
-.hero__code-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 9px 14px;
-  background: rgba(255,255,255,0.04);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.hero__code-dots {
-  display: inline-flex;
-  gap: 6px;
-}
-
-.hero__code-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.18);
-}
-
-.hero__code-name {
-  font-size: 11.5px;
-  color: rgba(250,250,247,0.55);
-  letter-spacing: 0.04em;
-}
-
-.hero__code-body {
+/* ---- Hero media (visual image) ---- */
+.hero__media {
   position: relative;
   margin: 0;
-  padding: 16px 18px 18px;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  line-height: 1.75;
-  color: rgba(250,250,247,0.88);
-  white-space: pre-wrap;
-  word-break: break-all;
-  min-height: 220px;
-  max-height: 320px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
   overflow: hidden;
-}
-
-@media (min-width: 720px) {
-  .hero__code-body { font-size: 13px; min-height: 240px; max-height: 340px; padding: 18px 22px 20px; }
+  width: 100%;
+  max-width: 540px;
+  margin-inline: auto;
+  aspect-ratio: 4 / 3;
 }
 
 @media (min-width: 1101px) {
-  .hero__code-body { font-size: 13.5px; min-height: 280px; max-height: 360px; padding: 20px 24px 22px; }
+  .hero__media {
+    margin-inline: 0;
+    max-width: none;
+    aspect-ratio: 4 / 5;
+    order: 1; /* タイトル左 / 画像右 */
+  }
+  .hero__statement { order: 0; }
 }
 
-.hero__code-body code {
-  font: inherit;
-  color: inherit;
-  background: transparent;
+.hero__media img {
   display: block;
-  padding: 0;
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-all;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* シンタックス風の薄い色分け（JS が span をラップする想定） */
-.hero__code-body .tk-comment { color: rgba(250,250,247,0.42); }
-.hero__code-body .tk-key     { color: var(--dark-accent); }
-.hero__code-body .tk-str     { color: #d8c693; }
-.hero__code-body .tk-num     { color: #d8c693; }
-.hero__code-body .tk-ok      { color: var(--dark-accent); font-weight: 600; }
-
-/* 点滅キャレット */
-.hero__code-caret {
-  display: inline-block;
-  width: 7px;
-  height: 1.05em;
-  background: var(--dark-accent);
-  vertical-align: -2px;
-  margin-left: 2px;
-  animation: heroCaret 1s steps(2) infinite;
+.hero__media-caption {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  font-size: 10.5px;
+  color: rgba(250,250,247,0.55);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
-@keyframes heroCaret {
-  0%, 50%   { opacity: 1; }
-  50.01%, 100% { opacity: 0; }
+.hero__media-tick {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 0 solid rgba(250,250,247,0.45);
+  pointer-events: none;
 }
 
-/* フェード遷移（スニペット切替時） */
-.hero__code-body[data-fade="true"] {
-  opacity: 0.15;
-  transition: opacity 320ms var(--ease-out);
+.hero__media-tick--tl { top: 12px; left: 12px;  border-top-width: 1px; border-left-width: 1px; }
+.hero__media-tick--tr { top: 12px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
+.hero__media-tick--bl { bottom: 12px; left: 12px;  border-bottom-width: 1px; border-left-width: 1px; }
+.hero__media-tick--br { bottom: 12px; right: 12px; border-bottom-width: 1px; border-right-width: 1px; }
+
+/* プレースホルダー（画像未設定時の暗背景＋グリッド模様） */
+.hero__media--placeholder {
+  background: linear-gradient(140deg, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0.18) 100%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero__code-caret { animation: none; opacity: 1; }
-  .hero__code-body[data-fade="true"] { opacity: 1; transition: none; }
+.hero__media-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.hero__media-placeholder-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 80%);
+          mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 80%);
+}
+
+.hero__media-placeholder-note {
+  position: relative;
+  font-size: 11px;
+  color: rgba(250,250,247,0.4);
+  letter-spacing: 0.18em;
 }
 
 /* ---- Hero enter animation : 各行が下からにゅっと立ち上がる ---- */
