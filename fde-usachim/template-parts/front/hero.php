@@ -39,36 +39,11 @@ $fde_lede    = (string) fde_field(
 		</g>
 	</svg>
 
-	<div class="hero__visual hero__visual--lg hero__poly" aria-hidden="true">
-		<div class="hero__poly-stage">
-			<span class="hero__poly-face hero__poly-face--front"></span>
-			<span class="hero__poly-face hero__poly-face--back"></span>
-			<span class="hero__poly-face hero__poly-face--right"></span>
-			<span class="hero__poly-face hero__poly-face--left"></span>
-			<span class="hero__poly-face hero__poly-face--top"></span>
-			<span class="hero__poly-face hero__poly-face--bottom"></span>
-
-			<svg class="hero__poly-core" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" focusable="false">
-				<g class="hero__visual-lines" stroke="currentColor" stroke-width="0.8" fill="none">
-					<line x1="40"  y1="40"  x2="130" y2="70"  />
-					<line x1="130" y1="70"  x2="170" y2="160" />
-					<line x1="170" y1="160" x2="70"  y2="150" />
-					<line x1="70"  y1="150" x2="40"  y2="40"  />
-					<line x1="40"  y1="40"  x2="170" y2="160" />
-					<line x1="130" y1="70"  x2="70"  y2="150" />
-				</g>
-				<g class="hero__visual-nodes" fill="currentColor">
-					<circle cx="40"  cy="40"  r="3" />
-					<circle cx="130" cy="70"  r="4.5" />
-					<circle cx="170" cy="160" r="3" />
-					<circle cx="70"  cy="150" r="3" />
-				</g>
-				<g class="hero__visual-pulse" fill="none" stroke="currentColor" stroke-width="0.6">
-					<circle cx="130" cy="70" r="10" />
-				</g>
-			</svg>
-		</div>
-	</div>
+	<svg class="hero__visual hero__visual--lg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" data-hero-poly>
+		<g class="hero__poly-edges" stroke="currentColor" stroke-width="0.6" fill="none"></g>
+		<g class="hero__poly-verts" fill="currentColor"></g>
+		<g class="hero__poly-pulses" fill="currentColor"></g>
+	</svg>
 
 	<div class="hero__inner">
 
