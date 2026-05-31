@@ -39,35 +39,36 @@ $fde_lede    = (string) fde_field(
 		</g>
 	</svg>
 
-	<svg class="hero__visual hero__visual--lg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
-		<g class="hero__visual-faces" fill="currentColor" stroke="none">
-			<polygon points="80,100 220,60 180,220" />
-			<polygon points="220,60 340,140 180,220" />
-			<polygon points="180,220 300,290 110,330" />
-		</g>
-		<g class="hero__visual-lines" stroke="currentColor" stroke-width="0.6" fill="none">
-			<line x1="80"  y1="100" x2="220" y2="60"  />
-			<line x1="220" y1="60"  x2="340" y2="140" />
-			<line x1="220" y1="60"  x2="180" y2="220" />
-			<line x1="340" y1="140" x2="300" y2="290" />
-			<line x1="180" y1="220" x2="300" y2="290" />
-			<line x1="80"  y1="100" x2="180" y2="220" />
-			<line x1="180" y1="220" x2="110" y2="330" />
-			<line x1="300" y1="290" x2="110" y2="330" />
-		</g>
-		<g class="hero__visual-nodes" fill="currentColor">
-			<circle cx="80"  cy="100" r="4" />
-			<circle cx="220" cy="60"  r="7" />
-			<circle cx="340" cy="140" r="4" />
-			<circle cx="180" cy="220" r="5" />
-			<circle cx="300" cy="290" r="4" />
-			<circle cx="110" cy="330" r="3" />
-		</g>
-		<g class="hero__visual-pulse" fill="none" stroke="currentColor" stroke-width="0.5">
-			<circle cx="220" cy="60" r="14" />
-			<circle cx="180" cy="220" r="14" />
-		</g>
-	</svg>
+	<div class="hero__visual hero__visual--lg hero__poly" aria-hidden="true">
+		<div class="hero__poly-stage">
+			<span class="hero__poly-face hero__poly-face--front"></span>
+			<span class="hero__poly-face hero__poly-face--back"></span>
+			<span class="hero__poly-face hero__poly-face--right"></span>
+			<span class="hero__poly-face hero__poly-face--left"></span>
+			<span class="hero__poly-face hero__poly-face--top"></span>
+			<span class="hero__poly-face hero__poly-face--bottom"></span>
+
+			<svg class="hero__poly-core" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" focusable="false">
+				<g class="hero__visual-lines" stroke="currentColor" stroke-width="0.8" fill="none">
+					<line x1="40"  y1="40"  x2="130" y2="70"  />
+					<line x1="130" y1="70"  x2="170" y2="160" />
+					<line x1="170" y1="160" x2="70"  y2="150" />
+					<line x1="70"  y1="150" x2="40"  y2="40"  />
+					<line x1="40"  y1="40"  x2="170" y2="160" />
+					<line x1="130" y1="70"  x2="70"  y2="150" />
+				</g>
+				<g class="hero__visual-nodes" fill="currentColor">
+					<circle cx="40"  cy="40"  r="3" />
+					<circle cx="130" cy="70"  r="4.5" />
+					<circle cx="170" cy="160" r="3" />
+					<circle cx="70"  cy="150" r="3" />
+				</g>
+				<g class="hero__visual-pulse" fill="none" stroke="currentColor" stroke-width="0.6">
+					<circle cx="130" cy="70" r="10" />
+				</g>
+			</svg>
+		</div>
+	</div>
 
 	<div class="hero__inner">
 
