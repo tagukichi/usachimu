@@ -201,7 +201,7 @@
   }
 
   .hero__visual--lg {
-    --size: clamp(220px, 60vw, 360px);
+    --size: clamp(280px, 80vw, 460px);
     width: var(--size);
     height: var(--size);
     margin: 0 auto 24px;
@@ -251,11 +251,11 @@
     aspect-ratio: 1 / 1;
   }
   .hero__visual--lg {
-    --size: clamp(320px, 32vw, 480px);
+    --size: clamp(420px, 42vw, 640px);
     width: var(--size);
     height: var(--size);
     top: 50%;
-    right: 4%;
+    right: 2%;
     transform: translateY(-50%);
     opacity: 0.6;
   }
