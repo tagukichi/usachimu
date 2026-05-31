@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '資料の中のAIではなく、' );
-$fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場の手の中で動く' );
+$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '資料のAIではなく、' );
+$fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場の' );
 $fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', 'AIを。' );
 $fde_lede    = (string) fde_field(
 	'hero_lede',

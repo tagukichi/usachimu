@@ -214,8 +214,20 @@
   .hero__sub { grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 48px; }
 }
 
+/* PC では .hero__main と同じ列幅に揃えて、左右の境界を縦に通す */
 @media (min-width: 1101px) {
-  .hero__sub { gap: 80px; margin-bottom: 56px; }
+  .hero__sub {
+    grid-template-columns: minmax(0, 1fr) 420px;
+    gap: 64px;
+    margin-bottom: 56px;
+  }
+}
+
+@media (min-width: 1281px) {
+  .hero__sub {
+    grid-template-columns: minmax(0, 1fr) 480px;
+    gap: 80px;
+  }
 }
 
 .hero__lede {
