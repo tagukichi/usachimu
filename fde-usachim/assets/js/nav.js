@@ -41,6 +41,14 @@ export function initNav() {
     isOpen() ? close() : open();
   });
 
+  // パネル内の閉じるボタン
+  const closeBtn = panel.querySelector('[data-nav-close]');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      if (isOpen()) close();
+    });
+  }
+
   document.addEventListener('keydown', (e) => {
     if (!isOpen()) return;
     if (e.key === 'Escape') {

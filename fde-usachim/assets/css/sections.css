@@ -118,17 +118,56 @@
   filter: drop-shadow(0 0 16px rgba(184, 212, 168, 0.18));
 }
 
-/* --- SP: 大きい方だけインライン、小さい方は非表示 --- */
+/* --- SP / tablet: 両方をインラインで表示、横並びに ---
+   キャッチコピーの上に flex container でラップする */
 @media (max-width: 1100px) {
-  .hero__visual--lg {
+  .hero__inner { position: relative; }
+
+  .hero__visual--lg,
+  .hero__visual--sm {
     display: block;
     position: relative;
-    width: clamp(180px, 48vw, 300px);
     aspect-ratio: 1 / 1;
-    margin: 0 auto 28px;
-    opacity: 0.7;
   }
-  .hero__visual--sm { display: none; }
+
+  .hero__visual--lg {
+    width: clamp(240px, 70vw, 420px);
+    margin: 0 auto 24px;
+    opacity: 0.8;
+  }
+
+  .hero__visual--sm {
+    position: absolute;
+    top: 0;
+    right: 4%;
+    width: clamp(90px, 26vw, 160px);
+    margin: 0;
+    opacity: 0.6;
+    z-index: 1;
+  }
+
+  /* SP では描画スピードを速める */
+  .hero__visual-lines line { animation-duration: 4.5s; }
+  .hero__visual-nodes circle { animation-duration: 2.4s; }
+  .hero__visual-pulse circle { animation-duration: 3s; }
+
+  /* ディレイも短く詰めて連鎖感を出す */
+  .hero__visual-lines line:nth-child(1) { animation-delay: 0s;    }
+  .hero__visual-lines line:nth-child(2) { animation-delay: 0.25s; }
+  .hero__visual-lines line:nth-child(3) { animation-delay: 0.5s;  }
+  .hero__visual-lines line:nth-child(4) { animation-delay: 0.75s; }
+  .hero__visual-lines line:nth-child(5) { animation-delay: 1.0s;  }
+  .hero__visual-lines line:nth-child(6) { animation-delay: 1.25s; }
+  .hero__visual-lines line:nth-child(7) { animation-delay: 1.5s;  }
+  .hero__visual-lines line:nth-child(8) { animation-delay: 1.75s; }
+
+  .hero__visual-nodes circle:nth-child(1) { animation-delay: 0s;   }
+  .hero__visual-nodes circle:nth-child(2) { animation-delay: 0.3s; }
+  .hero__visual-nodes circle:nth-child(3) { animation-delay: 0.6s; }
+  .hero__visual-nodes circle:nth-child(4) { animation-delay: 0.9s; }
+  .hero__visual-nodes circle:nth-child(5) { animation-delay: 1.2s; }
+  .hero__visual-nodes circle:nth-child(6) { animation-delay: 1.5s; }
+
 }
 
 /* --- PC: 両方を絶対配置、大きさに差 --- */

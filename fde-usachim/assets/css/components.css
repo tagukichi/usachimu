@@ -269,6 +269,52 @@ body:not(.has-dark-hero) .site-cta {
   text-align: center;
 }
 
+.nav-panel__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark-fg);
+}
+
+@media (min-width: 720px) {
+  .nav-panel__close { top: 26px; right: 28px; width: 40px; height: 40px; }
+}
+
+.nav-panel__close::before,
+.nav-panel__close::after {
+  content: none; /* bar 要素を使うので :before は使わない */
+}
+
+.nav-panel__close-bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 1.5px;
+  background: currentColor;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.nav-panel__close-bar:nth-child(1) {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.nav-panel__close-bar:nth-child(2) {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.nav-panel__close:hover { opacity: 0.7; }
+.nav-panel__close:active .nav-panel__close-bar { opacity: 0.5; }
+
 body.is-nav-open { overflow: hidden; }
 
 /* ============================================================

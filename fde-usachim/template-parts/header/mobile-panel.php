@@ -19,6 +19,16 @@ $fde_cta_label = (string) fde_option( 'cta_label', '相談を始める →' );
 	aria-label="<?php esc_attr_e( 'モバイルメニュー', 'fde-usachim' ); ?>"
 	data-nav-panel
 >
+	<button
+		type="button"
+		class="nav-panel__close"
+		aria-label="<?php esc_attr_e( 'メニューを閉じる', 'fde-usachim' ); ?>"
+		data-nav-close
+	>
+		<span class="nav-panel__close-bar" aria-hidden="true"></span>
+		<span class="nav-panel__close-bar" aria-hidden="true"></span>
+	</button>
+
 	<ul class="nav-panel__list">
 		<?php foreach ( $fde_items as $item ) : ?>
 			<li><a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a></li>
