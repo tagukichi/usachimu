@@ -63,6 +63,17 @@ if ( empty( $fde_news ) ) {
 }
 ?>
 <section class="section news" id="news" data-section="news">
+	<svg class="news__poly news__poly--tl" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" data-poly="news-a">
+		<g class="hero__poly-edges" stroke="currentColor" stroke-width="0.55" fill="none"></g>
+		<g class="hero__poly-verts" fill="currentColor"></g>
+		<g class="hero__poly-pulses" fill="currentColor"></g>
+	</svg>
+	<svg class="news__poly news__poly--br" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" data-poly="news-b">
+		<g class="hero__poly-edges" stroke="currentColor" stroke-width="0.55" fill="none"></g>
+		<g class="hero__poly-verts" fill="currentColor"></g>
+		<g class="hero__poly-pulses" fill="currentColor"></g>
+	</svg>
+
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">
