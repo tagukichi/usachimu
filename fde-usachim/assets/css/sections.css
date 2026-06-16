@@ -138,18 +138,23 @@
 
 .hero__globe-dots circle { fill: currentColor; }
 
-/* ===== SP / tablet (≤1100px) : 球体をキャッチコピー上にインライン ===== */
+/* ===== SP / tablet (≤1100px) : 球体をキャッチコピー上にインライン =====
+   親 .hero の padding に縛られず viewport 100% で配置し、SP で最大限
+   大きく見せる。.hero は overflow:hidden なのではみ出しは安全に隠れる。 */
 @media (max-width: 1100px) {
   .hero__inner { position: relative; }
   .hero__visual--lg {
     display: block;
     position: relative;
     aspect-ratio: 1 / 1;
-    --size: clamp(320px, 90vw, 540px);
-    width: var(--size);
-    height: var(--size);
-    margin: 0 auto 16px;
-    opacity: 0.9;
+    width: min(100vw, 760px);
+    /* viewport 100% を親の padding を無視して中央配置 */
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+    margin-bottom: 12px;
+    margin-right: 0;
+    opacity: 0.95;
   }
 }
 
