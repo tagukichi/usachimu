@@ -21,24 +21,6 @@ $fde_lede    = (string) fde_field(
 	<div class="hero__aurora" aria-hidden="true"></div>
 	<div class="hero__grid" aria-hidden="true"></div>
 
-	<svg class="hero__visual hero__visual--sm" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
-		<g class="hero__visual-lines" stroke="currentColor" stroke-width="0.8" fill="none">
-			<line x1="40"  y1="40"  x2="130" y2="70"  />
-			<line x1="130" y1="70"  x2="170" y2="160" />
-			<line x1="40"  y1="40"  x2="70"  y2="150" />
-			<line x1="70"  y1="150" x2="170" y2="160" />
-		</g>
-		<g class="hero__visual-nodes" fill="currentColor">
-			<circle cx="40"  cy="40"  r="3" />
-			<circle cx="130" cy="70"  r="4.5" />
-			<circle cx="170" cy="160" r="3" />
-			<circle cx="70"  cy="150" r="3" />
-		</g>
-		<g class="hero__visual-pulse" fill="none" stroke="currentColor" stroke-width="0.6">
-			<circle cx="130" cy="70" r="10" />
-		</g>
-	</svg>
-
 	<svg class="hero__visual hero__visual--lg hero__globe" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" data-hero-globe>
 		<g class="hero__globe-faces" stroke="currentColor" fill="currentColor"></g>
 		<g class="hero__globe-floaters" stroke="currentColor" fill="currentColor"></g>

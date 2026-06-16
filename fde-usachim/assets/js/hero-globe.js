@@ -188,8 +188,18 @@ function setupOne(svg, reduce) {
       }
       const cz = (pa.z + pb.z + pc.z) / 3;
       const ff = front(cz);
+      // 重心方向に縮めて、隣り合う三角を「離す」＝独立シャード化
+      const SHRINK = 0.74;
+      const mx = (pa.x + pb.x + pc.x) / 3;
+      const my = (pa.y + pb.y + pc.y) / 3;
+      const ax = mx + (pa.x - mx) * SHRINK;
+      const ay = my + (pa.y - my) * SHRINK;
+      const bx = mx + (pb.x - mx) * SHRINK;
+      const by = my + (pb.y - my) * SHRINK;
+      const cx = mx + (pc.x - mx) * SHRINK;
+      const cy = my + (pc.y - my) * SHRINK;
       fd.el.setAttribute('points',
-        `${pa.x.toFixed(1)},${pa.y.toFixed(1)} ${pb.x.toFixed(1)},${pb.y.toFixed(1)} ${pc.x.toFixed(1)},${pc.y.toFixed(1)}`);
+        `${ax.toFixed(1)},${ay.toFixed(1)} ${bx.toFixed(1)},${by.toFixed(1)} ${cx.toFixed(1)},${cy.toFixed(1)}`);
       fd.el.setAttribute('fill-opacity', (born * fd.base * (0.18 + 0.82 * ff)).toFixed(3));
       fd.el.setAttribute('stroke-opacity', (born * (0.05 + 0.16 * ff)).toFixed(3));
     });
@@ -201,8 +211,8 @@ function setupOne(svg, reduce) {
       const el = dotData[i];
       el.setAttribute('cx', p.x.toFixed(1));
       el.setAttribute('cy', p.y.toFixed(1));
-      el.setAttribute('r', (1.0 * p.f).toFixed(2));
-      el.setAttribute('fill-opacity', (0.12 + 0.55 * ff).toFixed(3));
+      el.setAttribute('r', (0.55 * p.f).toFixed(2));
+      el.setAttribute('fill-opacity', (0.08 + 0.42 * ff).toFixed(3));
     }
 
     // floaters

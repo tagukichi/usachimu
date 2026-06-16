@@ -58,7 +58,8 @@ if ( 0 === $fde_count ) {
 	return;
 }
 ?>
-<section class="section" id="services" data-section="services">
+<section class="section section--decor" id="services" data-section="services">
+	<?php fde_tri_field( 'tr', 10 ); ?>
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">

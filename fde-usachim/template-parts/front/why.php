@@ -50,7 +50,8 @@ $fde_df_diag  = (string) fde_field(
 	"  ┌────────────┐    ┌────────────┐    ┌────────────┐    ┌────────────┐\n  │  社内資産  │ →  │   整える   │ →  │ AI で活かす │ →  │ 現場で使う │\n  │  scattered │    │  organized │    │   AI/LLM   │    │  in-field  │\n  └────────────┘    └────────────┘    └────────────┘    └────────────┘\n       PDF              schema              RAG               UI/Slack\n       議事録           pipeline            eval              業務に\n       設備ログ         BigQuery            Dify              直接組込\n       問合せ           dbt                 LangGraph         運用 + 改善\n   \n   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─\n   ※ ふつう、左寄りはエンジニア／右寄りは事業側の仕事として\n     切り分けられる。CHIM はその切れ目を跨ぐところを引き受ける。"
 );
 ?>
-<section class="section" id="why" data-section="why">
+<section class="section section--decor" id="why" data-section="why">
+	<?php fde_tri_field( 'br', 11 ); ?>
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">

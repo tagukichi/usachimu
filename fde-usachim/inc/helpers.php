@@ -110,6 +110,30 @@ function fde_paragraphs( string $text ): string {
 }
 
 /**
+ * Echo a scattered-triangle decoration SVG (animated by tri-field.js).
+ * Place inside a position:relative / overflow:hidden section.
+ *
+ * @param string $variant tl | tr | bl | br (corner placement).
+ * @param int    $count   number of triangles.
+ * @param int    $seed    PRNG seed (0 = derive from variant for stability).
+ */
+function fde_tri_field( string $variant = 'br', int $count = 10, int $seed = 0 ): void {
+	$allowed = [ 'tl', 'tr', 'bl', 'br' ];
+	if ( ! in_array( $variant, $allowed, true ) ) {
+		$variant = 'br';
+	}
+	if ( 0 === $seed ) {
+		$seed = abs( crc32( $variant . '|' . $count ) ) % 1000000;
+	}
+	printf(
+		'<svg class="tri-field tri-field--%1$s" viewBox="0 0 120 120" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" data-tri-field data-tri-count="%2$d" data-tri-seed="%3$d"><g class="tri-field__g" stroke="currentColor" fill="currentColor"></g></svg>',
+		esc_attr( $variant ),
+		(int) $count,
+		(int) $seed
+	);
+}
+
+/**
  * Shared main navigation items — used by header, mobile panel, and footer.
  *
  * @return array<int,array{label:string,url:string}>

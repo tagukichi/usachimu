@@ -28,7 +28,9 @@ foreach ( [ 1, 2, 3, 4, 5, 6 ] as $n ) {
 	];
 }
 ?>
-<section class="section section--dark" id="stack" data-section="stack">
+<section class="section section--dark section--decor" id="stack" data-section="stack">
+	<?php fde_tri_field( 'tl', 10 ); ?>
+	<?php fde_tri_field( 'br', 9 ); ?>
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">

@@ -108,28 +108,14 @@
   100% { transform: translate(-2%,  3%) rotate(-0.5deg); opacity: 0.8; }
 }
 
-/* ---- Hero visual (SVG network graph) -----------------------------
-   構成順は base → SP → PC の3段。SP の shorthand 上書きが確実に
-   後勝ちするよう、base アニメーション定義は先に置く。
-   - SP / tablet (≤1100px) : 大小2つを同時表示。スピード速め、サイズ大きめ
-   - PC (≥1101px)          : 大小2つを絶対配置。大は右中央、小は左上寄り
-*/
+/* ---- Hero visual : 三角ポリゴンの半透明球体（モノクロ・FV のみ） ------
+   面・頂点・飛散三角は hero-globe.js が毎フレーム再投影する。色は
+   currentColor（= --dark-fg のオフホワイト）、不透明度は JS が個別に設定。 */
 .hero__visual {
   color: var(--dark-fg);
   pointer-events: none;
-  filter: drop-shadow(0 0 16px rgba(184, 212, 168, 0.18));
 }
 
-/* ===== Polyhedron : JS 駆動の不規則八面体ワイヤーフレーム（news 等で使用）=====
-   頂点・エッジ・パルスは hero-poly.js が毎フレーム再投影する。 */
-.hero__poly-pulse {
-  fill: var(--dark-accent);
-  filter: drop-shadow(0 0 4px var(--dark-accent));
-}
-
-/* ===== Globe (large hero visual) : 三角ポリゴンの半透明球体（モノクロ）=====
-   面・頂点・飛散三角は hero-globe.js が毎フレーム再投影する。色は
-   currentColor（= --dark-fg のオフホワイト）、不透明度は JS が個別に設定。 */
 .hero__globe { filter: drop-shadow(0 0 20px rgba(255,255,255,0.10)); }
 
 .hero__globe-faces polygon {
@@ -147,160 +133,43 @@
 
 .hero__globe-dots circle { fill: currentColor; }
 
-/* ===== Base : 小さい方の SVG ネットワーク図のアニメーション ===== */
-.hero__visual-lines line {
-  stroke-dasharray: 220;
-  stroke-dashoffset: 220;
-  opacity: 0;
-  animation: heroLineDraw 9s ease-in-out infinite;
-}
-
-.hero__visual-lines line:nth-child(1) { animation-delay: 0s;   }
-.hero__visual-lines line:nth-child(2) { animation-delay: 0.6s; }
-.hero__visual-lines line:nth-child(3) { animation-delay: 1.2s; }
-.hero__visual-lines line:nth-child(4) { animation-delay: 1.8s; }
-.hero__visual-lines line:nth-child(5) { animation-delay: 2.4s; }
-.hero__visual-lines line:nth-child(6) { animation-delay: 3.0s; }
-.hero__visual-lines line:nth-child(7) { animation-delay: 3.6s; }
-.hero__visual-lines line:nth-child(8) { animation-delay: 4.2s; }
-
-@keyframes heroLineDraw {
-  0%   { stroke-dashoffset: 220;  opacity: 0;   }
-  20%  { opacity: 0.75; }
-  45%  { stroke-dashoffset: 0;    opacity: 0.75; }
-  70%  { stroke-dashoffset: 0;    opacity: 0.6;  }
-  100% { stroke-dashoffset: -220; opacity: 0;   }
-}
-
-.hero__visual-nodes circle {
-  transform-origin: center;
-  transform-box: fill-box;
-  animation: heroNodePulse 4.2s ease-in-out infinite;
-}
-
-.hero__visual-nodes circle:nth-child(1) { animation-delay: 0.0s; }
-.hero__visual-nodes circle:nth-child(2) { animation-delay: 0.7s; }
-.hero__visual-nodes circle:nth-child(3) { animation-delay: 1.4s; }
-.hero__visual-nodes circle:nth-child(4) { animation-delay: 2.1s; }
-.hero__visual-nodes circle:nth-child(5) { animation-delay: 2.8s; }
-.hero__visual-nodes circle:nth-child(6) { animation-delay: 3.5s; }
-
-@keyframes heroNodePulse {
-  0%, 100% { opacity: 0.35; transform: scale(1);   }
-  50%      { opacity: 1;    transform: scale(1.4); }
-}
-
-.hero__visual-pulse circle {
-  transform-origin: center;
-  transform-box: fill-box;
-  opacity: 0;
-  animation: heroNodeRipple 5s ease-out infinite;
-}
-
-.hero__visual-pulse circle:nth-child(1) { animation-delay: 0.8s; }
-.hero__visual-pulse circle:nth-child(2) { animation-delay: 3.2s; }
-
-@keyframes heroNodeRipple {
-  0%   { opacity: 0;    transform: scale(0.4); }
-  30%  { opacity: 0.5;  }
-  100% { opacity: 0;    transform: scale(2.4); }
-}
-
-/* ===== SP / tablet (≤1100px) ============================================
-   大小 2 つをインライン配置。サイズを大きく、スピードを速くするため
-   animation を shorthand で再宣言（duration を約 2 倍速に）。 */
+/* ===== SP / tablet (≤1100px) : 球体をキャッチコピー上にインライン ===== */
 @media (max-width: 1100px) {
   .hero__inner { position: relative; }
-
-  .hero__visual--lg,
-  .hero__visual--sm {
+  .hero__visual--lg {
     display: block;
     position: relative;
     aspect-ratio: 1 / 1;
-  }
-
-  .hero__visual--lg {
     --size: clamp(280px, 80vw, 460px);
     width: var(--size);
     height: var(--size);
     margin: 0 auto 24px;
-    opacity: 0.85;
+    opacity: 0.9;
   }
-
-  .hero__visual--sm {
-    position: absolute;
-    top: 0;
-    right: 4%;
-    width: clamp(90px, 26vw, 160px);
-    margin: 0;
-    opacity: 0.6;
-    z-index: 1;
-  }
-
-  /* スピード上書き：shorthand なので base の animation 全体を置き換える */
-  .hero__visual-lines line  { animation: heroLineDraw 4.5s ease-in-out infinite; }
-  .hero__visual-nodes circle { animation: heroNodePulse 2.4s ease-in-out infinite; }
-  .hero__visual-pulse circle { animation: heroNodeRipple 3s ease-out infinite; }
-
-  /* ディレイも詰めて連鎖感を強める */
-  .hero__visual-lines line:nth-child(1) { animation-delay: 0s;    }
-  .hero__visual-lines line:nth-child(2) { animation-delay: 0.25s; }
-  .hero__visual-lines line:nth-child(3) { animation-delay: 0.5s;  }
-  .hero__visual-lines line:nth-child(4) { animation-delay: 0.75s; }
-  .hero__visual-lines line:nth-child(5) { animation-delay: 1.0s;  }
-  .hero__visual-lines line:nth-child(6) { animation-delay: 1.25s; }
-  .hero__visual-lines line:nth-child(7) { animation-delay: 1.5s;  }
-  .hero__visual-lines line:nth-child(8) { animation-delay: 1.75s; }
-
-  .hero__visual-nodes circle:nth-child(1) { animation-delay: 0s;   }
-  .hero__visual-nodes circle:nth-child(2) { animation-delay: 0.3s; }
-  .hero__visual-nodes circle:nth-child(3) { animation-delay: 0.6s; }
-  .hero__visual-nodes circle:nth-child(4) { animation-delay: 0.9s; }
-  .hero__visual-nodes circle:nth-child(5) { animation-delay: 1.2s; }
-  .hero__visual-nodes circle:nth-child(6) { animation-delay: 1.5s; }
-
-  .hero__visual-pulse circle:nth-child(1) { animation-delay: 0.3s; }
-  .hero__visual-pulse circle:nth-child(2) { animation-delay: 1.6s; }
 }
 
-/* ===== PC (≥1101px) : 大小 2 つを絶対配置 ============================= */
+/* ===== PC (≥1101px) : 球体を右側に絶対配置 ===== */
 @media (min-width: 1101px) {
-  .hero__visual {
+  .hero__visual--lg {
     position: absolute;
     aspect-ratio: 1 / 1;
-  }
-  .hero__visual--lg {
     --size: clamp(420px, 42vw, 640px);
     width: var(--size);
     height: var(--size);
     top: 50%;
     right: 2%;
     transform: translateY(-50%);
-    opacity: 0.6;
-  }
-  .hero__visual--sm {
-    top: 12%;
-    right: 42%;
-    width: clamp(140px, 14vw, 220px);
-    opacity: 0.42;
+    opacity: 0.7;
   }
 }
 
 @media (min-width: 1441px) {
   .hero__visual--lg { right: 7%; }
-  .hero__visual--sm { right: 44%; top: 14%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero { transition: none; }
   .hero__aurora { animation: none; }
-  .hero__visual-lines line,
-  .hero__visual-nodes circle,
-  .hero__visual-pulse circle {
-    animation: none;
-    opacity: 0.5;
-    stroke-dashoffset: 0;
-  }
 }
 
 .hero__statement {
@@ -369,46 +238,6 @@
 .news .sec-head__meta { color: var(--ink); }
 .news .news__more     { transition: opacity var(--dur-base) var(--ease-out); }
 .news .news__more:hover { opacity: 0.6; }
-
-/* --- 八面体ビジュアル：左上 / 右下に控えめに ---
-   Hero はアクセント緑＋強いグロー、こちらは ink 寄り＋低 opacity の
-   背景装飾。SP では小さめ・薄めに。 */
-.news__poly {
-  position: absolute;
-  pointer-events: none;
-  color: var(--ink);
-  opacity: 0.08;
-  z-index: 0;
-}
-
-.news__poly .hero__poly-pulse {
-  fill: var(--ink);
-  filter: drop-shadow(0 0 4px rgba(0,0,0,0.25));
-}
-
-.news__poly--tl {
-  top: -8%;
-  left: -6%;
-  width: clamp(180px, 28vw, 320px);
-  aspect-ratio: 1 / 1;
-}
-
-.news__poly--br {
-  bottom: -10%;
-  right: -6%;
-  width: clamp(200px, 32vw, 380px);
-  aspect-ratio: 1 / 1;
-}
-
-@media (min-width: 720px) {
-  .news__poly { opacity: 0.1; }
-}
-
-@media (min-width: 1101px) {
-  .news__poly { opacity: 0.12; }
-  .news__poly--tl { top: -10%; left: -4%; }
-  .news__poly--br { bottom: -12%; right: -4%; }
-}
 
 .news__list {
   list-style: none;
@@ -504,6 +333,49 @@
 .news__link:hover .news__arrow {
   color: var(--ink);
   transform: translateX(4px);
+}
+
+/* ============================================================
+   Tri-field — scattered triangle decoration (tri-field.js)
+   各セクションの四隅に置く三角シャードの群れ。色はセクションの
+   currentColor（明色セクション=ink / 暗色セクション=off-white）。
+   ============================================================ */
+.section--decor {
+  position: relative;
+  overflow: hidden;
+}
+
+.section--decor > .section__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.tri-field {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  width: clamp(170px, 26vw, 300px);
+  aspect-ratio: 1 / 1;
+  color: var(--ink);
+  opacity: 0.5;
+}
+
+.section--dark .tri-field { color: var(--dark-fg); opacity: 0.6; }
+
+.tri-field--tl { top: -5%;  left: -4%;  }
+.tri-field--tr { top: -5%;  right: -4%; }
+.tri-field--bl { bottom: -6%; left: -4%; }
+.tri-field--br { bottom: -6%; right: -4%; }
+
+.tri-field__g polygon {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+@media (min-width: 1101px) {
+  .tri-field { width: clamp(220px, 24vw, 360px); }
 }
 
 /* ============================================================

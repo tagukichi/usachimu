@@ -19,7 +19,8 @@ $fde_email = (string) fde_option( 'contact_email', '' );
 $fde_x_url = (string) fde_option( 'sns_x_url', '' );
 $fde_x_h   = (string) fde_option( 'sns_x_handle', '' );
 ?>
-<section class="section section--dark" id="contact" data-section="contact">
+<section class="section section--dark section--decor" id="contact" data-section="contact">
+	<?php fde_tri_field( 'tr', 9 ); ?>
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">
