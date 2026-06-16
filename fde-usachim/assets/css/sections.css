@@ -120,12 +120,28 @@
   filter: drop-shadow(0 0 16px rgba(184, 212, 168, 0.18));
 }
 
-/* ===== Polyhedron (large) : JS 駆動の不規則八面体ワイヤーフレーム =====
-   頂点・エッジ・パルスは hero-poly.js が毎フレーム再投影する。
-   ここでは見た目（パルスのグロー）だけ定義。 */
+/* ===== Polyhedron : JS 駆動の不規則八面体ワイヤーフレーム（news 等で使用）=====
+   頂点・エッジ・パルスは hero-poly.js が毎フレーム再投影する。 */
 .hero__poly-pulse {
   fill: var(--dark-accent);
   filter: drop-shadow(0 0 4px var(--dark-accent));
+}
+
+/* ===== Globe (large hero visual) : JS 駆動の地球風ワイヤーフレーム球体 =====
+   グリッド線・地形ドット・海岸線は hero-globe.js が毎フレーム再投影する。 */
+.hero__globe-grid { stroke-width: 0.5; }
+
+.hero__globe-limb {
+  stroke: var(--dark-accent);
+  stroke-width: 0.7;
+  opacity: 0.4;
+}
+
+.hero__globe-land { stroke-width: 0.7; stroke: var(--dark-accent); }
+
+.hero__globe-dots circle {
+  fill: var(--dark-accent);
+  filter: drop-shadow(0 0 2.5px var(--dark-accent));
 }
 
 /* ===== Base : 小さい方の SVG ネットワーク図のアニメーション ===== */

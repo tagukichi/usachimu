@@ -39,10 +39,11 @@ $fde_lede    = (string) fde_field(
 		</g>
 	</svg>
 
-	<svg class="hero__visual hero__visual--lg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" data-hero-poly>
-		<g class="hero__poly-edges" stroke="currentColor" stroke-width="0.6" fill="none"></g>
-		<g class="hero__poly-verts" fill="currentColor"></g>
-		<g class="hero__poly-pulses" fill="currentColor"></g>
+	<svg class="hero__visual hero__visual--lg hero__globe" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" data-hero-globe>
+		<circle class="hero__globe-limb" cx="100" cy="100" r="70" fill="none" />
+		<g class="hero__globe-grid" stroke="currentColor" fill="none"></g>
+		<g class="hero__globe-land" stroke="currentColor" fill="none"></g>
+		<g class="hero__globe-dots" fill="currentColor"></g>
 	</svg>
 
 	<div class="hero__inner">
