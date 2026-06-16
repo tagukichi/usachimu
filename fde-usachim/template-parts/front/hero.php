@@ -22,6 +22,8 @@ $fde_lede    = (string) fde_field(
 	<div class="hero__grid" aria-hidden="true"></div>
 
 	<svg class="hero__visual hero__visual--lg hero__globe" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" data-hero-globe>
+		<g class="hero__globe-grid" stroke="currentColor" fill="none"></g>
+		<g class="hero__globe-grid-dots" fill="currentColor"></g>
 		<g class="hero__globe-faces" stroke="currentColor" fill="currentColor"></g>
 		<g class="hero__globe-floaters" stroke="currentColor" fill="currentColor"></g>
 		<g class="hero__globe-dots" fill="currentColor"></g>
