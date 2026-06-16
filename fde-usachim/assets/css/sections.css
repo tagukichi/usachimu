@@ -145,10 +145,10 @@
     display: block;
     position: relative;
     aspect-ratio: 1 / 1;
-    --size: clamp(280px, 80vw, 460px);
+    --size: clamp(320px, 90vw, 540px);
     width: var(--size);
     height: var(--size);
-    margin: 0 auto 24px;
+    margin: 0 auto 16px;
     opacity: 0.9;
   }
 }
@@ -158,18 +158,18 @@
   .hero__visual--lg {
     position: absolute;
     aspect-ratio: 1 / 1;
-    --size: clamp(420px, 42vw, 640px);
+    --size: clamp(500px, 50vw, 760px);
     width: var(--size);
     height: var(--size);
     top: 50%;
-    right: 2%;
+    right: 0%;
     transform: translateY(-50%);
     opacity: 0.7;
   }
 }
 
 @media (min-width: 1441px) {
-  .hero__visual--lg { right: 7%; }
+  .hero__visual--lg { right: 4%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

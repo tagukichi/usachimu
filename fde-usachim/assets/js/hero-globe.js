@@ -10,7 +10,7 @@ const TAU = Math.PI * 2;
 const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 
 const CENTER = 100;
-const S = 64;          // projected sphere scale
+const S = 60;          // projected sphere scale (leaves room for floaters)
 const DIST = 2.7;      // perspective distance
 const TILT = 0.41;     // axial tilt
 const INNER_R = 0.82;  // inner wireframe radius
@@ -18,7 +18,7 @@ const INNER_R = 0.82;  // inner wireframe radius
 const SHARDS = 76;     // outer triangle count
 const REVEAL_STEP_MS = 26;
 const REVEAL_EASE = 34;
-const FLOATERS = 6;
+const FLOATERS = 18;
 
 function makeRng(seed) {
   let s = (seed >>> 0) || 1;
@@ -42,6 +42,17 @@ function rotX(v, a) {
   const y = v[1] * Math.cos(a) - v[2] * Math.sin(a);
   const z = v[1] * Math.sin(a) + v[2] * Math.cos(a);
   return [v[0], y, z];
+}
+// rotate vector around an arbitrary unit axis (Rodrigues)
+function rotAxis(v, ax, ang) {
+  const c = Math.cos(ang);
+  const s = Math.sin(ang);
+  const d = ax[0] * v[0] + ax[1] * v[1] + ax[2] * v[2];
+  return [
+    v[0] * c + (ax[1] * v[2] - ax[2] * v[1]) * s + ax[0] * d * (1 - c),
+    v[1] * c + (ax[2] * v[0] - ax[0] * v[2]) * s + ax[1] * d * (1 - c),
+    v[2] * c + (ax[0] * v[1] - ax[1] * v[0]) * s + ax[2] * d * (1 - c),
+  ];
 }
 function project(v) {
   const f = DIST / (DIST - v[2]);
@@ -194,19 +205,35 @@ function setupOne(svg, reduce) {
     return { ...sh, poly, dotEls, order: order[i] };
   });
 
-  // ---- floaters ----
+  // ---- floaters : triangles that flutter & orbit around the sphere ----
   const floaters = [];
   if (gFloaters) {
     for (let i = 0; i < FLOATERS; i += 1) {
-      const dir = norm([rng() - 0.5, rng() - 0.5, rng() - 0.5]);
-      const [u, w] = tangent(dir);
+      const baseDir = norm([rng() - 0.5, rng() - 0.5, rng() - 0.5]);
+      const axis = norm([rng() - 0.5, rng() - 0.5, rng() - 0.5]);
+      const size = 0.05 + rng() * 0.085;
       const corners = [];
+      let a = rng() * TAU;
       for (let k = 0; k < 3; k += 1) {
-        corners.push([(rng() - 0.5) * 0.22, (rng() - 0.5) * 0.22]);
+        a += ((0.7 + rng() * 0.8) * TAU) / 3;
+        const rr = size * (0.7 + rng() * 0.6);
+        corners.push([Math.cos(a) * rr, Math.sin(a) * rr]);
       }
       const el = document.createElementNS(SVG_NS, 'polygon');
       gFloaters.appendChild(el);
-      floaters.push({ el, dir, u, w, corners, phase: rng(), speed: 0.04 + rng() * 0.05 });
+      floaters.push({
+        el, baseDir, axis, corners,
+        orbitSpeed: (rng() - 0.5) * 0.5,
+        rBase: 1.14 + rng() * 0.14,
+        rAmp: 0.05 + rng() * 0.08,
+        rPhase: rng() * TAU,
+        rSpeed: 0.4 + rng() * 0.5,
+        flutPhase: rng() * TAU,
+        flutSpeed: 1.1 + rng() * 1.7,   // leaf-flip speed
+        spinPhase: rng() * TAU,
+        spinSpeed: (rng() - 0.5) * 1.8, // in-plane tumble
+        base: 0.06 + rng() * 0.11,
+      });
     }
   }
 
@@ -262,26 +289,33 @@ function setupOne(svg, reduce) {
       });
     });
 
-    // floaters
+    // floaters — orbit around the sphere while fluttering (leaf-flip)
     floaters.forEach((fl) => {
-      let tt = fl.phase + tSec * fl.speed;
-      tt -= Math.floor(tt);
-      const r = 1.08 + tt * 0.7;
-      const op = Math.sin(Math.PI * tt) * 0.12;
+      const dir = rotAxis(fl.baseDir, fl.axis, tSec * fl.orbitSpeed);
+      const [u, w] = tangent(dir);
+      const r = fl.rBase + fl.rAmp * Math.sin(fl.rPhase + tSec * fl.rSpeed);
+      const flut = Math.cos(fl.flutPhase + tSec * fl.flutSpeed); // -1..1 squash
+      const sp = fl.spinPhase + tSec * fl.spinSpeed;
+      const cs = Math.cos(sp);
+      const sn = Math.sin(sp);
       let pts = '';
       for (let k = 0; k < 3; k += 1) {
-        const [a, b] = fl.corners[k];
+        const a = fl.corners[k][0] * flut; // squash along u → flip
+        const b = fl.corners[k][1];
+        const ar = a * cs - b * sn;
+        const br = a * sn + b * cs;
         const p3 = [
-          fl.dir[0] * r + fl.u[0] * a + fl.w[0] * b,
-          fl.dir[1] * r + fl.u[1] * a + fl.w[1] * b,
-          fl.dir[2] * r + fl.u[2] * a + fl.w[2] * b,
+          dir[0] * r + u[0] * ar + w[0] * br,
+          dir[1] * r + u[1] * ar + w[1] * br,
+          dir[2] * r + u[2] * ar + w[2] * br,
         ];
         const pr = project3(p3, spin);
         pts += `${pr.x.toFixed(1)},${pr.y.toFixed(1)} `;
       }
       fl.el.setAttribute('points', pts.trim());
-      fl.el.setAttribute('fill-opacity', (op * 0.7).toFixed(3));
-      fl.el.setAttribute('stroke-opacity', op.toFixed(3));
+      const vis = fl.base * (0.4 + 0.6 * Math.abs(flut)); // fainter edge-on
+      fl.el.setAttribute('fill-opacity', (vis * 0.7).toFixed(3));
+      fl.el.setAttribute('stroke-opacity', vis.toFixed(3));
     });
   };
 
