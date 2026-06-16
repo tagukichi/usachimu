@@ -1,25 +1,22 @@
-// Hero globe — an Earth-like wireframe sphere rendered in pure JS + SVG.
-// The sphere keeps its shape while continents (terrain) progressively
-// "form" over time and then persist. Near hemisphere is bright, far side
-// fades; back-facing terrain is culled. Slow axial-tilted rotation.
+// Hero globe — a triangulated translucent sphere (monochrome), inspired by
+// low-poly "atoms" hero visuals. A jittered icosphere is rendered as
+// overlapping translucent triangles; faces build in over time then persist.
+// Near hemisphere is brighter, far side fades. A few triangles drift off
+// the surface for flavour. Slow axial-tilted rotation.
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 const CENTER = 100;   // viewBox 0..200
-const S = 66;         // projected sphere scale (limb ~ this radius)
-const DIST = 2.6;     // perspective camera distance (in sphere radii)
+const S = 64;         // projected sphere scale
+const DIST = 2.7;     // perspective camera distance (in sphere radii)
 const TILT = 0.41;    // ~23.5deg axial tilt
+const SUBDIV = 2;     // icosphere subdivisions (2 -> 320 faces / 162 verts)
+const JITTER = 0.085; // vertex irregularity
 
-// --- wireframe density ---
-const PARALLELS = [-60, -40, -20, 0, 20, 40, 60].map((d) => (d * Math.PI) / 180);
-const MERIDIAN_COUNT = 12;
-const SEG = 44; // points per grid line
+const REVEAL_STEP_MS = 18; // a face is born this often
+const REVEAL_EASE = 36;    // a face eases in over this many steps
+const FLOATERS = 6;
 
-// --- terrain timing ---
-const REVEAL_STEP_MS = 220; // a new terrain dot is born this often
-const REVEAL_EASE = 4;      // a dot eases in over this many steps
-
-// Deterministic PRNG so the continents look identical every load.
 function makeRng(seed) {
   let s = seed >>> 0;
   return () => {
@@ -28,195 +25,219 @@ function makeRng(seed) {
   };
 }
 
-function sph(lat, lng) {
-  const cl = Math.cos(lat);
-  return { x: cl * Math.cos(lng), y: Math.sin(lat), z: cl * Math.sin(lng) };
+function norm(v) {
+  const l = Math.hypot(v[0], v[1], v[2]) || 1;
+  return [v[0] / l, v[1] / l, v[2] / l];
 }
 
-function rotateY(p, a) {
-  const x =  p.x * Math.cos(a) + p.z * Math.sin(a);
-  const z = -p.x * Math.sin(a) + p.z * Math.cos(a);
-  return { x, y: p.y, z };
-}
-
-function rotateX(p, a) {
-  const y = p.y * Math.cos(a) - p.z * Math.sin(a);
-  const z = p.y * Math.sin(a) + p.z * Math.cos(a);
-  return { x: p.x, y, z };
-}
-
-function project(p) {
-  // camera looks along -z; near hemisphere = +z
-  const f = DIST / (DIST - p.z);
-  return {
-    x: CENTER + p.x * S * f,
-    y: CENTER - p.y * S * f,
-    z: p.z,
-    f,
-  };
-}
-
-// 0 (far / back) .. 1 (near / front) smooth front factor.
-function frontFactor(z) {
-  // visible from ~z>0; fade across the limb.
-  return Math.max(0, Math.min(1, (z + 0.1) / 0.45));
-}
-
-// Build continents as random-walk blobs on the sphere surface.
-function buildContinents() {
-  const rng = makeRng(20260616);
-  const centers = [
-    [ 0.55,  0.4 ],
-    [ 0.15,  2.3 ],
-    [-0.5,   3.5 ],
-    [ 0.7,   4.7 ],
-    [-0.25,  5.6 ],
-    [ 0.35,  1.4 ],
+function icosphere(level) {
+  const t = (1 + Math.sqrt(5)) / 2;
+  let verts = [
+    [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0],
+    [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
+    [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1],
+  ].map(norm);
+  let faces = [
+    [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11],
+    [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+    [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
+    [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
   ];
-  const continents = centers.map(([clat, clng]) => {
-    const count = 8 + Math.floor(rng() * 6);
-    let lat = clat;
-    let lng = clng;
-    const dots = [];
-    for (let k = 0; k < count; k += 1) {
-      dots.push({ lat, lng });
-      lat += (rng() - 0.5) * 0.5;
-      lng += (rng() - 0.5) * 0.65;
-      lat = Math.max(-1.35, Math.min(1.35, lat));
-    }
-    return dots;
-  });
-  return continents;
+  const cache = new Map();
+  const mid = (a, b) => {
+    const key = a < b ? `${a}_${b}` : `${b}_${a}`;
+    if (cache.has(key)) return cache.get(key);
+    const va = verts[a];
+    const vb = verts[b];
+    const vm = norm([va[0] + vb[0], va[1] + vb[1], va[2] + vb[2]]);
+    const idx = verts.length;
+    verts.push(vm);
+    cache.set(key, idx);
+    return idx;
+  };
+  for (let l = 0; l < level; l += 1) {
+    const nf = [];
+    faces.forEach(([a, b, c]) => {
+      const ab = mid(a, b);
+      const bc = mid(b, c);
+      const ca = mid(c, a);
+      nf.push([a, ab, ca], [b, bc, ab], [c, ca, bc], [ab, bc, ca]);
+    });
+    faces = nf;
+  }
+  return { verts, faces };
+}
+
+function rotY(v, a) {
+  const x =  v[0] * Math.cos(a) + v[2] * Math.sin(a);
+  const z = -v[0] * Math.sin(a) + v[2] * Math.cos(a);
+  return [x, v[1], z];
+}
+function rotX(v, a) {
+  const y = v[1] * Math.cos(a) - v[2] * Math.sin(a);
+  const z = v[1] * Math.sin(a) + v[2] * Math.cos(a);
+  return [v[0], y, z];
+}
+
+function projectScreen(v) {
+  const f = DIST / (DIST - v[2]);
+  return { x: CENTER + v[0] * S * f, y: CENTER - v[1] * S * f, z: v[2], f };
+}
+
+// 0 (far) .. 1 (near) front factor.
+function front(z) {
+  return Math.max(0, Math.min(1, (z + 0.2) / 0.5));
+}
+
+function tangentBasis(dir) {
+  const ref = Math.abs(dir[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
+  const u = norm([
+    dir[1] * ref[2] - dir[2] * ref[1],
+    dir[2] * ref[0] - dir[0] * ref[2],
+    dir[0] * ref[1] - dir[1] * ref[0],
+  ]);
+  const w = [
+    dir[1] * u[2] - dir[2] * u[1],
+    dir[2] * u[0] - dir[0] * u[2],
+    dir[0] * u[1] - dir[1] * u[0],
+  ];
+  return [u, w];
 }
 
 function setupOne(svg, reduce) {
-  const gGrid = svg.querySelector('.hero__globe-grid');
-  const gLand = svg.querySelector('.hero__globe-land');
-  const gDots = svg.querySelector('.hero__globe-dots');
-  if (!gGrid || !gLand || !gDots) return;
+  const gFaces    = svg.querySelector('.hero__globe-faces');
+  const gFloaters = svg.querySelector('.hero__globe-floaters');
+  const gDots     = svg.querySelector('.hero__globe-dots');
+  if (!gFaces || !gDots) return;
 
-  // ----- grid geometry (parallels + meridians) -----
-  const gridLines = [];
+  const rng = makeRng(20260616);
+  const { verts, faces } = icosphere(SUBDIV);
 
-  PARALLELS.forEach((lat) => {
-    const pts = [];
-    for (let i = 0; i <= SEG; i += 1) {
-      pts.push(sph(lat, (i / SEG) * Math.PI * 2));
-    }
-    const pl = document.createElementNS(SVG_NS, 'polyline');
-    gGrid.appendChild(pl);
-    gridLines.push({ el: pl, pts, kind: 'parallel' });
+  // jitter vertices for an irregular look (still on the sphere)
+  const V = verts.map((v) => norm([
+    v[0] + (rng() - 0.5) * JITTER,
+    v[1] + (rng() - 0.5) * JITTER,
+    v[2] + (rng() - 0.5) * JITTER,
+  ]));
+
+  // shuffled reveal order so faces pop in scattered
+  const orderPool = faces.map((_, i) => i);
+  for (let i = orderPool.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(rng() * (i + 1));
+    [orderPool[i], orderPool[j]] = [orderPool[j], orderPool[i]];
+  }
+
+  const faceData = faces.map((f, i) => {
+    const el = document.createElementNS(SVG_NS, 'polygon');
+    gFaces.appendChild(el);
+    return {
+      el,
+      idx: f,
+      base: 0.05 + rng() * 0.11, // per-face translucency
+      order: orderPool[i],
+    };
   });
 
-  for (let m = 0; m < MERIDIAN_COUNT; m += 1) {
-    const lng = (m / MERIDIAN_COUNT) * Math.PI * 2;
-    const pts = [];
-    for (let i = 0; i <= SEG; i += 1) {
-      const lat = -Math.PI / 2 + (i / SEG) * Math.PI;
-      pts.push(sph(lat, lng));
+  const dotData = V.map(() => {
+    const el = document.createElementNS(SVG_NS, 'circle');
+    gDots.appendChild(el);
+    return el;
+  });
+
+  // floaters: small triangles that drift radially out and back
+  const floaters = [];
+  if (gFloaters) {
+    for (let i = 0; i < FLOATERS; i += 1) {
+      const dir = norm([rng() - 0.5, rng() - 0.5, rng() - 0.5]);
+      const [u, w] = tangentBasis(dir);
+      const corners = [];
+      for (let k = 0; k < 3; k += 1) {
+        const a = (rng() - 0.5) * 0.22;
+        const b = (rng() - 0.5) * 0.22;
+        corners.push([a, b]);
+      }
+      const el = document.createElementNS(SVG_NS, 'polygon');
+      gFloaters.appendChild(el);
+      floaters.push({
+        el, dir, u, w, corners,
+        phase: rng(),
+        speed: 0.04 + rng() * 0.05,
+      });
     }
-    const pl = document.createElementNS(SVG_NS, 'polyline');
-    gGrid.appendChild(pl);
-    gridLines.push({ el: pl, pts, kind: 'meridian' });
   }
 
-  // ----- terrain geometry -----
-  const continents = buildContinents();
+  const screenVerts = new Array(V.length);
 
-  // flat list of dots, each with a reveal order (round-robin across
-  // continents so they grow together) + the coastline segment to prev dot.
-  const dots = [];
-  const maxLen = Math.max(...continents.map((c) => c.length));
-  let order = 0;
-  for (let k = 0; k < maxLen; k += 1) {
-    continents.forEach((c, ci) => {
-      if (k < c.length) {
-        const dotEl = document.createElementNS(SVG_NS, 'circle');
-        dotEl.setAttribute('r', '1.7');
-        gDots.appendChild(dotEl);
+  const render = (spin, revealF, tSec) => {
+    // rotate + project all vertices once
+    for (let i = 0; i < V.length; i += 1) {
+      screenVerts[i] = projectScreen(rotX(rotY(V[i], spin), TILT));
+    }
 
-        let lineEl = null;
-        if (k > 0) {
-          lineEl = document.createElementNS(SVG_NS, 'line');
-          gLand.appendChild(lineEl);
-        }
-        dots.push({
-          ci,
-          base: c[k],
-          prev: k > 0 ? c[k - 1] : null,
-          el: dotEl,
-          lineEl,
-          order: order++,
-        });
-      }
-    });
-  }
-
-  const project3 = (base, spin) =>
-    project(rotateX(rotateY(sph(base.lat, base.lng), spin), TILT));
-
-  const renderGrid = (spin) => {
-    gridLines.forEach((g) => {
-      let pointsStr = '';
-      let zSum = 0;
-      for (let i = 0; i < g.pts.length; i += 1) {
-        const pr = project(rotateX(rotateY(g.pts[i], spin), TILT));
-        pointsStr += `${pr.x.toFixed(1)},${pr.y.toFixed(1)} `;
-        zSum += pr.z;
-      }
-      g.el.setAttribute('points', pointsStr.trim());
-      // meridians fade front/back as a whole; parallels stay even.
-      const avg = zSum / g.pts.length;
-      const op = g.kind === 'meridian'
-        ? 0.1 + frontFactor(avg) * 0.32
-        : 0.18;
-      g.el.setAttribute('stroke-opacity', op.toFixed(3));
-    });
-  };
-
-  const renderTerrain = (spin, revealF) => {
-    dots.forEach((d) => {
-      const born = Math.max(0, Math.min(1, (revealF - d.order) / REVEAL_EASE));
+    // faces
+    faceData.forEach((fd) => {
+      const [a, b, c] = fd.idx;
+      const pa = screenVerts[a];
+      const pb = screenVerts[b];
+      const pc = screenVerts[c];
+      const born = Math.max(0, Math.min(1, (revealF - fd.order) / REVEAL_EASE));
       if (born <= 0) {
-        d.el.setAttribute('fill-opacity', '0');
-        if (d.lineEl) d.lineEl.setAttribute('stroke-opacity', '0');
+        fd.el.setAttribute('fill-opacity', '0');
+        fd.el.setAttribute('stroke-opacity', '0');
         return;
       }
-      const pr = project3(d.base, spin);
-      const ff = frontFactor(pr.z);
-      d.el.setAttribute('cx', pr.x.toFixed(1));
-      d.el.setAttribute('cy', pr.y.toFixed(1));
-      d.el.setAttribute('r', (1.7 * pr.f).toFixed(2));
-      d.el.setAttribute('fill-opacity', (born * ff * 0.9).toFixed(3));
+      const cz = (pa.z + pb.z + pc.z) / 3;
+      const ff = front(cz);
+      fd.el.setAttribute('points',
+        `${pa.x.toFixed(1)},${pa.y.toFixed(1)} ${pb.x.toFixed(1)},${pb.y.toFixed(1)} ${pc.x.toFixed(1)},${pc.y.toFixed(1)}`);
+      fd.el.setAttribute('fill-opacity', (born * fd.base * (0.18 + 0.82 * ff)).toFixed(3));
+      fd.el.setAttribute('stroke-opacity', (born * (0.05 + 0.16 * ff)).toFixed(3));
+    });
 
-      if (d.lineEl && d.prev) {
-        const pp = project3(d.prev, spin);
-        d.lineEl.setAttribute('x1', pp.x.toFixed(1));
-        d.lineEl.setAttribute('y1', pp.y.toFixed(1));
-        d.lineEl.setAttribute('x2', pr.x.toFixed(1));
-        d.lineEl.setAttribute('y2', pr.y.toFixed(1));
-        const lff = frontFactor((pr.z + pp.z) / 2);
-        d.lineEl.setAttribute('stroke-opacity', (born * lff * 0.5).toFixed(3));
+    // vertex dots
+    for (let i = 0; i < V.length; i += 1) {
+      const p = screenVerts[i];
+      const ff = front(p.z);
+      const el = dotData[i];
+      el.setAttribute('cx', p.x.toFixed(1));
+      el.setAttribute('cy', p.y.toFixed(1));
+      el.setAttribute('r', (1.0 * p.f).toFixed(2));
+      el.setAttribute('fill-opacity', (0.12 + 0.55 * ff).toFixed(3));
+    }
+
+    // floaters
+    floaters.forEach((fl) => {
+      let tt = fl.phase + tSec * fl.speed;
+      tt -= Math.floor(tt);             // 0..1 loop
+      const r = 1.08 + tt * 0.7;        // drift outward
+      const op = Math.sin(Math.PI * tt) * 0.12;
+      let pts = '';
+      for (let k = 0; k < 3; k += 1) {
+        const [a, b] = fl.corners[k];
+        const p3 = [
+          fl.dir[0] * r + fl.u[0] * a + fl.w[0] * b,
+          fl.dir[1] * r + fl.u[1] * a + fl.w[1] * b,
+          fl.dir[2] * r + fl.u[2] * a + fl.w[2] * b,
+        ];
+        const pr = projectScreen(rotX(rotY(p3, spin), TILT));
+        pts += `${pr.x.toFixed(1)},${pr.y.toFixed(1)} `;
       }
+      fl.el.setAttribute('points', pts.trim());
+      fl.el.setAttribute('fill-opacity', (op * 0.7).toFixed(3));
+      fl.el.setAttribute('stroke-opacity', op.toFixed(3));
     });
   };
 
   if (reduce) {
-    const spin = 0.6;
-    renderGrid(spin);
-    renderTerrain(spin, 9999); // fully formed, static
+    render(0.6, 1e9, 0);
     return;
   }
 
   const start = performance.now();
   let raf = 0;
-
   const frame = (now) => {
     const elapsed = now - start;
-    const spin = elapsed * 0.00018;          // ~35s per rotation
-    const revealF = elapsed / REVEAL_STEP_MS; // terrain growth clock
-    renderGrid(spin);
-    renderTerrain(spin, revealF);
+    render(elapsed * 0.00016, elapsed / REVEAL_STEP_MS, elapsed / 1000);
     raf = requestAnimationFrame(frame);
   };
   raf = requestAnimationFrame(frame);

@@ -127,22 +127,25 @@
   filter: drop-shadow(0 0 4px var(--dark-accent));
 }
 
-/* ===== Globe (large hero visual) : JS 駆動の地球風ワイヤーフレーム球体 =====
-   グリッド線・地形ドット・海岸線は hero-globe.js が毎フレーム再投影する。 */
-.hero__globe-grid { stroke-width: 0.5; }
+/* ===== Globe (large hero visual) : 三角ポリゴンの半透明球体（モノクロ）=====
+   面・頂点・飛散三角は hero-globe.js が毎フレーム再投影する。色は
+   currentColor（= --dark-fg のオフホワイト）、不透明度は JS が個別に設定。 */
+.hero__globe { filter: drop-shadow(0 0 20px rgba(255,255,255,0.10)); }
 
-.hero__globe-limb {
-  stroke: var(--dark-accent);
-  stroke-width: 0.7;
-  opacity: 0.4;
+.hero__globe-faces polygon {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.4;
+  stroke-linejoin: round;
 }
 
-.hero__globe-land { stroke-width: 0.7; stroke: var(--dark-accent); }
-
-.hero__globe-dots circle {
-  fill: var(--dark-accent);
-  filter: drop-shadow(0 0 2.5px var(--dark-accent));
+.hero__globe-floaters polygon {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.4;
 }
+
+.hero__globe-dots circle { fill: currentColor; }
 
 /* ===== Base : 小さい方の SVG ネットワーク図のアニメーション ===== */
 .hero__visual-lines line {
