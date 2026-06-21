@@ -31,7 +31,7 @@ $fde_fallback = [
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">
-				<span class="sec-head__num">§ 07</span>
+				<span class="sec-head__num">§ 05</span>
 				<h2 class="sec-head__title">Blog</h2>
 			</div>
 			<span class="sec-head__meta">MONTHLY 1–2 POSTS</span>

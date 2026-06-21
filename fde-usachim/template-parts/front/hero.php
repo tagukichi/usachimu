@@ -14,7 +14,7 @@ $fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場の' );
 $fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', '手の中にある。' );
 $fde_lede    = (string) fde_field(
 	'hero_lede',
-	"**AIと業務データを現場で使われる仕組みに変える。**\n発注を受けてから作るのではなく、現場に入り、何を作るべきかを一緒に決めるところから始めます。"
+	'**AIと業務データを、現場で使われる仕組みに。**'
 );
 ?>
 <section class="hero" id="top" aria-label="Hero" data-hero-time>
