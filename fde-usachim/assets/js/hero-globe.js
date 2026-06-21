@@ -16,8 +16,8 @@ const TILT = 0.41;     // axial tilt
 const INNER_R = 0.82;  // inner wireframe radius
 
 const SHARDS = 76;     // outer triangle count
-const REVEAL_STEP_MS = 26;
-const REVEAL_EASE = 34;
+const REVEAL_STEP_MS = 95; // slower so the "world" forms gradually
+const REVEAL_EASE = 26;
 const FLOATERS = 18;
 
 function makeRng(seed) {
@@ -158,7 +158,7 @@ function buildShards(rng) {
         dir[2] + (u[2] * Math.cos(ang) + w[2] * Math.sin(ang)) * rad,
       ]));
     }
-    out.push({ corners, base: 0.05 + rng() * 0.12 });
+    out.push({ corners, base: 0.05 + rng() * 0.12, cy: dir[1] });
   }
   return out;
 }
@@ -189,11 +189,13 @@ function setupOne(svg, reduce) {
 
   // ---- outer shards ----
   const shards = buildShards(rng);
-  const order = shards.map((_, i) => i);
-  for (let i = order.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(rng() * (i + 1));
-    [order[i], order[j]] = [order[j], order[i]];
-  }
+  // reveal order: sweep top → bottom (by latitude) with a little jitter so
+  // the sphere appears to "build up" like a world forming, not random twinkle.
+  const ranked = shards
+    .map((sh, i) => ({ i, key: sh.cy + (rng() - 0.5) * 0.45 }))
+    .sort((a, b) => b.key - a.key);
+  const order = [];
+  ranked.forEach((r, rank) => { order[r.i] = rank; });
   const shardData = shards.map((sh, i) => {
     const poly = document.createElementNS(SVG_NS, 'polygon');
     gFaces.appendChild(poly);
@@ -257,8 +259,8 @@ function setupOne(svg, reduce) {
       const el = wireDotEls[i];
       el.setAttribute('cx', p.x.toFixed(1));
       el.setAttribute('cy', p.y.toFixed(1));
-      el.setAttribute('r', (0.6 * p.f).toFixed(2));
-      el.setAttribute('fill-opacity', (0.07 + 0.16 * front(p.z)).toFixed(3));
+      el.setAttribute('r', (0.3 * p.f).toFixed(2));
+      el.setAttribute('fill-opacity', (0.05 + 0.12 * front(p.z)).toFixed(3));
     });
 
     // outer shards + corner dots
@@ -284,8 +286,8 @@ function setupOne(svg, reduce) {
         const d = sd.dotEls[k];
         d.setAttribute('cx', p.x.toFixed(1));
         d.setAttribute('cy', p.y.toFixed(1));
-        d.setAttribute('r', (0.55 * p.f).toFixed(2));
-        d.setAttribute('fill-opacity', (born * (0.18 + 0.5 * front(p.z))).toFixed(3));
+        d.setAttribute('r', (0.32 * p.f).toFixed(2));
+        d.setAttribute('fill-opacity', (born * (0.2 + 0.55 * front(p.z))).toFixed(3));
       });
     });
 
