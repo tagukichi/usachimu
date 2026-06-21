@@ -9,8 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_cta_url   = home_url( '/' ) . '#contact';
-$fde_cta_label = (string) fde_option( 'cta_label', '相談を始める →' );
 $fde_nav       = fde_main_nav_items();
 ?>
 <nav class="site-nav" aria-label="<?php esc_attr_e( 'プライマリ', 'fde-usachim' ); ?>">
@@ -20,7 +18,6 @@ $fde_nav       = fde_main_nav_items();
 </nav>
 
 <div class="site-header__right">
-	<a class="site-cta" href="<?php echo esc_url( $fde_cta_url ); ?>"><?php echo esc_html( $fde_cta_label ); ?></a>
 	<button
 		type="button"
 		class="nav-toggle"

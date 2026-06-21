@@ -143,7 +143,6 @@ function fde_main_nav_items(): array {
 	return [
 		[ 'label' => 'About',    'url' => $home . '#about' ],
 		[ 'label' => 'Services', 'url' => $home . '#services' ],
-		[ 'label' => 'Work',     'url' => $home . '#work' ],
 		[ 'label' => 'Blog',     'url' => $home . '#writing' ],
 	];
 }

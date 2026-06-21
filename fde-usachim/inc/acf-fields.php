@@ -203,13 +203,12 @@ add_action(
 
 		// ---------- §03 Services ----------
 		$top_fields[] = fde_acf_tab( 'services', __( '§03 Services', 'fde-usachim' ) );
-		foreach ( [ 1, 2, 3, 4 ] as $n ) {
-			$top_fields[] = fde_acf_text( "service_{$n}_no",    "service_{$n}_no",    sprintf( __( 'サービス %d — 番号', 'fde-usachim' ), $n ), 'I / II / III / IV' );
+		foreach ( [ 1, 2, 3 ] as $n ) {
+			$top_fields[] = fde_acf_text( "service_{$n}_no",    "service_{$n}_no",    sprintf( __( 'サービス %d — 番号', 'fde-usachim' ), $n ), '01 / 02 / 03' );
 			$top_fields[] = fde_acf_text( "service_{$n}_title", "service_{$n}_title", sprintf( __( 'サービス %d — 名称（空ならサービスごと非表示）', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_text( "service_{$n}_meta",  "service_{$n}_meta",  sprintf( __( 'サービス %d — メタ', 'fde-usachim' ), $n ), 'LLM / RAG / Eval' );
-			$top_fields[] = fde_acf_textarea( "service_{$n}_desc", "service_{$n}_desc", sprintf( __( 'サービス %d — 説明', 'fde-usachim' ), $n ), 3 );
-
-			// 拡張：画像 / 詳細 / こんなとき / 進め方 / 期間 / 詳細リンク
+			$top_fields[] = fde_acf_text( "service_{$n}_lead",  "service_{$n}_lead",  sprintf( __( 'サービス %d — リード一文', 'fde-usachim' ), $n ) );
+			$top_fields[] = fde_acf_textarea( "service_{$n}_desc", "service_{$n}_desc", sprintf( __( 'サービス %d — 説明', 'fde-usachim' ), $n ), 4 );
+			$top_fields[] = fde_acf_text( "service_{$n}_tags",  "service_{$n}_tags",  sprintf( __( 'サービス %d — 技術タグ（カンマ区切り）', 'fde-usachim' ), $n ) );
 			$top_fields[] = [
 				'key'           => "field_fde_service_{$n}_image",
 				'label'         => sprintf( __( 'サービス %d — 画像', 'fde-usachim' ), $n ),
@@ -217,40 +216,9 @@ add_action(
 				'type'          => 'image',
 				'return_format' => 'array',
 				'preview_size'  => 'medium',
-				'instructions'  => __( '研修風景・ヒアリング風景・成果物など。空欄なら画像は出ません。', 'fde-usachim' ),
-			];
-			$top_fields[] = fde_acf_textarea(
-				"service_{$n}_long_desc",
-				"service_{$n}_long_desc",
-				sprintf( __( 'サービス %d — 詳細説明（任意・段落区切りは空行）', 'fde-usachim' ), $n ),
-				5
-			);
-			$top_fields[] = fde_acf_textarea(
-				"service_{$n}_for",
-				"service_{$n}_for",
-				sprintf( __( 'サービス %d — こんなとき（1行1項目・任意）', 'fde-usachim' ), $n ),
-				4
-			);
-			$top_fields[] = fde_acf_textarea(
-				"service_{$n}_steps",
-				"service_{$n}_steps",
-				sprintf( __( 'サービス %d — 進め方（1行1項目・任意）', 'fde-usachim' ), $n ),
-				4
-			);
-			$top_fields[] = fde_acf_text(
-				"service_{$n}_period",
-				"service_{$n}_period",
-				sprintf( __( 'サービス %d — 期間目安（任意）', 'fde-usachim' ), $n ),
-				'例：3〜6ヶ月'
-			);
-			$top_fields[] = [
-				'key'   => "field_fde_service_{$n}_link_url",
-				'label' => sprintf( __( 'サービス %d — 詳細リンク URL（任意）', 'fde-usachim' ), $n ),
-				'name'  => "service_{$n}_link_url",
-				'type'  => 'url',
+				'instructions'  => __( '横長 16:10 〜 4:3 を推奨。空欄なら番号入りのプレースホルダーを表示。', 'fde-usachim' ),
 			];
 		}
-		$top_fields[] = fde_acf_textarea( 'services_note', 'services_note', __( '契約に関する注記（**強調** 可）', 'fde-usachim' ), 2 );
 
 		// ---------- §04 Process ----------
 		$top_fields[] = fde_acf_tab( 'process', __( '§04 Process', 'fde-usachim' ) );

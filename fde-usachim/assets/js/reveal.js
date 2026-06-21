@@ -11,10 +11,8 @@ export function initReveal() {
     '.why2',
     '.why2__pillar',
     '.about__grid',
-    '.svc__item',
-    '.wk__item',
-    '.writing-card',
-    '.contact__grid',
+    '.svc-row',
+    '.blog-card',
     '.site-footer__top',
   ].join(',');
 

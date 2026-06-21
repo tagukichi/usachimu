@@ -12,8 +12,6 @@ require FDE_USACHIM_DIR . '/template-parts/front/news.php';
 require FDE_USACHIM_DIR . '/template-parts/front/why.php';
 require FDE_USACHIM_DIR . '/template-parts/front/about.php';
 require FDE_USACHIM_DIR . '/template-parts/front/services.php';
-require FDE_USACHIM_DIR . '/template-parts/front/work.php';
 require FDE_USACHIM_DIR . '/template-parts/front/writing.php';
-require FDE_USACHIM_DIR . '/template-parts/front/contact.php';
 
 get_footer();
