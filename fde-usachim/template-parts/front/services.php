@@ -1,7 +1,8 @@
 <?php
 /**
- * §03 — Services (image-led alternating layout).
- * 3 sub-services: Web開発 / SaaS開発 / 社内DX支援
+ * §02 — Service. Two rich blocks:
+ *   1) WEB開発（HP制作 / システム・アプリ開発=調速）+ 制作実績
+ *   2) 業務効率化支援（自治体DX / 民間企業）
  *
  * @package fde-usachim
  */
@@ -10,107 +11,182 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_service_defaults = [
-	[
-		'no'    => '01',
-		'title' => 'Web開発・アプリ制作',
-		'lead'  => 'ブランドサイトから業務アプリまで、目的に合わせて設計・実装します。',
-		'desc'  => 'コーポレートサイト、サービスサイト、ランディングページ、Web/モバイルアプリの開発まで一気通貫で対応します。ヒアリングから情報設計、デザイン、実装、運用までを一貫体制で進めるため、要件のブレや手戻りを抑え、ビジネス成果に直結するプロダクトをスピーディーに届けます。',
-		'tags'  => 'Next.js, React, TypeScript, WordPress, Figma',
-	],
-	[
-		'no'    => '02',
-		'title' => 'SaaS開発',
-		'lead'  => 'ゼロからのプロダクト立ち上げ、既存SaaSの機能拡張をサポートします。',
-		'desc'  => 'プロダクトの要件定義から MVP 開発、グロース後の機能拡張、保守運用まで、フェーズに合わせた体制で伴走します。マルチテナント設計、課金導線、API連携、認証基盤など、SaaSに不可欠な構成要素をベストプラクティスに沿って実装し、スケールに耐えるプロダクトを育てます。',
-		'tags'  => 'Next.js, Hono, Supabase, AWS, Stripe',
-	],
-	[
-		'no'    => '03',
-		'title' => '社内DX支援',
-		'lead'  => '業務の見える化からツール導入・内製化まで、現場目線で進めます。',
-		'desc'  => '紙やExcel中心の業務を、kintone・Notion・スプレッドシート連携・生成AIなどを組み合わせて段階的にデジタル化します。現場ヒアリングから業務フロー設計、ツール選定、定着支援、内製化のための研修まで対応。「導入して終わり」にならない、現場で回り続ける仕組みづくりが強みです。',
-		'tags'  => 'kintone, Notion, Google Workspace, 生成AI, RPA',
-	],
-];
+// ---- Block 1 : WEB開発 ----
+$fde_web_desc = (string) fde_field(
+	'svc_web_desc',
+	'ホームページ制作からシステム・アプリ開発まで。企画から公開後の運用まで、一貫体制で対応します。'
+);
+$fde_web_hp_desc = (string) fde_field(
+	'svc_web_hp_desc',
+	'通算200件以上の制作実績。コーポレートサイトからLP、ECサイトまで、目的に合わせて設計・制作します。'
+);
+$fde_chousoku_desc = (string) fde_field(
+	'chousoku_desc',
+	'自社サービス「調速」を開発・運営。不動産の物件調査をスムーズに行うための、AI搭載アプリケーションです。'
+);
+$fde_chousoku_logo = fde_field( 'chousoku_logo' );
+$fde_chousoku_url  = (string) fde_field( 'chousoku_url', '' );
 
-$fde_services = [];
-foreach ( [ 1, 2, 3 ] as $n ) {
-	$i = $n - 1;
-	$title_raw = function_exists( 'get_field' ) && (int) get_option( 'page_on_front' )
-		? get_field( "service_{$n}_title", (int) get_option( 'page_on_front' ) )
-		: null;
-	if ( '' === $title_raw || ( is_string( $title_raw ) && '' === trim( $title_raw ) ) ) {
-		continue;
-	}
-	$title = ( null === $title_raw || false === $title_raw )
-		? $fde_service_defaults[ $i ]['title']
-		: (string) $title_raw;
-	$fde_services[] = [
-		'no'    => (string) fde_field( "service_{$n}_no",    $fde_service_defaults[ $i ]['no'] ),
-		'title' => $title,
-		'lead'  => (string) fde_field( "service_{$n}_lead",  $fde_service_defaults[ $i ]['lead'] ),
-		'desc'  => (string) fde_field( "service_{$n}_desc",  $fde_service_defaults[ $i ]['desc'] ),
-		'tags'  => fde_split_tags( (string) fde_field( "service_{$n}_tags", $fde_service_defaults[ $i ]['tags'] ) ),
-		'image' => fde_field( "service_{$n}_image" ),
-	];
-}
-if ( empty( $fde_services ) ) {
-	return;
-}
+// ---- Block 2 : 業務効率化支援 ----
+$fde_dx_desc = (string) fde_field(
+	'svc_dx_desc',
+	'行政・民間企業の現場に入り込み、伴走型で業務のデジタル化を支援します。「導入して終わり」にしない、現場で回り続ける仕組みづくりが強みです。'
+);
+$fde_dx_gov_desc = (string) fde_field(
+	'svc_dx_gov_desc',
+	'生成AI研修の実施、現課への個別サポート、AIアプリの作成、インフラ検討まで。行政職員としての経験を活かし、庁内の実情に合わせて進めます。'
+);
+$fde_dx_biz_desc = (string) fde_field(
+	'svc_dx_biz_desc',
+	'Google Workspace研修、業務フロー改善の提案、GASなどを使ったPoC作成。小さく試して、効果を確かめながら広げていきます。'
+);
+
+$fde_svc_web_img = fde_field( 'service_1_image' );
+$fde_svc_dx_img  = fde_field( 'service_2_image' );
+
+// ---- 制作実績（works CPT）----
+$fde_works = new WP_Query(
+	[
+		'post_type'           => 'works',
+		'posts_per_page'      => 6,
+		'orderby'             => 'menu_order date',
+		'order'               => 'ASC',
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
+	]
+);
 ?>
-<section class="section section--decor" id="services" data-section="services">
+<section class="section section--dark section--decor svc" id="services" data-section="services">
 	<?php fde_tri_field( 'tr', 9 ); ?>
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">
-				<span class="sec-head__num">§ 03</span>
-				<h2 class="sec-head__title">Services</h2>
+				<span class="sec-head__num">02</span>
+				<h2 class="sec-head__title">Service</h2>
 			</div>
 			<span class="sec-head__meta">事業内容</span>
 		</header>
 
-		<p class="svc-intro jp">プロダクト開発から社内のDXまで。技術と現場理解の両輪で、課題を仕組みに変えます。</p>
+		<!-- ============ Block 1 : WEB開発 ============ -->
+		<article class="svc-block">
+			<header class="svc-block__head">
+				<span class="svc-block__no mono">SERVICE 01</span>
+				<h3 class="svc-block__title">WEB開発</h3>
+				<p class="svc-block__desc jp"><?php echo esc_html( $fde_web_desc ); ?></p>
+			</header>
 
-		<div class="svc-list">
-			<?php foreach ( $fde_services as $i => $s ) : ?>
-				<?php $flipped = ( $i % 2 === 1 ) ? 'true' : 'false'; ?>
-				<article class="svc-row" data-flipped="<?php echo esc_attr( $flipped ); ?>">
-					<figure class="svc-row__media">
-						<?php if ( is_array( $s['image'] ) && ! empty( $s['image']['url'] ) ) : ?>
-							<img
-								src="<?php echo esc_url( $s['image']['url'] ); ?>"
-								alt="<?php echo esc_attr( ! empty( $s['image']['alt'] ) ? $s['image']['alt'] : $s['title'] ); ?>"
-								loading="lazy"
-								<?php if ( ! empty( $s['image']['width'] ) ) : ?>width="<?php echo esc_attr( $s['image']['width'] ); ?>"<?php endif; ?>
-								<?php if ( ! empty( $s['image']['height'] ) ) : ?>height="<?php echo esc_attr( $s['image']['height'] ); ?>"<?php endif; ?>
-							>
+			<?php if ( is_array( $fde_svc_web_img ) && ! empty( $fde_svc_web_img['url'] ) ) : ?>
+				<figure class="svc-block__media">
+					<img src="<?php echo esc_url( $fde_svc_web_img['url'] ); ?>"
+					     alt="<?php echo esc_attr( ! empty( $fde_svc_web_img['alt'] ) ? $fde_svc_web_img['alt'] : 'WEB開発' ); ?>"
+					     loading="lazy">
+				</figure>
+			<?php endif; ?>
+
+			<div class="svc-block__subs">
+				<div class="svc-sub glass">
+					<span class="svc-sub__label mono">01 — WEBSITE</span>
+					<h4 class="svc-sub__title">ホームページ制作</h4>
+					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_web_hp_desc ); ?></p>
+					<div class="svc-sub__stat">
+						<span class="svc-sub__stat-v serif">200<span class="svc-sub__stat-unit">件+</span></span>
+						<span class="svc-sub__stat-k mono">PROJECTS DELIVERED</span>
+					</div>
+				</div>
+
+				<div class="svc-sub glass">
+					<span class="svc-sub__label mono">02 — SYSTEM / APP</span>
+					<h4 class="svc-sub__title">システム開発・アプリ開発</h4>
+					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_chousoku_desc ); ?></p>
+
+					<div class="svc-sub__product">
+						<?php if ( is_array( $fde_chousoku_logo ) && ! empty( $fde_chousoku_logo['url'] ) ) : ?>
+							<img class="svc-sub__product-logo"
+							     src="<?php echo esc_url( $fde_chousoku_logo['url'] ); ?>"
+							     alt="<?php echo esc_attr( ! empty( $fde_chousoku_logo['alt'] ) ? $fde_chousoku_logo['alt'] : '調速' ); ?>"
+							     loading="lazy">
 						<?php else : ?>
-							<div class="svc-row__placeholder" aria-hidden="true">
-								<span class="svc-row__placeholder-no mono"><?php echo esc_html( $s['no'] ); ?></span>
-							</div>
+							<span class="svc-sub__product-name serif">調速</span>
 						<?php endif; ?>
-					</figure>
-
-					<div class="svc-row__body">
-						<span class="svc-row__no mono">SERVICE <?php echo esc_html( $s['no'] ); ?></span>
-						<h3 class="svc-row__title"><?php echo esc_html( $s['title'] ); ?></h3>
-						<?php if ( $s['lead'] ) : ?>
-							<p class="svc-row__lead jp"><?php echo esc_html( $s['lead'] ); ?></p>
-						<?php endif; ?>
-						<?php if ( $s['desc'] ) : ?>
-							<p class="svc-row__desc jp"><?php echo esc_html( $s['desc'] ); ?></p>
-						<?php endif; ?>
-						<?php if ( ! empty( $s['tags'] ) ) : ?>
-							<div class="svc-row__tags">
-								<?php foreach ( $s['tags'] as $t ) : ?>
-									<span class="chip mono"><?php echo esc_html( $t ); ?></span>
-								<?php endforeach; ?>
-							</div>
+						<?php if ( $fde_chousoku_url ) : ?>
+							<a class="svc-sub__product-link mono" href="<?php echo esc_url( $fde_chousoku_url ); ?>" target="_blank" rel="noopener">
+								サービスサイトへ →
+							</a>
 						<?php endif; ?>
 					</div>
-				</article>
-			<?php endforeach; ?>
-		</div>
+				</div>
+			</div>
+
+			<?php if ( $fde_works->have_posts() ) : ?>
+				<div class="svc-works">
+					<span class="svc-works__label mono">WORKS — 制作実績</span>
+					<div class="svc-works__grid">
+						<?php $fde_i = 0; while ( $fde_works->have_posts() ) : $fde_works->the_post(); $fde_i++; ?>
+							<?php
+							$industry = function_exists( 'get_field' ) ? (string) get_field( 'industry' ) : '';
+							$year     = function_exists( 'get_field' ) ? (string) get_field( 'year' ) : '';
+							$thumb    = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'medium_large' ) : '';
+							?>
+							<a class="svc-work" href="<?php the_permalink(); ?>">
+								<div class="svc-work__thumb">
+									<?php if ( $thumb ) : ?>
+										<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
+									<?php else : ?>
+										<span class="svc-work__thumb-no mono"><?php echo esc_html( sprintf( '%02d', $fde_i ) ); ?></span>
+									<?php endif; ?>
+								</div>
+								<div class="svc-work__meta">
+									<span class="svc-work__title jp"><?php the_title(); ?></span>
+									<span class="svc-work__sub mono"><?php echo esc_html( trim( $industry . ( $year ? ' · ' . $year : '' ) ) ); ?></span>
+								</div>
+							</a>
+						<?php endwhile; ?>
+					</div>
+				</div>
+				<?php wp_reset_postdata(); ?>
+			<?php endif; ?>
+		</article>
+
+		<!-- ============ Block 2 : 業務効率化支援 ============ -->
+		<article class="svc-block">
+			<header class="svc-block__head">
+				<span class="svc-block__no mono">SERVICE 02</span>
+				<h3 class="svc-block__title">業務効率化支援</h3>
+				<p class="svc-block__desc jp"><?php echo esc_html( $fde_dx_desc ); ?></p>
+			</header>
+
+			<?php if ( is_array( $fde_svc_dx_img ) && ! empty( $fde_svc_dx_img['url'] ) ) : ?>
+				<figure class="svc-block__media">
+					<img src="<?php echo esc_url( $fde_svc_dx_img['url'] ); ?>"
+					     alt="<?php echo esc_attr( ! empty( $fde_svc_dx_img['alt'] ) ? $fde_svc_dx_img['alt'] : '業務効率化支援' ); ?>"
+					     loading="lazy">
+				</figure>
+			<?php endif; ?>
+
+			<div class="svc-block__subs">
+				<div class="svc-sub glass">
+					<span class="svc-sub__label mono">01 — GOVERNMENT</span>
+					<h4 class="svc-sub__title">自治体でのDX推進支援</h4>
+					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_dx_gov_desc ); ?></p>
+					<ul class="svc-sub__list jp">
+						<li>生成AI研修の実施</li>
+						<li>現課への個別サポート</li>
+						<li>AIアプリの作成</li>
+						<li>インフラ検討</li>
+					</ul>
+				</div>
+
+				<div class="svc-sub glass">
+					<span class="svc-sub__label mono">02 — BUSINESS</span>
+					<h4 class="svc-sub__title">民間企業支援</h4>
+					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_dx_biz_desc ); ?></p>
+					<ul class="svc-sub__list jp">
+						<li>Google Workspace 研修</li>
+						<li>業務フロー改善の提案</li>
+						<li>GAS等を使用したPoC作成</li>
+					</ul>
+				</div>
+			</div>
+		</article>
 	</div>
 </section>

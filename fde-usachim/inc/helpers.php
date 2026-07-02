@@ -141,9 +141,9 @@ function fde_tri_field( string $variant = 'br', int $count = 10, int $seed = 0 )
 function fde_main_nav_items(): array {
 	$home = home_url( '/' );
 	return [
-		[ 'label' => 'About',    'url' => $home . '#about' ],
-		[ 'label' => 'Services', 'url' => $home . '#services' ],
-		[ 'label' => 'Blog',     'url' => $home . '#writing' ],
+		[ 'label' => 'Concept', 'url' => $home . '#concept' ],
+		[ 'label' => 'Service', 'url' => $home . '#services' ],
+		[ 'label' => 'About',   'url' => $home . '#about' ],
 	];
 }
 

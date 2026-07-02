@@ -13,13 +13,13 @@
   --line-2:       #e8e6df;
 
   /* Dark sections (hero / stack / contact / footer) */
-  --dark-bg:      #25221d;
+  --dark-bg:      #0b0e14; /* deep space navy */
   --dark-fg:      #fafaf7;
   --dark-fg-mid:  rgba(250,250,247,0.65);
   --dark-fg-mute: rgba(250,250,247,0.45);
   --dark-line:    rgba(250,250,247,0.15);
   --dark-line-2:  rgba(250,250,247,0.08);
-  --dark-accent:  #b8d4a8; /* terminal-friendly subtle green */
+  --dark-accent:  #6ee7dd; /* electric cyan — futuristic glow */
 
   /* Status (kept minimal) */
   --color-success: #5a7a4a;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Hero section (dark). Editable via the front page editor.
+ * Hero — mission statement over the globe animation.
  *
  * @package fde-usachim
  */
@@ -9,12 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '未来を切り開くのは、' );
-$fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '現場の' );
-$fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', '手の中にある。' );
+$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '明日が少し待ち遠しくなる、' );
+$fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '' );
+$fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', '社会の実現へ。' );
 $fde_lede    = (string) fde_field(
 	'hero_lede',
-	'**AIと業務データを、現場で使われる仕組みに。**'
+	'ITの力で、日本の未来を切り開く。'
 );
 ?>
 <section class="hero" id="top" aria-label="Hero" data-hero-time>
@@ -38,11 +38,16 @@ $fde_lede    = (string) fde_field(
 			<span class="hero__statement-line">
 				<?php if ( $fde_stmt_la ) : ?>
 					<span class="hero__statement-mute"><?php echo esc_html( $fde_stmt_la ); ?></span><?php endif; ?>
-				<?php echo esc_html( $fde_stmt_lb ); ?>
+				<span class="hero__statement-em"><?php echo esc_html( $fde_stmt_lb ); ?></span>
 			</span>
 		</h1>
 
 		<p class="hero__lede"><?php echo wp_kses( str_replace( "\n", '<br>', fde_inline_text( $fde_lede ) ), [ 'b' => [], 'br' => [], 'strong' => [] ] ); ?></p>
+
+		<div class="hero__scroll mono" aria-hidden="true">
+			<span class="hero__scroll-label">SCROLL</span>
+			<span class="hero__scroll-line"></span>
+		</div>
 
 	</div>
 </section>

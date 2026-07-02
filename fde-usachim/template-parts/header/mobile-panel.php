@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $fde_items = fde_main_nav_items();
+$fde_items[] = [ 'label' => 'Contact', 'url' => home_url( '/' ) . '#contact' ];
 ?>
 <div
 	id="nav-panel"

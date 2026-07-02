@@ -149,39 +149,59 @@ add_action(
 		$top_fields = [];
 
 		// ---------- Hero ----------
-		$top_fields[] = fde_acf_tab( 'hero', __( 'Hero', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'hero_stmt_l1',       'hero_statement_l1', __( 'Hero ステートメント 1行目', 'fde-usachim' ), '未来を切り開くのは、' );
-		$top_fields[] = fde_acf_text( 'hero_stmt_l2_a',     'hero_statement_l2_a', __( 'Hero 2行目（薄色部分）', 'fde-usachim' ), '現場の' );
-		$top_fields[] = fde_acf_text( 'hero_stmt_l2_b',     'hero_statement_l2_b', __( 'Hero 2行目（強調部分）', 'fde-usachim' ), '手の中にある。' );
-		$top_fields[] = fde_acf_textarea( 'hero_lede',      'hero_lede', __( 'Hero リード文', 'fde-usachim' ), 4, '**強調** で太字（白）にできます。' );
+		$top_fields[] = fde_acf_tab( 'hero', __( 'Hero（FV）', 'fde-usachim' ) );
+		$top_fields[] = fde_acf_text( 'hero_stmt_l1',       'hero_statement_l1', __( 'ミッション 1行目', 'fde-usachim' ), '明日が少し待ち遠しくなる、' );
+		$top_fields[] = fde_acf_text( 'hero_stmt_l2_a',     'hero_statement_l2_a', __( '2行目（薄色部分・任意）', 'fde-usachim' ), '' );
+		$top_fields[] = fde_acf_text( 'hero_stmt_l2_b',     'hero_statement_l2_b', __( '2行目（グラデーション強調部分）', 'fde-usachim' ), '社会の実現へ。' );
+		$top_fields[] = fde_acf_textarea( 'hero_lede',      'hero_lede', __( 'サブコピー（ビジョン）', 'fde-usachim' ), 2, '**強調** で太字（白）にできます。' );
 
-		// ---------- §01 Why ----------
-		$top_fields[] = fde_acf_tab( 'why', __( '§01 Why', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'why_title', 'why_title', __( 'セクション タイトル', 'fde-usachim' ), 'AIを味方につけ、次の10年に備える。' );
-		$top_fields[] = fde_acf_textarea( 'why_premise', 'why_premise', __( 'Premise（大見出し）', 'fde-usachim' ), 2, '**強調** で太字。' );
-		$top_fields[] = fde_acf_textarea( 'why_premise_sub', 'why_premise_sub', __( 'Premise サブテキスト', 'fde-usachim' ), 3, '大見出しの下に小さく表示。' );
+		// ---------- 01 Concept ----------
+		$top_fields[] = fde_acf_tab( 'concept', __( '01 Concept', 'fde-usachim' ) );
+		$top_fields[] = fde_acf_text( 'concept_lead', 'concept_lead', __( 'リード（大きな一文）', 'fde-usachim' ), '「つくる」ことで、誰かの役に立ちたい。' );
+		$top_fields[] = fde_acf_textarea( 'concept_body', 'concept_body', __( '本文（段落区切りは空行）', 'fde-usachim' ), 8 );
 
-		// 3つの柱
-		foreach ( [ 1, 2, 3 ] as $n ) {
-			$top_fields[] = fde_acf_text( "why_pillar_{$n}_head", "why_pillar_{$n}_head", sprintf( __( '柱 %d — 見出し', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_textarea( "why_pillar_{$n}_body", "why_pillar_{$n}_body", sprintf( __( '柱 %d — 本文', 'fde-usachim' ), $n ), 4 );
-		}
-
-		$top_fields[] = fde_acf_text( 'why_df_title', 'why_dataflow_title', __( 'Dataflow タイトル', 'fde-usachim' ), '散らばったデータを、現場の判断に届くまで。' );
-		$top_fields[] = fde_acf_textarea( 'why_df_note', 'why_dataflow_note', __( 'Dataflow 説明', 'fde-usachim' ), 3 );
+		// ---------- 02 Service ----------
+		$top_fields[] = fde_acf_tab( 'services', __( '02 Service', 'fde-usachim' ) );
+		$top_fields[] = fde_acf_textarea( 'svc_web_desc', 'svc_web_desc', __( 'WEB開発 — 概要', 'fde-usachim' ), 3 );
 		$top_fields[] = [
-			'key'           => 'field_fde_why_df_image',
-			'label'         => __( 'Dataflow 画像（右側）', 'fde-usachim' ),
-			'name'          => 'why_dataflow_image',
+			'key'           => 'field_fde_service_1_image',
+			'label'         => __( 'WEB開発 — イメージ画像（任意）', 'fde-usachim' ),
+			'name'          => 'service_1_image',
 			'type'          => 'image',
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
-			'instructions'  => __( 'アップロードすると、ASCIIダイアグラムの代わりにこの画像を表示します。', 'fde-usachim' ),
 		];
-		$top_fields[] = fde_acf_textarea( 'why_df_diag', 'why_dataflow_diagram', __( 'Dataflow ダイアグラム（画像未設定時のフォールバック）', 'fde-usachim' ), 12 );
+		$top_fields[] = fde_acf_textarea( 'svc_web_hp_desc', 'svc_web_hp_desc', __( 'ホームページ制作 — 説明', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '調速 — 説明文', 'fde-usachim' ), 3 );
+		$top_fields[] = [
+			'key'           => 'field_fde_chousoku_logo',
+			'label'         => __( '調速 — ロゴ画像', 'fde-usachim' ),
+			'name'          => 'chousoku_logo',
+			'type'          => 'image',
+			'return_format' => 'array',
+			'preview_size'  => 'medium',
+			'instructions'  => __( '横長ロゴを推奨。未設定時はテキストで「調速」と表示。', 'fde-usachim' ),
+		];
+		$top_fields[] = [
+			'key'   => 'field_fde_chousoku_url',
+			'label' => __( '調速 — LP の URL', 'fde-usachim' ),
+			'name'  => 'chousoku_url',
+			'type'  => 'url',
+		];
+		$top_fields[] = fde_acf_textarea( 'svc_dx_desc', 'svc_dx_desc', __( '業務効率化支援 — 概要', 'fde-usachim' ), 3 );
+		$top_fields[] = [
+			'key'           => 'field_fde_service_2_image',
+			'label'         => __( '業務効率化支援 — イメージ画像（任意）', 'fde-usachim' ),
+			'name'          => 'service_2_image',
+			'type'          => 'image',
+			'return_format' => 'array',
+			'preview_size'  => 'medium',
+		];
+		$top_fields[] = fde_acf_textarea( 'svc_dx_gov_desc', 'svc_dx_gov_desc', __( '自治体DX推進支援 — 説明', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_textarea( 'svc_dx_biz_desc', 'svc_dx_biz_desc', __( '民間企業支援 — 説明', 'fde-usachim' ), 3 );
 
-		// ---------- §02 About ----------
-		$top_fields[] = fde_acf_tab( 'about', __( '§02 About', 'fde-usachim' ) );
+		// ---------- 03 About ----------
+		$top_fields[] = fde_acf_tab( 'about', __( '03 About', 'fde-usachim' ) );
 		$top_fields[] = [
 			'key'           => 'field_fde_about_portrait',
 			'label'         => __( 'ポートレート画像', 'fde-usachim' ),
@@ -190,59 +210,19 @@ add_action(
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
 		];
-		$top_fields[] = fde_acf_text( 'about_portrait_fig', 'about_portrait_fig', __( 'FIG ラベル', 'fde-usachim' ), 'FIG. 01 — CHIM' );
-
-		// Profile 情報（portrait 直下に表示）
-		$top_fields[] = fde_acf_text( 'about_name',     'about_name',     __( '名前', 'fde-usachim' ), 'CHIM' );
-		$top_fields[] = fde_acf_text( 'about_position', 'about_position', __( '肩書', 'fde-usachim' ), 'Forward Deployed Engineer' );
-		$top_fields[] = fde_acf_text( 'about_location', 'about_location', __( '所在地', 'fde-usachim' ), 'Tokyo, JP' );
-		$top_fields[] = fde_acf_text( 'about_since',    'about_since',    __( '開始年', 'fde-usachim' ), 'SINCE 2021' );
-
-		$top_fields[] = fde_acf_textarea( 'about_lead', 'about_lead', __( 'About リード（明朝大）', 'fde-usachim' ), 3 );
-		$top_fields[] = fde_acf_textarea( 'about_body', 'about_body', __( 'About 本文', 'fde-usachim' ), 8, '段落区切りは空行。**強調** で太字。' );
-
-		// ---------- §03 Services ----------
-		$top_fields[] = fde_acf_tab( 'services', __( '§03 Services', 'fde-usachim' ) );
+		$top_fields[] = fde_acf_text( 'about_name',     'about_name',     __( '名前', 'fde-usachim' ), '' );
+		$top_fields[] = fde_acf_text( 'about_position', 'about_position', __( '肩書', 'fde-usachim' ), 'フリーランス デザイナー・エンジニア' );
+		$top_fields[] = fde_acf_textarea( 'about_lead', 'about_lead', __( 'リード（大きな一文）', 'fde-usachim' ), 2 );
+		$top_fields[] = fde_acf_textarea( 'about_body', 'about_body', __( '本文（段落区切りは空行）', 'fde-usachim' ), 5 );
 		foreach ( [ 1, 2, 3 ] as $n ) {
-			$top_fields[] = fde_acf_text( "service_{$n}_no",    "service_{$n}_no",    sprintf( __( 'サービス %d — 番号', 'fde-usachim' ), $n ), '01 / 02 / 03' );
-			$top_fields[] = fde_acf_text( "service_{$n}_title", "service_{$n}_title", sprintf( __( 'サービス %d — 名称（空ならサービスごと非表示）', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_text( "service_{$n}_lead",  "service_{$n}_lead",  sprintf( __( 'サービス %d — リード一文', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_textarea( "service_{$n}_desc", "service_{$n}_desc", sprintf( __( 'サービス %d — 説明', 'fde-usachim' ), $n ), 4 );
-			$top_fields[] = fde_acf_text( "service_{$n}_tags",  "service_{$n}_tags",  sprintf( __( 'サービス %d — 技術タグ（カンマ区切り）', 'fde-usachim' ), $n ) );
-			$top_fields[] = [
-				'key'           => "field_fde_service_{$n}_image",
-				'label'         => sprintf( __( 'サービス %d — 画像', 'fde-usachim' ), $n ),
-				'name'          => "service_{$n}_image",
-				'type'          => 'image',
-				'return_format' => 'array',
-				'preview_size'  => 'medium',
-				'instructions'  => __( '横長 16:10 〜 4:3 を推奨。空欄なら番号入りのプレースホルダーを表示。', 'fde-usachim' ),
-			];
+			$top_fields[] = fde_acf_text( "about_tl_{$n}_year", "about_tl_{$n}_year", sprintf( __( '経歴 %d — 期間', 'fde-usachim' ), $n ), '2011 – 2015' );
+			$top_fields[] = fde_acf_text( "about_tl_{$n}_text", "about_tl_{$n}_text", sprintf( __( '経歴 %d — 内容', 'fde-usachim' ), $n ) );
 		}
 
-		// ---------- §04 Process ----------
-		$top_fields[] = fde_acf_tab( 'process', __( '§04 Process', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'process_meta', 'process_meta', __( 'メタ（期間レンジ）', 'fde-usachim' ), 'MIN 0w · TYP 10w · MAX 26w' );
-		$top_fields[] = fde_acf_textarea( 'process_aside', 'process_aside', __( 'NOTE（左カラム・**強調** 可）', 'fde-usachim' ), 4 );
-		foreach ( [ 1, 2, 3, 4, 5 ] as $n ) {
-			$top_fields[] = fde_acf_text( "process_step_{$n}_no",    "process_step_{$n}_no",    sprintf( __( 'ステップ %d — 番号', 'fde-usachim' ), $n ), '00 / 01 / 02 ...' );
-			$top_fields[] = fde_acf_text( "process_step_{$n}_dur",   "process_step_{$n}_dur",   sprintf( __( 'ステップ %d — 期間', 'fde-usachim' ), $n ), 'Day 0 / Week 1–2 ...' );
-			$top_fields[] = fde_acf_text( "process_step_{$n}_title", "process_step_{$n}_title", sprintf( __( 'ステップ %d — タイトル', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_textarea( "process_step_{$n}_desc", "process_step_{$n}_desc", sprintf( __( 'ステップ %d — 説明', 'fde-usachim' ), $n ), 3 );
-		}
-
-		// ---------- §06 Stack ----------
-		$top_fields[] = fde_acf_tab( 'stack', __( '§06 Stack', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'stack_meta', 'stack_meta', __( 'Stack 見直し日', 'fde-usachim' ), 'REVIEWED 2026.04' );
-		foreach ( [ 1, 2, 3, 4, 5, 6 ] as $n ) {
-			$top_fields[] = fde_acf_text( "stack_g_{$n}_g",     "stack_g_{$n}_g",     sprintf( __( 'Stack %d — カテゴリ名', 'fde-usachim' ), $n ), 'AI / LLM' );
-			$top_fields[] = fde_acf_text( "stack_g_{$n}_items", "stack_g_{$n}_items", sprintf( __( 'Stack %d — 項目（カンマ区切り）', 'fde-usachim' ), $n ), 'OpenAI, Anthropic, Local LLM, RAG, Eval' );
-		}
-
-		// ---------- §08 Contact ----------
-		$top_fields[] = fde_acf_tab( 'contact', __( '§08 Contact', 'fde-usachim' ) );
+		// ---------- 04 Contact ----------
+		$top_fields[] = fde_acf_tab( 'contact', __( '04 Contact', 'fde-usachim' ) );
 		$top_fields[] = fde_acf_text( 'contact_meta', 'contact_meta', __( 'Contact メタ', 'fde-usachim' ), 'RESPONSE WITHIN 1 BIZ DAY' );
-		$top_fields[] = fde_acf_text( 'contact_lead', 'contact_lead', __( 'Contact リード', 'fde-usachim' ), '初回60分はオンラインで無料です。' );
+		$top_fields[] = fde_acf_text( 'contact_lead', 'contact_lead', __( 'Contact リード', 'fde-usachim' ), 'まずはお気軽にご相談ください。' );
 		$top_fields[] = fde_acf_textarea( 'contact_note', 'contact_note', __( 'Contact 補足', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_text( 'cf7_shortcode_top', 'cf7_shortcode', __( 'CF7 ショートコード', 'fde-usachim' ), '[contact-form-7 id="123" title="お問い合わせ"]' );
 

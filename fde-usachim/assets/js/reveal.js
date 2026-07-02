@@ -6,13 +6,13 @@ export function initReveal() {
 
   const candidates = [
     '.hero',
-    '.news__item',
     '.sec-head',
-    '.why2',
-    '.why2__pillar',
-    '.about__grid',
-    '.svc-row',
-    '.blog-card',
+    '.concept__inner',
+    '.svc-block__head',
+    '.svc-sub',
+    '.svc-work',
+    '.about2__grid',
+    '.contact__grid',
     '.site-footer__top',
   ].join(',');
 

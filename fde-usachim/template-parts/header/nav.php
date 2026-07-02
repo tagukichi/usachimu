@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $fde_nav       = fde_main_nav_items();
+$fde_cta_label = (string) fde_option( 'cta_label', 'お問い合わせ' );
 ?>
 <nav class="site-nav" aria-label="<?php esc_attr_e( 'プライマリ', 'fde-usachim' ); ?>">
 	<?php foreach ( $fde_nav as $item ) : ?>
@@ -18,6 +19,7 @@ $fde_nav       = fde_main_nav_items();
 </nav>
 
 <div class="site-header__right">
+	<a class="site-cta" href="<?php echo esc_url( home_url( '/' ) . '#contact' ); ?>"><?php echo esc_html( $fde_cta_label ); ?></a>
 	<button
 		type="button"
 		class="nav-toggle"
