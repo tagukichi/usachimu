@@ -74,7 +74,7 @@
 }
 
 .section--dark .sec-head {
-  border-bottom-color: rgba(250,250,247,0.4);
+  border-bottom-color: rgba(22,33,58,0.4);
 }
 
 .sec-head__l {
@@ -95,7 +95,7 @@
   white-space: nowrap;
 }
 
-.section--dark .sec-head__num { color: rgba(250,250,247,0.55); }
+.section--dark .sec-head__num { color: rgba(22,33,58,0.55); }
 
 .sec-head__title {
   font-family: var(--font-serif);
@@ -113,7 +113,7 @@
   text-transform: uppercase;
 }
 
-.section--dark .sec-head__meta { color: rgba(250,250,247,0.5); }
+.section--dark .sec-head__meta { color: rgba(22,33,58,0.5); }
 
 /* Page-head for standalone pages */
 .page-head {
