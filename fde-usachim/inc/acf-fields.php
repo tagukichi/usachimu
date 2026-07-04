@@ -152,17 +152,16 @@ add_action(
 			'name'  => 'chousoku_url',
 			'type'  => 'url',
 		];
-		$top_fields[] = fde_acf_textarea( 'svc_dx_desc', 'svc_dx_desc', __( '業務効率化支援 — 概要', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_textarea( 'svc_dx_desc', 'svc_dx_desc', __( '業務効率化支援 — 概要（見出し下・1行推奨）', 'fde-usachim' ), 2 );
+		$top_fields[] = fde_acf_textarea( 'svc_dx_detail', 'svc_dx_detail', __( '行政や企業におけるDX推進支援 — 説明', 'fde-usachim' ), 4 );
 		$top_fields[] = [
 			'key'           => 'field_fde_service_2_image',
-			'label'         => __( '業務効率化支援 — イメージ画像（任意）', 'fde-usachim' ),
+			'label'         => __( '業務効率化支援 — BOX内の画像（任意・未設定でOK）', 'fde-usachim' ),
 			'name'          => 'service_2_image',
 			'type'          => 'image',
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
 		];
-		$top_fields[] = fde_acf_textarea( 'svc_dx_gov_desc', 'svc_dx_gov_desc', __( '自治体DX推進支援 — 説明', 'fde-usachim' ), 3 );
-		$top_fields[] = fde_acf_textarea( 'svc_dx_biz_desc', 'svc_dx_biz_desc', __( '民間企業支援 — 説明', 'fde-usachim' ), 3 );
 
 		// ---------- 03 About ----------
 		$top_fields[] = fde_acf_tab( 'about', __( '03 About', 'fde-usachim' ) );

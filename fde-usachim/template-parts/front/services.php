@@ -40,13 +40,9 @@ $fde_dx_desc = (string) fde_field(
 	'svc_dx_desc',
 	'行政・民間企業の現場に入り込み、伴走型で業務のデジタル化を支援します。「導入して終わり」にしない、現場で回り続ける仕組みづくりが強みです。'
 );
-$fde_dx_gov_desc = (string) fde_field(
-	'svc_dx_gov_desc',
-	'生成AI研修の実施、現課への個別サポート、AIアプリの作成、インフラ検討まで。行政職員としての経験を活かし、庁内の実情に合わせて進めます。'
-);
-$fde_dx_biz_desc = (string) fde_field(
-	'svc_dx_biz_desc',
-	'Google Workspace研修、業務フロー改善の提案、GASなどを使ったPoC作成。小さく試して、効果を確かめながら広げていきます。'
+$fde_dx_detail = (string) fde_field(
+	'svc_dx_detail',
+	'行政職員としての経験を活かした自治体のDX推進から、民間企業の業務改善まで。生成AI研修やAIアプリ作成、業務フロー改善、PoC作成などを通じて、現場に定着する仕組みをつくります。'
 );
 
 $fde_svc_web_img = fde_field( 'service_1_image' );
@@ -104,7 +100,6 @@ $fde_svc_dx_img  = fde_field( 'service_2_image' );
 
 			<!-- ============ 自社サービス：調速 フィーチャー ============ -->
 			<div class="svc-feature glass">
-				<span class="svc-feature__ribbon mono">OUR PRODUCT — 自社サービス</span>
 				<div class="svc-feature__grid">
 					<div class="svc-feature__brand">
 						<?php if ( is_array( $fde_chousoku_logo ) && ! empty( $fde_chousoku_logo['url'] ) ) : ?>
@@ -116,7 +111,6 @@ $fde_svc_dx_img  = fde_field( 'service_2_image' );
 							<span class="svc-feature__name serif">調速</span>
 							<span class="svc-feature__read mono">ちょうはや</span>
 						<?php endif; ?>
-						<span class="svc-feature__cat mono">不動産調査アプリ</span>
 					</div>
 					<div class="svc-feature__body">
 						<p class="svc-feature__desc jp"><?php echo esc_html( $fde_chousoku_desc ); ?></p>
@@ -142,36 +136,27 @@ $fde_svc_dx_img  = fde_field( 'service_2_image' );
 				<p class="svc-block__desc jp"><?php echo esc_html( $fde_dx_desc ); ?></p>
 			</header>
 
-			<?php if ( is_array( $fde_svc_dx_img ) && ! empty( $fde_svc_dx_img['url'] ) ) : ?>
-				<figure class="svc-block__media">
-					<img src="<?php echo esc_url( $fde_svc_dx_img['url'] ); ?>"
-					     alt="<?php echo esc_attr( ! empty( $fde_svc_dx_img['alt'] ) ? $fde_svc_dx_img['alt'] : '業務効率化支援' ); ?>"
-					     loading="lazy">
-				</figure>
-			<?php endif; ?>
-
-			<div class="svc-block__subs">
-				<div class="svc-sub glass">
-					<span class="svc-sub__label mono">01 — GOVERNMENT</span>
-					<h4 class="svc-sub__title">自治体でのDX推進支援</h4>
-					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_dx_gov_desc ); ?></p>
-					<ul class="svc-sub__list jp">
-						<li>生成AI研修の実施</li>
-						<li>現課への個別サポート</li>
-						<li>AIアプリの作成</li>
-						<li>インフラ検討</li>
-					</ul>
-				</div>
-
-				<div class="svc-sub glass">
-					<span class="svc-sub__label mono">02 — BUSINESS</span>
-					<h4 class="svc-sub__title">民間企業支援</h4>
-					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_dx_biz_desc ); ?></p>
-					<ul class="svc-sub__list jp">
-						<li>Google Workspace 研修</li>
-						<li>業務フロー改善の提案</li>
-						<li>GAS等を使用したPoC作成</li>
-					</ul>
+			<div class="svc-sub glass svc-sub--wide">
+				<div class="svc-sub__wide-grid">
+					<div class="svc-sub__wide-text">
+						<span class="svc-sub__label mono">GOV / BUSINESS</span>
+						<h4 class="svc-sub__title">行政や企業におけるDX推進支援</h4>
+						<p class="svc-sub__desc jp"><?php echo esc_html( $fde_dx_detail ); ?></p>
+						<ul class="svc-sub__list jp">
+							<li>生成AI研修の実施</li>
+							<li>AIアプリ・業務ツールの作成</li>
+							<li>業務フロー改善・PoC作成</li>
+							<li>Google Workspace 研修</li>
+							<li>インフラ検討・個別サポート</li>
+						</ul>
+					</div>
+					<figure class="svc-sub__wide-media">
+						<?php if ( is_array( $fde_svc_dx_img ) && ! empty( $fde_svc_dx_img['url'] ) ) : ?>
+							<img src="<?php echo esc_url( $fde_svc_dx_img['url'] ); ?>"
+							     alt="<?php echo esc_attr( ! empty( $fde_svc_dx_img['alt'] ) ? $fde_svc_dx_img['alt'] : '業務効率化支援' ); ?>"
+							     loading="lazy">
+						<?php endif; ?>
+					</figure>
 				</div>
 			</div>
 		</article>

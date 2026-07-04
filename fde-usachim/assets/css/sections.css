@@ -560,7 +560,14 @@
 }
 
 @media (min-width: 1101px) {
-  .svc-block__desc { font-size: 17.5px; }
+  .svc-block__desc {
+    font-size: 17px;
+    white-space: nowrap; /* PC では概要を1行に */
+  }
+}
+
+@media (min-width: 1101px) and (max-width: 1320px) {
+  .svc-block__desc { font-size: 15.5px; } /* 収まりきらない幅で微縮小 */
 }
 
 .svc-block__media {
@@ -597,6 +604,47 @@
 
 @media (min-width: 1101px) {
   .svc-sub { padding: 38px 34px 42px; }
+}
+
+/* 統合ボックス（行政や企業におけるDX推進支援）：テキスト + 画像 */
+.svc-sub__wide-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+@media (min-width: 820px) {
+  .svc-sub__wide-grid { grid-template-columns: 1.2fr 1fr; gap: 44px; }
+}
+
+.svc-sub__wide-text {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.svc-sub__wide-media {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(22, 33, 58, 0.1);
+  border-radius: 4px;
+  aspect-ratio: 4 / 3;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.svc-sub__wide-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.svc-sub__wide-media:empty,
+.svc-sub__wide-media:not(:has(img)) {
+  border-style: dashed;
+  background:
+    repeating-linear-gradient(135deg, rgba(22,33,58,0.03) 0 10px, transparent 10px 20px);
 }
 
 .svc-sub__label {
@@ -736,13 +784,6 @@
   background: linear-gradient(90deg, var(--dark-accent), var(--accent-2));
 }
 
-.svc-feature__ribbon {
-  display: inline-block;
-  font-size: 10.5px;
-  letter-spacing: 0.2em;
-  color: var(--dark-accent);
-  margin-bottom: 22px;
-}
 
 .svc-feature__grid {
   display: grid;
@@ -752,9 +793,9 @@
 
 @media (min-width: 820px) {
   .svc-feature__grid {
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 360px 1fr;
     gap: 48px;
-    align-items: start;
+    align-items: center;
   }
 }
 
@@ -768,9 +809,9 @@
 .svc-feature__logo {
   display: block;
   width: 100%;
-  max-width: 240px;
+  max-width: 360px;
   height: auto;
-  max-height: 120px;
+  max-height: 200px;
   object-fit: contain;
   object-position: left center;
 }
@@ -789,15 +830,6 @@
   color: var(--mute);
 }
 
-.svc-feature__cat {
-  margin-top: 4px;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--dark-accent);
-  padding: 5px 12px;
-  border: 1px solid rgba(8, 145, 178, 0.35);
-  border-radius: 999px;
-}
 
 .svc-feature__body {
   display: flex;
