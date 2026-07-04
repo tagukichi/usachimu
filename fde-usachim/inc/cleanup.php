@@ -28,3 +28,19 @@ add_filter(
 		return is_array( $plugins ) ? array_diff( $plugins, [ 'wpemoji' ] ) : $plugins;
 	}
 );
+
+/**
+ * Blog (post) archives: show 12 posts per page.
+ * 対象: ホーム/ブログ一覧・カテゴリ・タグ・投稿者・日付など投稿アーカイブ。
+ */
+add_action(
+	'pre_get_posts',
+	static function ( $query ) {
+		if ( is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+		if ( $query->is_home() || $query->is_category() || $query->is_tag() || $query->is_author() || $query->is_date() ) {
+			$query->set( 'posts_per_page', 12 );
+		}
+	}
+);

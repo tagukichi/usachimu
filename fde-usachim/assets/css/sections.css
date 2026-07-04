@@ -615,7 +615,7 @@
 }
 
 @media (min-width: 820px) {
-  .svc-sub__wide-grid { grid-template-columns: 6fr 4fr; gap: 44px; align-items: start; }
+  .svc-sub__wide-grid { grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; }
 }
 
 .svc-sub__wide-text {
