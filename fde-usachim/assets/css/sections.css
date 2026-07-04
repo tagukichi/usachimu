@@ -504,7 +504,7 @@
 }
 
 .concept__body p {
-  font-size: 15px;
+  font-size: 16.5px;
   line-height: 2.1;
   color: rgba(22, 33, 58, 0.75);
 }
@@ -513,7 +513,7 @@
 
 @media (min-width: 1101px) {
   .concept__lead { margin-bottom: 40px; }
-  .concept__body p { font-size: 16.5px; }
+  .concept__body p { font-size: 18px; }
 }
 
 /* ============================================================
@@ -554,13 +554,13 @@
 }
 
 .svc-block__desc {
-  font-size: 15px;
+  font-size: 16.5px;
   line-height: 1.95;
   color: rgba(22, 33, 58, 0.72);
 }
 
 @media (min-width: 1101px) {
-  .svc-block__desc { font-size: 16px; }
+  .svc-block__desc { font-size: 17.5px; }
 }
 
 .svc-block__media {
@@ -607,7 +607,7 @@
 
 .svc-sub__title {
   font-family: var(--font-serif);
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.35;
@@ -615,17 +615,17 @@
 }
 
 @media (min-width: 1101px) {
-  .svc-sub__title { font-size: 25px; }
+  .svc-sub__title { font-size: 27px; }
 }
 
 .svc-sub__desc {
-  font-size: 14px;
+  font-size: 15.5px;
   line-height: 1.9;
   color: rgba(22, 33, 58, 0.7);
 }
 
 @media (min-width: 1101px) {
-  .svc-sub__desc { font-size: 15px; }
+  .svc-sub__desc { font-size: 16.5px; }
 }
 
 /* 200件+ のスタット */
@@ -765,7 +765,15 @@
   align-items: flex-start;
 }
 
-.svc-feature__logo { display: block; max-height: 64px; width: auto; }
+.svc-feature__logo {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  max-height: 120px;
+  object-fit: contain;
+  object-position: left center;
+}
 
 .svc-feature__name {
   font-size: 48px;
@@ -798,14 +806,14 @@
 }
 
 .svc-feature__desc {
-  font-size: 15.5px;
+  font-size: 17px;
   line-height: 1.9;
   color: var(--dark-fg);
   font-weight: 500;
 }
 
 .svc-feature__sys {
-  font-size: 13.5px;
+  font-size: 15px;
   line-height: 1.9;
   color: rgba(22, 33, 58, 0.6);
   padding-left: 16px;
@@ -846,8 +854,8 @@
 
 .svc-sub__list li {
   position: relative;
-  padding: 8px 0 8px 20px;
-  font-size: 13.5px;
+  padding: 9px 0 9px 22px;
+  font-size: 15px;
   line-height: 1.7;
   color: rgba(22, 33, 58, 0.78);
   border-bottom: 1px dotted rgba(22, 33, 58, 0.12);
@@ -1056,7 +1064,7 @@
 }
 
 .about2__text p {
-  font-size: 15px;
+  font-size: 16.5px;
   line-height: 2;
   color: rgba(22, 33, 58, 0.72);
 }
@@ -1092,7 +1100,7 @@
 }
 
 .about2__tl-text {
-  font-size: 14.5px;
+  font-size: 16px;
   color: rgba(22, 33, 58, 0.85);
 }
 
@@ -1178,7 +1186,7 @@
 }
 
 .blog2-card__title {
-  font-size: 15px;
+  font-size: 16.5px;
   font-weight: 500;
   line-height: 1.6;
   color: var(--dark-fg);
