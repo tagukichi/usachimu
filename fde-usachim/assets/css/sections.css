@@ -460,17 +460,25 @@
    01 Concept
    ============================================================ */
 .concept__inner {
-  max-width: 800px;
+  max-width: 960px;
 }
+
+/* Concept セクションの三角形アニメを最前面に */
+.concept--front-tri .tri-field { z-index: 3; }
 
 .concept__lead {
   font-family: var(--font-serif);
-  font-size: clamp(26px, 4.2vw, 44px);
+  font-size: clamp(22px, 3.4vw, 38px);
   font-weight: 600;
-  line-height: 1.45;
-  letter-spacing: -0.02em;
+  line-height: 1.4;
+  letter-spacing: -0.03em;
   color: var(--dark-fg);
   margin-bottom: 32px;
+}
+
+/* PC ではキャッチを1行に収める */
+@media (min-width: 900px) {
+  .concept__lead { white-space: nowrap; }
 }
 
 .concept__body p {
@@ -628,32 +636,46 @@
   color: rgba(232, 232, 227, 0.5);
 }
 
-/* 調速 プロダクトカード */
-.svc-sub__product {
-  margin-top: auto;
-  padding-top: 18px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.14);
+/* 調速 プロダクト */
+.svc-sub__product-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .svc-sub__product-logo {
   display: block;
-  max-height: 44px;
+  max-height: 40px;
   width: auto;
 }
 
 .svc-sub__product-name {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--dark-fg);
 }
 
+.svc-sub__product-cat {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--dark-accent);
+  padding: 4px 10px;
+  border: 1px solid rgba(110, 231, 221, 0.35);
+  border-radius: 999px;
+}
+
+.svc-sub__desc--sub {
+  font-size: 13px !important;
+  color: rgba(232, 232, 227, 0.55) !important;
+}
+
 .svc-sub__product-link {
+  margin-top: auto;
+  align-self: flex-start;
   font-size: 12px;
   letter-spacing: 0.08em;
   color: var(--dark-accent);
@@ -691,31 +713,68 @@
   color: var(--dark-accent);
 }
 
-/* WEB制作 実績グリッド */
-.svc-works { margin-top: 40px; }
+/* WEB制作 実績スライダー */
+.svc-works { margin-top: 44px; }
 
-.svc-works__label {
-  display: inline-block;
-  font-size: 10.5px;
-  letter-spacing: 0.24em;
-  color: rgba(232, 232, 227, 0.55);
+.svc-works__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 18px;
 }
 
-.svc-works__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+.svc-works__label {
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  color: rgba(232, 232, 227, 0.55);
 }
 
-@media (min-width: 900px) {
-  .svc-works__grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.svc-works__nav { display: flex; gap: 8px; }
+
+.svc-works__arrow {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: transparent;
+  color: var(--dark-fg);
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color var(--dur-base) var(--ease-out),
+              color var(--dur-base) var(--ease-out);
+}
+
+.svc-works__arrow:hover { border-color: var(--dark-accent); color: var(--dark-accent); }
+.svc-works__arrow[disabled] { opacity: 0.3; cursor: default; }
+
+.svc-works__slider {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 82%;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.svc-works__slider::-webkit-scrollbar { display: none; }
+
+@media (min-width: 720px) {
+  .svc-works__slider { grid-auto-columns: 46%; gap: 20px; }
+}
+
+@media (min-width: 1101px) {
+  .svc-works__slider { grid-auto-columns: calc((100% - 48px) / 3); gap: 24px; }
 }
 
 .svc-work {
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   color: var(--dark-fg);
 }
 
@@ -741,7 +800,7 @@
   transition: transform 0.9s var(--ease-out);
 }
 
-.svc-work:hover .svc-work__thumb img { transform: scale(1.04); }
+.svc-work:hover .svc-work__thumb img { transform: scale(1.05); }
 
 .svc-work__thumb-no {
   font-size: 28px;
@@ -751,21 +810,23 @@
 
 .svc-work__meta {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .svc-work__title {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.5;
   color: var(--dark-fg);
 }
 
-.svc-work__sub {
+.svc-work__more {
   font-size: 10.5px;
-  letter-spacing: 0.08em;
-  color: rgba(232, 232, 227, 0.5);
+  letter-spacing: 0.1em;
+  color: var(--dark-accent);
+  white-space: nowrap;
 }
 
 /* ============================================================
@@ -885,6 +946,113 @@
   font-size: 14.5px;
   color: rgba(232, 232, 227, 0.85);
 }
+
+/* ============================================================
+   04 Blog — post + news cards (dark)
+   ============================================================ */
+.blog2-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .blog2-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
+
+@media (min-width: 1101px) {
+  .blog2-grid { grid-template-columns: repeat(3, 1fr); gap: 28px; }
+}
+
+.blog2-card {
+  display: flex;
+  flex-direction: column;
+  color: var(--dark-fg);
+  overflow: hidden;
+}
+
+.blog2-card__thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.blog2-card__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-out);
+}
+
+.blog2-card:hover .blog2-card__thumb img { transform: scale(1.05); }
+
+.blog2-card__thumb-ph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(110,231,221,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(110,140,230,0.15), transparent 60%),
+    rgba(255,255,255,0.03);
+}
+
+.blog2-card__thumb-ph span {
+  font-size: 64px;
+  color: rgba(232, 232, 227, 0.35);
+}
+
+.blog2-card__cat {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--dark-bg);
+  background: var(--dark-accent);
+}
+
+.blog2-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 16px 20px;
+}
+
+.blog2-card__date {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(232, 232, 227, 0.5);
+}
+
+.blog2-card__title {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--dark-fg);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.blog2-card:hover .blog2-card__title { color: var(--dark-accent); }
+
+.blog2-more {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.blog2-more__link {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--dark-fg);
+  border-bottom: 1px solid var(--dark-accent);
+  padding-bottom: 4px;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.blog2-more__link:hover { color: var(--dark-accent); }
 
 /* ============================================================
    §01 Why (simplified) — premise + 3 concise pillars
@@ -2487,6 +2655,17 @@
 @media (min-width: 1101px) {
   .contact__grid { grid-template-columns: minmax(480px, 1fr) minmax(0, 520px); gap: 80px; align-items: start; }
 }
+
+/* 1 カラム版 */
+.contact__grid--single {
+  grid-template-columns: 1fr !important;
+  max-width: 640px;
+  margin-inline: auto;
+  gap: 40px;
+}
+
+.contact__grid--single .contact__aside { text-align: center; align-items: center; }
+.contact__grid--single .contact__channels { width: 100%; max-width: 420px; }
 
 .contact__aside {
   display: flex;

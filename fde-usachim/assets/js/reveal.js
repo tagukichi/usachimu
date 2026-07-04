@@ -12,6 +12,7 @@ export function initReveal() {
     '.svc-sub',
     '.svc-work',
     '.about2__grid',
+    '.blog2-card',
     '.contact__grid',
     '.site-footer__top',
   ].join(',');

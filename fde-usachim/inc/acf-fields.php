@@ -172,7 +172,8 @@ add_action(
 			'preview_size'  => 'medium',
 		];
 		$top_fields[] = fde_acf_textarea( 'svc_web_hp_desc', 'svc_web_hp_desc', __( 'ホームページ制作 — 説明', 'fde-usachim' ), 3 );
-		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '調速 — 説明文', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '調速 — 説明文（不動産調査アプリ）', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_textarea( 'chousoku_sys', 'chousoku_sys', __( '調速 — システム面の補足（MCPサーバー設計等）', 'fde-usachim' ), 3 );
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_logo',
 			'label'         => __( '調速 — ロゴ画像', 'fde-usachim' ),

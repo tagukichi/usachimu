@@ -15,10 +15,10 @@ $fde_lead = (string) fde_field(
 );
 $fde_body = (string) fde_field(
 	'concept_body',
-	"家を建てたくて、建築を学んだ。\nまちの役に立ちたくて、自治体で働いた。\nもっと多くの人の力になりたくて、独立した。\n\nITを選んだのは、もともと好きだったから。そして、ITに困っている人が、まだたくさんいるから。技術と現場の経験を使って、今日の困りごとを、明日の楽しみに変えていきます。"
+	"家を建てたくて、建築を学んだ。\nまちの役に立ちたくて、自治体で働いた。\nもっと多くの人の力になりたくて、独立した。\n\nITを選んだのは、もともと好きだったから。そして、ITに困っている人が、まだたくさんいるから。\n技術と現場の経験を使って、今日の困りごとを、明日の楽しみに変えていきます。"
 );
 ?>
-<section class="section section--dark section--decor concept" id="concept" data-section="concept">
+<section class="section section--dark section--decor concept concept--front-tri" id="concept" data-section="concept">
 	<?php fde_tri_field( 'br', 9 ); ?>
 	<div class="section__inner">
 		<header class="sec-head">

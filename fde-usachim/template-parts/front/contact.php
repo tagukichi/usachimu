@@ -23,13 +23,13 @@ $fde_x_h   = (string) fde_option( 'sns_x_handle', '' );
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">
-				<span class="sec-head__num">04</span>
+				<span class="sec-head__num">05</span>
 				<h2 class="sec-head__title">Contact</h2>
 			</div>
 			<span class="sec-head__meta"><?php echo esc_html( $fde_meta ); ?></span>
 		</header>
 
-		<div class="contact__grid">
+		<div class="contact__grid contact__grid--single">
 			<aside class="contact__aside">
 				<p class="contact__aside-lead"><?php echo esc_html( $fde_lead ); ?></p>
 				<p class="contact__aside-note jp"><?php echo nl2br( esc_html( $fde_note ) ); ?></p>

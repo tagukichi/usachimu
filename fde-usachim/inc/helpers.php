@@ -144,6 +144,7 @@ function fde_main_nav_items(): array {
 		[ 'label' => 'Concept', 'url' => $home . '#concept' ],
 		[ 'label' => 'Service', 'url' => $home . '#services' ],
 		[ 'label' => 'About',   'url' => $home . '#about' ],
+		[ 'label' => 'Blog',    'url' => $home . '#blog' ],
 	];
 }
 

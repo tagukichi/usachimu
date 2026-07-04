@@ -3,6 +3,7 @@ import { initReveal } from './reveal.js';
 import { initHeroTime } from './hero-time.js';
 import { initGlobe } from './hero-globe.js';
 import { initTriFields } from './tri-field.js';
+import { initSliders } from './slider.js';
 
 const boot = () => {
   initNav();
@@ -10,6 +11,7 @@ const boot = () => {
   initHeroTime();
   initGlobe();
   initTriFields();
+  initSliders();
 };
 
 if (document.readyState === 'loading') {

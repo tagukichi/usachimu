@@ -22,10 +22,14 @@ $fde_web_hp_desc = (string) fde_field(
 );
 $fde_chousoku_desc = (string) fde_field(
 	'chousoku_desc',
-	'自社サービス「調速」を開発・運営。不動産の物件調査をスムーズに行うための、AI搭載アプリケーションです。'
+	'不動産の物件調査をスムーズに行うための、AI搭載アプリ「調速（ちょうはや）」を開発・運営しています。物件情報の収集・整理を自動化し、調査業務の時間を大幅に短縮します。'
+);
+$fde_chousoku_sys = (string) fde_field(
+	'chousoku_sys',
+	'フロントの実装だけでなく、生成AIと外部データを連携させる MCPサーバーの設計・構築、データパイプラインやインフラ選定まで、システム全体をトータルで設計しています。'
 );
 $fde_chousoku_logo = fde_field( 'chousoku_logo' );
-$fde_chousoku_url  = (string) fde_field( 'chousoku_url', '' );
+$fde_chousoku_url  = (string) fde_field( 'chousoku_url', 'https://usachim.com/cho-haya/' );
 
 // ---- Block 2 : 業務効率化支援 ----
 $fde_dx_desc = (string) fde_field(
@@ -44,11 +48,11 @@ $fde_dx_biz_desc = (string) fde_field(
 $fde_svc_web_img = fde_field( 'service_1_image' );
 $fde_svc_dx_img  = fde_field( 'service_2_image' );
 
-// ---- 制作実績（works CPT）----
+// ---- 制作実績（works CPT・スライダー3件）----
 $fde_works = new WP_Query(
 	[
 		'post_type'           => 'works',
-		'posts_per_page'      => 6,
+		'posts_per_page'      => 3,
 		'orderby'             => 'menu_order date',
 		'order'               => 'ASC',
 		'ignore_sticky_posts' => true,
@@ -97,9 +101,7 @@ $fde_works = new WP_Query(
 				<div class="svc-sub glass">
 					<span class="svc-sub__label mono">02 — SYSTEM / APP</span>
 					<h4 class="svc-sub__title">システム開発・アプリ開発</h4>
-					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_chousoku_desc ); ?></p>
-
-					<div class="svc-sub__product">
+					<div class="svc-sub__product-head">
 						<?php if ( is_array( $fde_chousoku_logo ) && ! empty( $fde_chousoku_logo['url'] ) ) : ?>
 							<img class="svc-sub__product-logo"
 							     src="<?php echo esc_url( $fde_chousoku_logo['url'] ); ?>"
@@ -108,24 +110,33 @@ $fde_works = new WP_Query(
 						<?php else : ?>
 							<span class="svc-sub__product-name serif">調速</span>
 						<?php endif; ?>
-						<?php if ( $fde_chousoku_url ) : ?>
-							<a class="svc-sub__product-link mono" href="<?php echo esc_url( $fde_chousoku_url ); ?>" target="_blank" rel="noopener">
-								サービスサイトへ →
-							</a>
-						<?php endif; ?>
+						<span class="svc-sub__product-cat mono">不動産調査アプリ</span>
 					</div>
+					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_chousoku_desc ); ?></p>
+					<?php if ( $fde_chousoku_sys ) : ?>
+						<p class="svc-sub__desc svc-sub__desc--sub jp"><?php echo esc_html( $fde_chousoku_sys ); ?></p>
+					<?php endif; ?>
+					<?php if ( $fde_chousoku_url ) : ?>
+						<a class="svc-sub__product-link mono" href="<?php echo esc_url( $fde_chousoku_url ); ?>" target="_blank" rel="noopener">
+							調速のサービスサイトを見る →
+						</a>
+					<?php endif; ?>
 				</div>
 			</div>
 
 			<?php if ( $fde_works->have_posts() ) : ?>
 				<div class="svc-works">
-					<span class="svc-works__label mono">WORKS — 制作実績</span>
-					<div class="svc-works__grid">
+					<div class="svc-works__head">
+						<span class="svc-works__label mono">WORKS — ホームページ制作実績</span>
+						<div class="svc-works__nav">
+							<button type="button" class="svc-works__arrow" data-slider-prev aria-label="前へ">←</button>
+							<button type="button" class="svc-works__arrow" data-slider-next aria-label="次へ">→</button>
+						</div>
+					</div>
+					<div class="svc-works__slider" data-slider>
 						<?php $fde_i = 0; while ( $fde_works->have_posts() ) : $fde_works->the_post(); $fde_i++; ?>
 							<?php
-							$industry = function_exists( 'get_field' ) ? (string) get_field( 'industry' ) : '';
-							$year     = function_exists( 'get_field' ) ? (string) get_field( 'year' ) : '';
-							$thumb    = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'medium_large' ) : '';
+							$thumb = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'large' ) : '';
 							?>
 							<a class="svc-work" href="<?php the_permalink(); ?>">
 								<div class="svc-work__thumb">
@@ -137,7 +148,7 @@ $fde_works = new WP_Query(
 								</div>
 								<div class="svc-work__meta">
 									<span class="svc-work__title jp"><?php the_title(); ?></span>
-									<span class="svc-work__sub mono"><?php echo esc_html( trim( $industry . ( $year ? ' · ' . $year : '' ) ) ); ?></span>
+									<span class="svc-work__more mono">VIEW →</span>
 								</div>
 							</a>
 						<?php endwhile; ?>
