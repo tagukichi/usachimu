@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $fde_query = new WP_Query(
 	[
 		'post_type'           => 'post',
-		'posts_per_page'      => 6,
+		'posts_per_page'      => 9,
 		'ignore_sticky_posts' => true,
 		'no_found_rows'       => true,
 	]

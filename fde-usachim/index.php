@@ -1,47 +1,65 @@
 <?php
 /**
- * Fallback template (blog index / archives).
+ * Blog index / archive — eyecatch card list.
  *
  * @package fde-usachim
  */
 
 get_header();
+
+$fde_heading = 'Blog';
+$fde_sub     = 'ブログ・お知らせ';
+if ( is_category() ) {
+	$fde_heading = single_cat_title( '', false );
+	$fde_sub     = 'カテゴリー';
+} elseif ( is_tag() ) {
+	$fde_heading = single_tag_title( '', false );
+	$fde_sub     = 'タグ';
+} elseif ( is_date() ) {
+	$fde_heading = get_the_archive_title();
+	$fde_sub     = 'アーカイブ';
+}
 ?>
 
-<section class="section">
+<section class="section blog-archive">
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">
-				<span class="sec-head__num">§ 07</span>
-				<h2 class="sec-head__title">Blog</h2>
+				<span class="sec-head__num">Blog</span>
+				<h2 class="sec-head__title"><?php echo esc_html( $fde_heading ); ?></h2>
 			</div>
-			<span class="sec-head__meta">ARCHIVE</span>
+			<span class="sec-head__meta"><?php echo esc_html( $fde_sub ); ?></span>
 		</header>
 
 		<?php if ( have_posts() ) : ?>
-			<ul class="writing__grid">
+			<div class="blog2-grid">
 				<?php while ( have_posts() ) : the_post(); ?>
 					<?php
-					$tag = function_exists( 'get_field' ) ? (string) get_field( 'tag_label' ) : '';
-					$read = function_exists( 'get_field' ) ? (string) get_field( 'read_time' ) : '';
+					$cats  = get_the_category();
+					$cat   = ! empty( $cats ) ? $cats[0]->name : '';
+					$thumb = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'large' ) : '';
+					$title = get_the_title();
 					?>
-					<li class="writing-card">
-						<div class="writing-card__head">
-							<span class="writing-card__date"><?php echo esc_html( get_the_date( 'Y.m.d' ) ); ?></span>
-							<?php if ( $read ) : ?><span class="writing-card__read"><?php echo esc_html( $read ); ?> read</span><?php endif; ?>
+					<a class="blog2-card glass" href="<?php the_permalink(); ?>">
+						<div class="blog2-card__thumb">
+							<?php if ( $thumb ) : ?>
+								<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
+							<?php else : ?>
+								<div class="blog2-card__thumb-ph" aria-hidden="true">
+									<span class="serif"><?php echo esc_html( mb_substr( $title, 0, 1 ) ); ?></span>
+								</div>
+							<?php endif; ?>
+							<?php if ( $cat ) : ?>
+								<span class="blog2-card__cat mono"><?php echo esc_html( $cat ); ?></span>
+							<?php endif; ?>
 						</div>
-						<h3 class="writing-card__title">
-							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-						</h3>
-						<div class="writing-card__foot">
-							<?php if ( $tag ) : ?>
-								<span class="writing-card__tag"><?php echo esc_html( $tag ); ?></span>
-							<?php else : ?><span></span><?php endif; ?>
-							<a href="<?php the_permalink(); ?>" class="writing-card__more">read →</a>
+						<div class="blog2-card__body">
+							<span class="blog2-card__date mono"><?php echo esc_html( get_the_date( 'Y.m.d' ) ); ?></span>
+							<h3 class="blog2-card__title jp"><?php echo esc_html( $title ); ?></h3>
 						</div>
-					</li>
+					</a>
 				<?php endwhile; ?>
-			</ul>
+			</div>
 
 			<?php
 			the_posts_pagination(
@@ -53,7 +71,7 @@ get_header();
 			);
 			?>
 		<?php else : ?>
-			<p class="work__disclaimer jp">記事はまだありません。</p>
+			<p class="jp" style="color:var(--mute);">記事はまだありません。</p>
 		<?php endif; ?>
 	</div>
 </section>

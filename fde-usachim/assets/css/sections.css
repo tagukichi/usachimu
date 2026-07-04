@@ -1192,6 +1192,18 @@
 
 .blog2-card:hover .blog2-card__title { color: var(--dark-accent); }
 
+/* アーカイブページ：ヘッダー上部にナビ分の余白 + ページネーション */
+.blog-archive { padding-top: calc(72px + 48px); }
+
+@media (min-width: 1101px) {
+  .blog-archive { padding-top: calc(72px + 64px); }
+}
+
+.blog-archive .pagination,
+.blog-archive .nav-links {
+  margin-top: 48px;
+}
+
 .blog2-more {
   margin-top: 40px;
   text-align: center;

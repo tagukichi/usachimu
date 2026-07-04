@@ -109,7 +109,7 @@ body:not(.has-dark-hero) .site-header {
 /* Brand */
 .brand {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
   font-weight: 600;
   font-size: 15px;
@@ -118,15 +118,14 @@ body:not(.has-dark-hero) .site-header {
   flex-shrink: 0;
 }
 
-.brand__slash {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.06em;
-  opacity: 0.45;
+.brand__logo {
+  display: block;
+  width: auto;
+  height: 30px;
 }
 
-@media (max-width: 719px) {
-  .brand__slash { display: none; }
+@media (min-width: 720px) {
+  .brand__logo { height: 34px; }
 }
 
 /* Nav links */
