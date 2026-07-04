@@ -615,7 +615,7 @@
 }
 
 @media (min-width: 820px) {
-  .svc-sub__wide-grid { grid-template-columns: 1.2fr 1fr; gap: 44px; }
+  .svc-sub__wide-grid { grid-template-columns: 6fr 4fr; gap: 44px; align-items: start; }
 }
 
 .svc-sub__wide-text {
@@ -629,7 +629,10 @@
   overflow: hidden;
   border: 1px solid rgba(22, 33, 58, 0.1);
   border-radius: 4px;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
+  max-width: 360px;
+  width: 100%;
+  margin-left: auto;
   background: rgba(255, 255, 255, 0.5);
 }
 
