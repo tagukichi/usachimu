@@ -90,45 +90,7 @@ add_action(
 		}
 
 		// ============================================================
-		// (1) Works (case study) details — CPT
-		// ============================================================
-		acf_add_local_field_group(
-			[
-				'key'      => 'group_fde_works_details',
-				'title'    => __( '実績詳細', 'fde-usachim' ),
-				'fields'   => [
-					fde_acf_text( 'industry', 'industry', __( '業界', 'fde-usachim' ), '基礎自治体 / SaaSスタートアップ など' ),
-					fde_acf_textarea( 'summary', 'summary', __( '概要', 'fde-usachim' ), 4, '本文として実績スプレッドに表示。' ),
-					fde_acf_text( 'headline', 'headline', __( 'ヘッドライン（KPIポスター大文字）', 'fde-usachim' ), '−85% / 8h → 30m など' ),
-					fde_acf_text( 'headline_label', 'headline_label', __( 'ヘッドラインの説明', 'fde-usachim' ), '提案リードタイム / 月次経理作業 など' ),
-
-					// KPI 4組（繰り返しなし）
-					fde_acf_text( 'kpi_1_k', 'kpi_1_k', __( 'KPI 1 指標', 'fde-usachim' ) ),
-					fde_acf_text( 'kpi_1_v', 'kpi_1_v', __( 'KPI 1 値', 'fde-usachim' ) ),
-					fde_acf_text( 'kpi_2_k', 'kpi_2_k', __( 'KPI 2 指標', 'fde-usachim' ) ),
-					fde_acf_text( 'kpi_2_v', 'kpi_2_v', __( 'KPI 2 値', 'fde-usachim' ) ),
-					fde_acf_text( 'kpi_3_k', 'kpi_3_k', __( 'KPI 3 指標', 'fde-usachim' ) ),
-					fde_acf_text( 'kpi_3_v', 'kpi_3_v', __( 'KPI 3 値', 'fde-usachim' ) ),
-					fde_acf_text( 'kpi_4_k', 'kpi_4_k', __( 'KPI 4 指標', 'fde-usachim' ) ),
-					fde_acf_text( 'kpi_4_v', 'kpi_4_v', __( 'KPI 4 値', 'fde-usachim' ) ),
-
-					fde_acf_text( 'tags', 'tags', __( 'Stack タグ（カンマ区切り）', 'fde-usachim' ), 'LLM, Python, Slack Bot, Notion API' ),
-					fde_acf_text( 'year', 'year', __( '実施年', 'fde-usachim' ), '2025 / 2024–25' ),
-					fde_acf_text( 'scale', 'scale', __( '規模', 'fde-usachim' ), '〜300万円 / 〜800万円' ),
-					fde_acf_text( 'role', 'role', __( '体制', 'fde-usachim' ), '一人 / 4ヶ月  ・  一人 + 内製2名' ),
-					[
-						'key'   => 'field_fde_external_url',
-						'label' => __( '外部リンク（任意）', 'fde-usachim' ),
-						'name'  => 'external_url',
-						'type'  => 'url',
-					],
-				],
-				'location' => [ [ [ 'param' => 'post_type', 'operator' => '==', 'value' => 'works' ] ] ],
-			]
-		);
-
-		// ============================================================
-		// (2) Writing (post) details
+		// (1) Writing (post) details
 		// ============================================================
 		acf_add_local_field_group(
 			[
@@ -172,7 +134,8 @@ add_action(
 			'preview_size'  => 'medium',
 		];
 		$top_fields[] = fde_acf_textarea( 'svc_web_hp_desc', 'svc_web_hp_desc', __( 'ホームページ制作 — 説明', 'fde-usachim' ), 3 );
-		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '調速 — 説明文（不動産調査アプリ）', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_textarea( 'svc_sys_desc', 'svc_sys_desc', __( 'システム開発・アプリ開発 — 説明', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '調速（自社サービス）— 説明文', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_textarea( 'chousoku_sys', 'chousoku_sys', __( '調速 — システム面の補足（MCPサーバー設計等）', 'fde-usachim' ), 3 );
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_logo',

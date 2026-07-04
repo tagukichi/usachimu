@@ -713,6 +713,133 @@
 
 .svc-sub__product-link:hover { opacity: 0.7; }
 
+/* ============================================================
+   自社サービス「調速」フィーチャー
+   ============================================================ */
+.svc-feature {
+  position: relative;
+  margin-top: 24px;
+  padding: 34px 26px 34px;
+  overflow: hidden;
+  border-color: rgba(8, 145, 178, 0.3);
+  background:
+    radial-gradient(ellipse 60% 120% at 88% 0%, rgba(8,145,178,0.10), transparent 60%),
+    radial-gradient(ellipse 70% 130% at 0% 100%, rgba(99,102,241,0.10), transparent 60%),
+    rgba(255, 255, 255, 0.72);
+}
+
+@media (min-width: 720px) {
+  .svc-feature { padding: 44px 44px 46px; margin-top: 28px; }
+}
+
+/* 上端のグラデーションライン */
+.svc-feature::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--dark-accent), var(--accent-2));
+}
+
+.svc-feature__ribbon {
+  display: inline-block;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--dark-accent);
+  margin-bottom: 22px;
+}
+
+.svc-feature__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 820px) {
+  .svc-feature__grid {
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+.svc-feature__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.svc-feature__logo { display: block; max-height: 64px; width: auto; }
+
+.svc-feature__name {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--dark-fg);
+}
+
+.svc-feature__read {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--mute);
+}
+
+.svc-feature__cat {
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--dark-accent);
+  padding: 5px 12px;
+  border: 1px solid rgba(8, 145, 178, 0.35);
+  border-radius: 999px;
+}
+
+.svc-feature__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.svc-feature__desc {
+  font-size: 15.5px;
+  line-height: 1.9;
+  color: var(--dark-fg);
+  font-weight: 500;
+}
+
+.svc-feature__sys {
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: rgba(22, 33, 58, 0.6);
+  padding-left: 16px;
+  border-left: 2px solid rgba(8, 145, 178, 0.35);
+}
+
+.svc-feature__link {
+  align-self: flex-start;
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  background: linear-gradient(100deg, var(--dark-accent), var(--accent-2));
+  color: #ffffff;
+  border-radius: 999px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 20px -8px rgba(8, 145, 178, 0.5);
+  transition: transform var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+
+.svc-feature__link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px -8px rgba(8, 145, 178, 0.6);
+  color: #ffffff;
+}
+
 /* 箇条書き */
 .svc-sub__list {
   list-style: none;

@@ -20,13 +20,17 @@ $fde_web_hp_desc = (string) fde_field(
 	'svc_web_hp_desc',
 	'通算200件以上の制作実績。コーポレートサイトからLP、ECサイトまで、目的に合わせて設計・制作します。'
 );
+$fde_sys_desc = (string) fde_field(
+	'svc_sys_desc',
+	'業務システム・Webアプリ・API連携まで、現場の課題に合わせてゼロから設計・開発します。生成AIやMCPサーバーを組み込んだ、次世代のアプリケーション開発も得意としています。'
+);
 $fde_chousoku_desc = (string) fde_field(
 	'chousoku_desc',
-	'不動産の物件調査をスムーズに行うための、AI搭載アプリ「調速（ちょうはや）」を開発・運営しています。物件情報の収集・整理を自動化し、調査業務の時間を大幅に短縮します。'
+	'不動産の物件調査をスムーズに行うための、AI搭載アプリ。物件情報の収集・整理を自動化し、調査業務にかかる時間を大幅に短縮します。'
 );
 $fde_chousoku_sys = (string) fde_field(
 	'chousoku_sys',
-	'フロントの実装だけでなく、生成AIと外部データを連携させる MCPサーバーの設計・構築、データパイプラインやインフラ選定まで、システム全体をトータルで設計しています。'
+	'生成AIと外部データを連携させるMCPサーバーの設計・構築、データパイプライン、インフラ選定まで、システム全体をトータルで設計しています。'
 );
 $fde_chousoku_logo = fde_field( 'chousoku_logo' );
 $fde_chousoku_url  = (string) fde_field( 'chousoku_url', 'https://usachim.com/cho-haya/' );
@@ -47,18 +51,6 @@ $fde_dx_biz_desc = (string) fde_field(
 
 $fde_svc_web_img = fde_field( 'service_1_image' );
 $fde_svc_dx_img  = fde_field( 'service_2_image' );
-
-// ---- 制作実績（works CPT・スライダー3件）----
-$fde_works = new WP_Query(
-	[
-		'post_type'           => 'works',
-		'posts_per_page'      => 3,
-		'orderby'             => 'menu_order date',
-		'order'               => 'ASC',
-		'ignore_sticky_posts' => true,
-		'no_found_rows'       => true,
-	]
-);
 ?>
 <section class="section section--dark section--decor svc" id="services" data-section="services">
 	<?php fde_tri_field( 'tr', 9 ); ?>
@@ -101,61 +93,45 @@ $fde_works = new WP_Query(
 				<div class="svc-sub glass">
 					<span class="svc-sub__label mono">02 — SYSTEM / APP</span>
 					<h4 class="svc-sub__title">システム開発・アプリ開発</h4>
-					<div class="svc-sub__product-head">
+					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_sys_desc ); ?></p>
+					<ul class="svc-sub__list jp">
+						<li>業務システム・Webアプリ開発</li>
+						<li>API・外部サービス連携</li>
+						<li>生成AI・MCPサーバーの実装</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- ============ 自社サービス：調速 フィーチャー ============ -->
+			<div class="svc-feature glass">
+				<span class="svc-feature__ribbon mono">OUR PRODUCT — 自社サービス</span>
+				<div class="svc-feature__grid">
+					<div class="svc-feature__brand">
 						<?php if ( is_array( $fde_chousoku_logo ) && ! empty( $fde_chousoku_logo['url'] ) ) : ?>
-							<img class="svc-sub__product-logo"
+							<img class="svc-feature__logo"
 							     src="<?php echo esc_url( $fde_chousoku_logo['url'] ); ?>"
 							     alt="<?php echo esc_attr( ! empty( $fde_chousoku_logo['alt'] ) ? $fde_chousoku_logo['alt'] : '調速' ); ?>"
 							     loading="lazy">
 						<?php else : ?>
-							<span class="svc-sub__product-name serif">調速</span>
+							<span class="svc-feature__name serif">調速</span>
+							<span class="svc-feature__read mono">ちょうはや</span>
 						<?php endif; ?>
-						<span class="svc-sub__product-cat mono">不動産調査アプリ</span>
+						<span class="svc-feature__cat mono">不動産調査アプリ</span>
 					</div>
-					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_chousoku_desc ); ?></p>
-					<?php if ( $fde_chousoku_sys ) : ?>
-						<p class="svc-sub__desc svc-sub__desc--sub jp"><?php echo esc_html( $fde_chousoku_sys ); ?></p>
-					<?php endif; ?>
-					<?php if ( $fde_chousoku_url ) : ?>
-						<a class="svc-sub__product-link mono" href="<?php echo esc_url( $fde_chousoku_url ); ?>" target="_blank" rel="noopener">
-							調速のサービスサイトを見る →
-						</a>
-					<?php endif; ?>
+					<div class="svc-feature__body">
+						<p class="svc-feature__desc jp"><?php echo esc_html( $fde_chousoku_desc ); ?></p>
+						<?php if ( $fde_chousoku_sys ) : ?>
+							<p class="svc-feature__sys jp"><?php echo esc_html( $fde_chousoku_sys ); ?></p>
+						<?php endif; ?>
+						<?php if ( $fde_chousoku_url ) : ?>
+							<a class="svc-feature__link" href="<?php echo esc_url( $fde_chousoku_url ); ?>" target="_blank" rel="noopener">
+								<span class="mono">調速のサービスサイトを見る</span>
+								<span aria-hidden="true">→</span>
+							</a>
+						<?php endif; ?>
+					</div>
 				</div>
 			</div>
-
-			<?php if ( $fde_works->have_posts() ) : ?>
-				<div class="svc-works">
-					<div class="svc-works__head">
-						<span class="svc-works__label mono">WORKS — ホームページ制作実績</span>
-						<div class="svc-works__nav">
-							<button type="button" class="svc-works__arrow" data-slider-prev aria-label="前へ">←</button>
-							<button type="button" class="svc-works__arrow" data-slider-next aria-label="次へ">→</button>
-						</div>
-					</div>
-					<div class="svc-works__slider" data-slider>
-						<?php $fde_i = 0; while ( $fde_works->have_posts() ) : $fde_works->the_post(); $fde_i++; ?>
-							<?php
-							$thumb = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'large' ) : '';
-							?>
-							<a class="svc-work" href="<?php the_permalink(); ?>">
-								<div class="svc-work__thumb">
-									<?php if ( $thumb ) : ?>
-										<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
-									<?php else : ?>
-										<span class="svc-work__thumb-no mono"><?php echo esc_html( sprintf( '%02d', $fde_i ) ); ?></span>
-									<?php endif; ?>
-								</div>
-								<div class="svc-work__meta">
-									<span class="svc-work__title jp"><?php the_title(); ?></span>
-									<span class="svc-work__more mono">VIEW →</span>
-								</div>
-							</a>
-						<?php endwhile; ?>
-					</div>
-				</div>
-				<?php wp_reset_postdata(); ?>
-			<?php endif; ?>
 		</article>
 
 		<!-- ============ Block 2 : 業務効率化支援 ============ -->
