@@ -15,6 +15,20 @@ const DIST = 2.7;      // perspective distance
 const TILT = 0.41;     // axial tilt
 const INNER_R = 0.82;  // inner wireframe radius
 
+// 「世界はいろいろな色でできている」— シャードに与えるパステルパレット。
+// FV のオーロラ（sky / indigo / mint / pink …）と同系でまとめる。
+const PALETTE = [
+  '#38bdf8', // sky
+  '#60a5fa', // blue
+  '#818cf8', // indigo
+  '#a78bfa', // violet
+  '#5eead4', // mint
+  '#34d399', // emerald
+  '#f9a8d4', // pink
+  '#fda4af', // rose
+  '#fcd34d', // amber
+];
+
 const SHARDS = 76;     // outer triangle count
 const REVEAL_STEP_MS = 95; // slower so the "world" forms gradually
 const REVEAL_EASE = 26;
@@ -158,7 +172,12 @@ function buildShards(rng) {
         dir[2] + (u[2] * Math.cos(ang) + w[2] * Math.sin(ang)) * rad,
       ]));
     }
-    out.push({ corners, base: 0.05 + rng() * 0.12, cy: dir[1] });
+    out.push({
+      corners,
+      base: 0.3 + rng() * 0.3,
+      cy: dir[1],
+      color: PALETTE[Math.floor(rng() * PALETTE.length)],
+    });
   }
   return out;
 }
@@ -198,9 +217,12 @@ function setupOne(svg, reduce) {
   ranked.forEach((r, rank) => { order[r.i] = rank; });
   const shardData = shards.map((sh, i) => {
     const poly = document.createElementNS(SVG_NS, 'polygon');
+    poly.setAttribute('fill', sh.color);
+    poly.setAttribute('stroke', sh.color);
     gFaces.appendChild(poly);
     const dotEls = [0, 1, 2].map(() => {
       const c = document.createElementNS(SVG_NS, 'circle');
+      c.setAttribute('fill', sh.color);
       gDots.appendChild(c);
       return c;
     });
@@ -222,6 +244,9 @@ function setupOne(svg, reduce) {
         corners.push([Math.cos(a) * rr, Math.sin(a) * rr]);
       }
       const el = document.createElementNS(SVG_NS, 'polygon');
+      const color = PALETTE[Math.floor(rng() * PALETTE.length)];
+      el.setAttribute('fill', color);
+      el.setAttribute('stroke', color);
       gFloaters.appendChild(el);
       floaters.push({
         el, baseDir, axis, corners,
@@ -234,7 +259,7 @@ function setupOne(svg, reduce) {
         flutSpeed: 1.1 + rng() * 1.7,   // leaf-flip speed
         spinPhase: rng() * TAU,
         spinSpeed: (rng() - 0.5) * 1.8, // in-plane tumble
-        base: 0.06 + rng() * 0.11,
+        base: 0.3 + rng() * 0.3,
       });
     }
   }
@@ -279,15 +304,15 @@ function setupOne(svg, reduce) {
       const ff = front(cz);
       sd.poly.setAttribute('points',
         `${p0.x.toFixed(1)},${p0.y.toFixed(1)} ${p1.x.toFixed(1)},${p1.y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)}`);
-      sd.poly.setAttribute('fill-opacity', (born * sd.base * (0.18 + 0.82 * ff)).toFixed(3));
-      sd.poly.setAttribute('stroke-opacity', (born * (0.05 + 0.18 * ff)).toFixed(3));
+      sd.poly.setAttribute('fill-opacity', (born * sd.base * (0.22 + 0.78 * ff)).toFixed(3));
+      sd.poly.setAttribute('stroke-opacity', (born * (0.15 + 0.45 * ff)).toFixed(3));
 
       [p0, p1, p2].forEach((p, k) => {
         const d = sd.dotEls[k];
         d.setAttribute('cx', p.x.toFixed(1));
         d.setAttribute('cy', p.y.toFixed(1));
         d.setAttribute('r', (0.32 * p.f).toFixed(2));
-        d.setAttribute('fill-opacity', (born * (0.2 + 0.55 * front(p.z))).toFixed(3));
+        d.setAttribute('fill-opacity', (born * (0.25 + 0.6 * front(p.z))).toFixed(3));
       });
     });
 
@@ -316,8 +341,8 @@ function setupOne(svg, reduce) {
       }
       fl.el.setAttribute('points', pts.trim());
       const vis = fl.base * (0.4 + 0.6 * Math.abs(flut)); // fainter edge-on
-      fl.el.setAttribute('fill-opacity', (vis * 0.7).toFixed(3));
-      fl.el.setAttribute('stroke-opacity', vis.toFixed(3));
+      fl.el.setAttribute('fill-opacity', (vis * 0.8).toFixed(3));
+      fl.el.setAttribute('stroke-opacity', Math.min(1, vis * 1.1).toFixed(3));
     });
   };
 
