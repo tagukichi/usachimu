@@ -28,10 +28,6 @@ $fde_chousoku_desc = (string) fde_field(
 	'chousoku_desc',
 	'不動産の物件調査をスムーズに行うための、AI搭載アプリ。物件情報の収集・整理を自動化し、調査業務にかかる時間を大幅に短縮します。'
 );
-$fde_chousoku_sys = (string) fde_field(
-	'chousoku_sys',
-	'生成AIと外部データを連携させるMCPサーバーの設計・構築、データパイプライン、インフラ選定まで、システム全体をトータルで設計しています。'
-);
 $fde_chousoku_logo = fde_field( 'chousoku_logo' );
 $fde_chousoku_url  = (string) fde_field( 'chousoku_url', 'https://usachim.com/cho-haya/' );
 
@@ -114,9 +110,6 @@ $fde_svc_dx_img  = fde_field( 'service_2_image' );
 					</div>
 					<div class="svc-feature__body">
 						<p class="svc-feature__desc jp"><?php echo esc_html( $fde_chousoku_desc ); ?></p>
-						<?php if ( $fde_chousoku_sys ) : ?>
-							<p class="svc-feature__sys jp"><?php echo esc_html( $fde_chousoku_sys ); ?></p>
-						<?php endif; ?>
 						<?php if ( $fde_chousoku_url ) : ?>
 							<a class="svc-feature__link" href="<?php echo esc_url( $fde_chousoku_url ); ?>" target="_blank" rel="noopener">
 								<span class="mono">調速のサービスサイトを見る</span>

@@ -845,13 +845,6 @@
   font-weight: 500;
 }
 
-.svc-feature__sys {
-  font-size: 15px;
-  line-height: 1.9;
-  color: rgba(22, 33, 58, 0.6);
-  padding-left: 16px;
-  border-left: 2px solid rgba(8, 145, 178, 0.35);
-}
 
 .svc-feature__link {
   align-self: flex-start;
