@@ -5,9 +5,7 @@ export function initReveal() {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const candidates = [
-    '.hero',
     '.sec-head',
-    '.concept__inner',
     '.svc-block__head',
     '.svc-sub',
     '.svc-work',

@@ -6,8 +6,11 @@
  */
 
 get_header();
-
-require FDE_USACHIM_DIR . '/template-parts/front/hero.php';
+?>
+<div class="hero-scroll" data-hero-scroll>
+	<?php require FDE_USACHIM_DIR . '/template-parts/front/hero.php'; ?>
+</div>
+<?php
 require FDE_USACHIM_DIR . '/template-parts/front/concept.php';
 require FDE_USACHIM_DIR . '/template-parts/front/services.php';
 require FDE_USACHIM_DIR . '/template-parts/front/about.php';

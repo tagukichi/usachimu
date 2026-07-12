@@ -27,7 +27,6 @@ $fde_body = (string) fde_field(
 				<span class="sec-head__num">01</span>
 				<h2 class="sec-head__title">Concept</h2>
 			</div>
-			<span class="sec-head__meta">考え</span>
 		</header>
 
 		<div class="concept__inner">
