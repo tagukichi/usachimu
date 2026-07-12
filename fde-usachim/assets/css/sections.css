@@ -17,14 +17,33 @@
   height: 100vh;
 }
 
+/* pin 中：Concept を「球体が拡大した中央の位置」に重ねてクロスフェード。
+   negative margin で pin の後半に覆いかぶせ、viewport 中央に内容を配置。 */
+.concept.is-fx {
+  position: relative;
+  z-index: 5;
+  margin-top: -100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  will-change: opacity;
+}
+
 .hero {
   position: relative;
   overflow: hidden;
   background: var(--dark-bg);
   color: var(--dark-fg);
   padding: 72px var(--gutter-sp) 56px;
+}
+
+/* pin 時は Hero 内容を縦中央に */
+.hero-scroll.is-pinned .hero {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @media (min-width: 720px) {
@@ -35,6 +54,8 @@
   .hero {
     padding: 140px 64px 140px;
     min-height: 86vh;
+    display: flex;
+    align-items: center;
   }
 }
 

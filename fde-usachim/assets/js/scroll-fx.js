@@ -21,8 +21,7 @@ export function initScrollFx() {
   wrap.classList.add('is-pinned');
   globe.style.willChange = 'transform, opacity';
   if (concept) {
-    concept.style.willChange = 'opacity, transform';
-    concept.style.opacity = '0';
+    concept.classList.add('is-fx'); // pin に重ねてクロスフェードさせる
   }
 
   // 球体を中央へ寄せるための水平オフセット(px)を実測（scale1/x0 の状態で）
@@ -60,13 +59,11 @@ export function initScrollFx() {
       inner.style.transform = `translateY(${(-p * 60).toFixed(1)}px)`;
     }
 
-    // Concept：pin を抜けて画面に入ってきたらフェードイン + せり上がり
+    // Concept：球体が中央で拡大→消えるのに合わせ、同じ位置に重ねてフェードイン
+    // （pin 進行度 p 0.5→0.9 でクロスフェード）
     if (concept) {
-      const vh = window.innerHeight;
-      const r = concept.getBoundingClientRect();
-      const cp = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.45)));
+      const cp = Math.min(1, Math.max(0, (p - 0.5) / 0.4));
       concept.style.opacity = cp.toFixed(3);
-      concept.style.transform = `translateY(${((1 - cp) * 40).toFixed(1)}px)`;
     }
   };
 
