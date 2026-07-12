@@ -153,24 +153,17 @@ add_action(
 		];
 		$top_fields[] = fde_acf_textarea( 'svc_dx_desc', 'svc_dx_desc', __( '業務効率化支援 — 概要（見出し下・1行推奨）', 'fde-usachim' ), 2 );
 		$top_fields[] = fde_acf_textarea( 'svc_dx_detail', 'svc_dx_detail', __( '行政や企業におけるDX推進支援 — 説明', 'fde-usachim' ), 4 );
-		$top_fields[] = [
-			'key'           => 'field_fde_service_2_gallery',
-			'label'         => __( '業務効率化支援 — BOX内の画像（複数可・時間で切替）', 'fde-usachim' ),
-			'name'          => 'service_2_gallery',
-			'type'          => 'gallery',
-			'return_format' => 'array',
-			'preview_size'  => 'medium',
-			'insert'        => 'append',
-			'instructions'  => __( '複数登録すると数秒ごとにクロスフェードで切り替わります。未設定でもOK。', 'fde-usachim' ),
-		];
-		$top_fields[] = [
-			'key'           => 'field_fde_service_2_image',
-			'label'         => __( '業務効率化支援 — BOX内の画像（旧・単体／上のギャラリー未使用時のフォールバック）', 'fde-usachim' ),
-			'name'          => 'service_2_image',
-			'type'          => 'image',
-			'return_format' => 'array',
-			'preview_size'  => 'medium',
-		];
+		foreach ( [ 1, 2, 3 ] as $n ) {
+			$top_fields[] = [
+				'key'           => "field_fde_service_2_image_{$n}",
+				'label'         => sprintf( __( '業務効率化支援 — BOX内の画像 %d（任意）', 'fde-usachim' ), $n ),
+				'name'          => "service_2_image_{$n}",
+				'type'          => 'image',
+				'return_format' => 'array',
+				'preview_size'  => 'medium',
+				'instructions'  => 1 === $n ? __( '2枚以上設定すると数秒ごとにクロスフェードで切り替わります。1枚のみでもOK。', 'fde-usachim' ) : '',
+			];
+		}
 
 		// ---------- 03 About ----------
 		$top_fields[] = fde_acf_tab( 'about', __( '03 About', 'fde-usachim' ) );

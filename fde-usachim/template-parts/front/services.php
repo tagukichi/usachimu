@@ -43,20 +43,12 @@ $fde_dx_detail = (string) fde_field(
 
 $fde_svc_web_img = fde_field( 'service_1_image' );
 
-// 業務効率化支援：BOX内の画像（ギャラリー優先、無ければ単体画像）
-$fde_svc_dx_gallery = fde_field( 'service_2_gallery' );
-$fde_svc_dx_images  = [];
-if ( is_array( $fde_svc_dx_gallery ) ) {
-	foreach ( $fde_svc_dx_gallery as $g ) {
-		if ( is_array( $g ) && ! empty( $g['url'] ) ) {
-			$fde_svc_dx_images[] = [ 'url' => $g['url'], 'alt' => $g['alt'] ?? '' ];
-		}
-	}
-}
-if ( empty( $fde_svc_dx_images ) ) {
-	$single = fde_field( 'service_2_image' );
-	if ( is_array( $single ) && ! empty( $single['url'] ) ) {
-		$fde_svc_dx_images[] = [ 'url' => $single['url'], 'alt' => $single['alt'] ?? '' ];
+// 業務効率化支援：BOX内の画像（画像 1〜3。複数時はクロスフェード）
+$fde_svc_dx_images = [];
+foreach ( [ 1, 2, 3 ] as $n ) {
+	$img = fde_field( "service_2_image_{$n}" );
+	if ( is_array( $img ) && ! empty( $img['url'] ) ) {
+		$fde_svc_dx_images[] = [ 'url' => $img['url'], 'alt' => $img['alt'] ?? '' ];
 	}
 }
 ?>
