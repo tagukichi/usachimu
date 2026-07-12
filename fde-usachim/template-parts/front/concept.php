@@ -19,6 +19,7 @@ $fde_body = (string) fde_field(
 );
 ?>
 <section class="section section--dark section--decor concept concept--front-tri" id="concept" data-section="concept">
+	<?php fde_tri_field( 'tl', 9 ); ?>
 	<?php fde_tri_field( 'br', 9 ); ?>
 	<div class="section__inner">
 		<header class="sec-head">

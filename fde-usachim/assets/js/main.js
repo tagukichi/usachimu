@@ -5,6 +5,7 @@ import { initGlobe } from './hero-globe.js';
 import { initTriFields } from './tri-field.js';
 import { initSliders } from './slider.js';
 import { initImgFade } from './img-fade.js';
+import { initScrollFx } from './scroll-fx.js';
 
 const boot = () => {
   initNav();
@@ -14,6 +15,7 @@ const boot = () => {
   initTriFields();
   initSliders();
   initImgFade();
+  initScrollFx();
 };
 
 if (document.readyState === 'loading') {

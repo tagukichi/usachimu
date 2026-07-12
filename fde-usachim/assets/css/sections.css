@@ -197,11 +197,12 @@
     width: min(100vw, 760px);
     /* viewport 100% を親の padding を無視して中央配置 */
     margin-left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(var(--fx-scale, 1));
+    transform-origin: center 60%;
     margin-top: 0;
     margin-bottom: 12px;
     margin-right: 0;
-    opacity: 0.95;
+    opacity: calc(0.95 * var(--fx-fade, 1));
   }
 }
 
@@ -215,8 +216,9 @@
     height: auto;
     right: -8%;
     top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.7;
+    transform: translateY(-50%) scale(var(--fx-scale, 1));
+    transform-origin: 60% 50%;
+    opacity: calc(0.7 * var(--fx-fade, 1));
   }
 }
 
