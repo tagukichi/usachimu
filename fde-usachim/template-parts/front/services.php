@@ -42,7 +42,23 @@ $fde_dx_detail = (string) fde_field(
 );
 
 $fde_svc_web_img = fde_field( 'service_1_image' );
-$fde_svc_dx_img  = fde_field( 'service_2_image' );
+
+// 業務効率化支援：BOX内の画像（ギャラリー優先、無ければ単体画像）
+$fde_svc_dx_gallery = fde_field( 'service_2_gallery' );
+$fde_svc_dx_images  = [];
+if ( is_array( $fde_svc_dx_gallery ) ) {
+	foreach ( $fde_svc_dx_gallery as $g ) {
+		if ( is_array( $g ) && ! empty( $g['url'] ) ) {
+			$fde_svc_dx_images[] = [ 'url' => $g['url'], 'alt' => $g['alt'] ?? '' ];
+		}
+	}
+}
+if ( empty( $fde_svc_dx_images ) ) {
+	$single = fde_field( 'service_2_image' );
+	if ( is_array( $single ) && ! empty( $single['url'] ) ) {
+		$fde_svc_dx_images[] = [ 'url' => $single['url'], 'alt' => $single['alt'] ?? '' ];
+	}
+}
 ?>
 <section class="section section--dark section--decor svc" id="services" data-section="services">
 	<?php fde_tri_field( 'tr', 9 ); ?>
@@ -143,12 +159,14 @@ $fde_svc_dx_img  = fde_field( 'service_2_image' );
 							<li>インフラ検討・個別サポート</li>
 						</ul>
 					</div>
-					<figure class="svc-sub__wide-media">
-						<?php if ( is_array( $fde_svc_dx_img ) && ! empty( $fde_svc_dx_img['url'] ) ) : ?>
-							<img src="<?php echo esc_url( $fde_svc_dx_img['url'] ); ?>"
-							     alt="<?php echo esc_attr( ! empty( $fde_svc_dx_img['alt'] ) ? $fde_svc_dx_img['alt'] : '業務効率化支援' ); ?>"
-							     loading="lazy">
-						<?php endif; ?>
+					<figure class="svc-sub__wide-media<?php echo count( $fde_svc_dx_images ) > 1 ? ' is-slideshow' : ''; ?>"<?php echo count( $fde_svc_dx_images ) > 1 ? ' data-img-fade' : ''; ?>>
+						<?php foreach ( $fde_svc_dx_images as $i => $img ) : ?>
+							<img
+								class="svc-sub__wide-img<?php echo 0 === $i ? ' is-active' : ''; ?>"
+								src="<?php echo esc_url( $img['url'] ); ?>"
+								alt="<?php echo esc_attr( $img['alt'] ?: '業務効率化支援' ); ?>"
+								loading="lazy">
+						<?php endforeach; ?>
 					</figure>
 				</div>
 			</div>

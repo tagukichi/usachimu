@@ -154,8 +154,18 @@ add_action(
 		$top_fields[] = fde_acf_textarea( 'svc_dx_desc', 'svc_dx_desc', __( '業務効率化支援 — 概要（見出し下・1行推奨）', 'fde-usachim' ), 2 );
 		$top_fields[] = fde_acf_textarea( 'svc_dx_detail', 'svc_dx_detail', __( '行政や企業におけるDX推進支援 — 説明', 'fde-usachim' ), 4 );
 		$top_fields[] = [
+			'key'           => 'field_fde_service_2_gallery',
+			'label'         => __( '業務効率化支援 — BOX内の画像（複数可・時間で切替）', 'fde-usachim' ),
+			'name'          => 'service_2_gallery',
+			'type'          => 'gallery',
+			'return_format' => 'array',
+			'preview_size'  => 'medium',
+			'insert'        => 'append',
+			'instructions'  => __( '複数登録すると数秒ごとにクロスフェードで切り替わります。未設定でもOK。', 'fde-usachim' ),
+		];
+		$top_fields[] = [
 			'key'           => 'field_fde_service_2_image',
-			'label'         => __( '業務効率化支援 — BOX内の画像（任意・未設定でOK）', 'fde-usachim' ),
+			'label'         => __( '業務効率化支援 — BOX内の画像（旧・単体／上のギャラリー未使用時のフォールバック）', 'fde-usachim' ),
 			'name'          => 'service_2_image',
 			'type'          => 'image',
 			'return_format' => 'array',
@@ -216,7 +226,7 @@ add_action(
 				'fields'   => [
 					// ---------- ブランド ----------
 					fde_acf_tab( 'brand', __( 'ブランド', 'fde-usachim' ) ),
-					fde_acf_text( 'brand_name', 'brand_name', __( '屋号（テキストロゴ）', 'fde-usachim' ), 'CHIM WORKS' ),
+					fde_acf_text( 'brand_name', 'brand_name', __( '屋号（テキストロゴ）', 'fde-usachim' ), 'CHIMWORKS' ),
 					fde_acf_text( 'brand_subtitle', 'brand_subtitle', __( '屋号サブ（mono の slash テキスト）', 'fde-usachim' ), '// FORWARD DEPLOYED' ),
 					fde_acf_text( 'cta_label', 'cta_label', __( 'ヘッダーCTA ラベル', 'fde-usachim' ), '相談を始める →' ),
 

@@ -625,6 +625,7 @@
 }
 
 .svc-sub__wide-media {
+  position: relative;
   margin: 0;
   overflow: hidden;
   border: 1px solid rgba(22, 33, 58, 0.1);
@@ -639,6 +640,18 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* 複数画像のクロスフェード */
+.svc-sub__wide-media.is-slideshow img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-out);
+}
+
+.svc-sub__wide-media.is-slideshow img.is-active {
+  opacity: 1;
 }
 
 .svc-sub__wide-media:empty,
