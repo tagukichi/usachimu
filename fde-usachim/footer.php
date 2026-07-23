@@ -5,10 +5,8 @@
  * @package fde-usachim
  */
 
-$fde_brand        = (string) fde_option( 'brand_name', get_bloginfo( 'name' ) );
-$fde_footer_left  = (string) fde_option( 'footer_meta_left', "EST. 2021 · TOKYO, JAPAN\nFORWARD DEPLOYED ENGINEER (SOLE PROPRIETOR)\nNO TRACKERS · BUILT BY HAND" );
-$fde_footer_right = (string) fde_option( 'footer_meta_right', sprintf( "v%s\n© %s %s", date_i18n( 'Y.m' ), date_i18n( 'Y' ), $fde_brand ) );
-$fde_nav          = fde_main_nav_items();
+$fde_brand   = (string) fde_option( 'brand_name', get_bloginfo( 'name' ) );
+$fde_nav     = fde_main_nav_items();
 $fde_logo_id      = (int) get_theme_mod( 'custom_logo' );
 $fde_logo_src     = $fde_logo_id ? wp_get_attachment_image_src( $fde_logo_id, 'full' ) : false;
 ?>
@@ -40,8 +38,7 @@ $fde_logo_src     = $fde_logo_id ? wp_get_attachment_image_src( $fde_logo_id, 'f
 		</div>
 
 		<div class="site-footer__meta">
-			<div><?php echo nl2br( esc_html( $fde_footer_left ) ); ?></div>
-			<div><?php echo nl2br( esc_html( $fde_footer_right ) ); ?></div>
+			<small class="site-footer__copy">© <?php echo esc_html( date_i18n( 'Y' ) ); ?> <?php echo esc_html( $fde_brand ); ?></small>
 		</div>
 
 	</div>
