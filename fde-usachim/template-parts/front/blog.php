@@ -44,7 +44,8 @@ if ( ! $fde_query->have_posts() ) {
 				<a class="blog2-card glass" href="<?php the_permalink(); ?>">
 					<div class="blog2-card__thumb">
 						<?php if ( $thumb ) : ?>
-							<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
+							<img class="blog2-card__thumb-bg" src="<?php echo esc_url( $thumb ); ?>" alt="" aria-hidden="true" loading="lazy">
+							<img class="blog2-card__thumb-img" src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $title ); ?>" loading="lazy">
 						<?php else : ?>
 							<div class="blog2-card__thumb-ph" aria-hidden="true">
 								<span class="serif"><?php echo esc_html( mb_substr( $title, 0, 1 ) ); ?></span>
