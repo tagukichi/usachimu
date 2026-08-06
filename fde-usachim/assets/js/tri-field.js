@@ -13,17 +13,17 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 const BOX = 120;     // matches viewBox 0 0 120 120
 const MARGIN = 24;   // wrap margin so shards drift in/out of view
 
-// hero-globe.js と同系のパステルパレット
+// hero-globe.js と同系のコーポレートブルー系パレット
 const PALETTE = [
-  [56, 189, 248],  // sky
-  [96, 165, 250],  // blue
-  [129, 140, 248], // indigo
-  [167, 139, 250], // violet
-  [94, 234, 212],  // mint
-  [52, 211, 153],  // emerald
-  [249, 168, 212], // pink
-  [253, 164, 175], // rose
-  [252, 211, 77],  // amber
+  [26, 86, 219],   // corporate blue
+  [37, 99, 235],   // blue
+  [59, 130, 246],  // azure
+  [96, 165, 250],  // light blue
+  [147, 197, 253], // pale blue
+  [30, 64, 175],   // deep blue
+  [16, 49, 110],   // navy
+  [100, 116, 139], // steel
+  [148, 163, 184], // silver
 ];
 
 const GREY = [148, 163, 184]; // slate — 色づく前の欠片

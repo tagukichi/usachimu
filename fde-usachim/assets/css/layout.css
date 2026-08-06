@@ -90,12 +90,13 @@
 .sec-head__num {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
-  color: var(--mute);
+  font-weight: 600;
+  color: var(--dark-accent);
   letter-spacing: 0.1em;
   white-space: nowrap;
 }
 
-.section--dark .sec-head__num { color: rgba(22,33,58,0.55); }
+.section--dark .sec-head__num { color: var(--dark-accent); }
 
 .sec-head__title {
   font-family: var(--font-serif);

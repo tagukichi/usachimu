@@ -1,37 +1,40 @@
-/* Design tokens — CHIM WORKS bright-futuristic system.
+/* Design tokens — CHIMWORKS corporate system.
+   法人化に伴うコーポレートリデザイン：ブルー×ネイビーの信頼感ある配色、
+   見出しはゴシックに統一。
    NOTE: --dark-* は歴史的な変数名。現在は「メインセクション（旧ダーク）」
    を指し、値はライトテーマ。 */
 
 :root {
-  /* Paper / ink — cool-shifted lights */
-  --paper:        #f7fafd;
-  --paper-2:      #edf2f8;
+  /* Paper / ink — clean corporate lights */
+  --paper:        #ffffff;
+  --paper-2:      #f4f7fa;
   --ink:          #101828;
   --ink-2:        #1d2939;
   --ink-3:        #344054;
   --mute:         #64748b;
   --mute-2:       #94a3b8;
-  --line:         #d5dfe9;
-  --line-2:       #e4ebf2;
+  --line:         #dbe2ea;
+  --line-2:       #e7edf3;
 
-  /* Main sections (hero / concept / services / footer) — bright futuristic */
-  --dark-bg:      #eef4fa; /* ice blue-white */
+  /* Main sections (hero / concept / services / footer) — corporate light */
+  --dark-bg:      #f5f8fb; /* near-white blue-grey */
   --dark-fg:      #16213a; /* deep navy ink */
   --dark-fg-mid:  rgba(22,33,58,0.65);
   --dark-fg-mute: rgba(22,33,58,0.45);
   --dark-line:    rgba(22,33,58,0.12);
   --dark-line-2:  rgba(22,33,58,0.07);
-  --dark-accent:  #0891b2; /* deep cyan — readable on light */
-  --accent-2:     #6366f1; /* indigo — gradient partner */
+  --dark-accent:  #1a56db; /* corporate blue */
+  --accent-2:     #10316e; /* deep navy — gradient partner */
 
   /* Status (kept minimal) */
   --color-success: #5a7a4a;
   --color-error:   #9c4444;
 
-  /* Typography */
+  /* Typography — 見出しもゴシックに統一（コーポレート）。
+     --font-serif は歴史的な変数名で、現在は見出し用スタックを指す。 */
   --font-sans:  "Geist", "Inter Tight", "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-jp:    "Zen Kaku Gothic New", "Noto Sans JP", system-ui, sans-serif;
-  --font-serif: "Shippori Mincho", "Noto Serif JP", "EB Garamond", serif;
+  --font-serif: "Inter Tight", "Zen Kaku Gothic New", "Noto Sans JP", system-ui, sans-serif;
   --font-mono:  "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* Type scale (PC base, scaled via clamp() at usage sites) */

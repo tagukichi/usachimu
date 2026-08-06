@@ -15,18 +15,18 @@ const DIST = 2.7;      // perspective distance
 const TILT = 0.41;     // axial tilt
 const INNER_R = 0.82;  // inner wireframe radius
 
-// 「世界はいろいろな色でできている」— シャードに与えるパステルパレット。
-// FV のオーロラ（sky / indigo / mint / pink …）と同系でまとめる。
+// コーポレートリデザイン：ブルー〜ネイビー〜スチールの同系色パレット。
+// 信頼感を出しつつ、濃淡で立体感を保つ。
 const PALETTE = [
-  '#38bdf8', // sky
-  '#60a5fa', // blue
-  '#818cf8', // indigo
-  '#a78bfa', // violet
-  '#5eead4', // mint
-  '#34d399', // emerald
-  '#f9a8d4', // pink
-  '#fda4af', // rose
-  '#fcd34d', // amber
+  '#1a56db', // corporate blue
+  '#2563eb', // blue
+  '#3b82f6', // azure
+  '#60a5fa', // light blue
+  '#93c5fd', // pale blue
+  '#1e40af', // deep blue
+  '#10316e', // navy
+  '#64748b', // steel
+  '#94a3b8', // silver
 ];
 
 const SHARDS = 76;     // outer triangle count
