@@ -107,10 +107,13 @@ function heroPin(gsap, ScrollTrigger) {
   });
 
   // 球体：中央へ寄りつつ拡大（0→1）、後半でフェードアウト
-  tl.to(globe, {
+  // fromTo で開始値を明示：未定義の CSS 変数を to() が「開始値 0」として
+  // キャプチャし、トップへ戻ると球体が 0 倍に縮んで消えるバグの対策
+  tl.fromTo(globe, { '--fx-scale': 1, '--fx-x': '0px' }, {
     '--fx-scale': () => (isPc() ? 2.4 : 2.1),
     '--fx-x': () => (isPc() ? `${measureOffset().toFixed(1)}px` : '0px'),
     duration: 1,
+    immediateRender: false,
   }, 0);
   // fromTo で両端を明示：初回描画がどの進行度で起きても開始値 1 が保証され、
   // トップへ戻れば球体が必ず再表示される。

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1',  '明日が少し待ち遠しくなる、' );
+$fde_stmt_l1 = (string) fde_field( 'hero_statement_l1', "明日が少し\n待ち遠しくなる、" );
 $fde_stmt_la = (string) fde_field( 'hero_statement_l2_a', '' );
 $fde_stmt_lb = (string) fde_field( 'hero_statement_l2_b', '社会の実現へ。' );
 $fde_lede    = (string) fde_field(
@@ -33,7 +33,7 @@ $fde_lede    = (string) fde_field(
 
 		<h1 class="hero__statement jp">
 			<span class="hero__statement-line">
-				<?php echo esc_html( $fde_stmt_l1 ); ?>
+				<?php echo wp_kses( nl2br( esc_html( $fde_stmt_l1 ) ), [ 'br' => [] ] ); ?>
 			</span>
 			<span class="hero__statement-line">
 				<?php if ( $fde_stmt_la ) : ?>
