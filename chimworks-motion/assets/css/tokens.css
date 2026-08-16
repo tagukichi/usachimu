@@ -1,0 +1,88 @@
+/* Design tokens — CHIMWORKS MOTION.
+   gsap.com にインスパイアされたモーションショーケース系ダークテーマ：
+   ほぼ黒の背景 × ネオングリーン、巨大タイポグラフィ。
+   NOTE: 変数名は元テーマ（ライト）から引き継いでいるため、
+   --paper = ページ背景（ダーク）、--ink = 本文色（ライト）を指す。
+   --dark-* は「メインセクション」用トークン。 */
+
+:root {
+  /* Surface / text — near-black & off-white */
+  --paper:        #0e100f; /* page bg (GSAP dark) */
+  --paper-2:      #161917;
+  --ink:          #f2f5f2; /* primary text */
+  --ink-2:        #e4e9e4;
+  --ink-3:        #c3cbc4;
+  --mute:         #8e9a90;
+  --mute-2:       #626d64;
+  --line:         #2b302c;
+  --line-2:       #1e221f;
+
+  /* Main sections (hero / concept / services / footer) */
+  --dark-bg:      #0e100f;
+  --dark-fg:      #f2f5f2;
+  --dark-fg-mid:  rgba(242,245,242,0.65);
+  --dark-fg-mute: rgba(242,245,242,0.45);
+  --dark-line:    rgba(242,245,242,0.14);
+  --dark-line-2:  rgba(242,245,242,0.08);
+  --dark-accent:  #0ae448; /* neon green */
+  --accent-2:     #00bae2; /* electric cyan — gradient partner */
+
+  /* Status */
+  --color-success: #0ae448;
+  --color-error:   #ff5a5a;
+
+  /* Typography — 見出しは極太サンズ。
+     --font-serif は歴史的な変数名で、現在は見出し用スタックを指す。 */
+  --font-sans:  "Geist", "Inter Tight", "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-jp:    "Zen Kaku Gothic New", "Noto Sans JP", system-ui, sans-serif;
+  --font-serif: "Inter Tight", "Zen Kaku Gothic New", "Noto Sans JP", system-ui, sans-serif;
+  --font-mono:  "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Type scale */
+  --text-xs:    12px;
+  --text-sm:    13.5px;
+  --text-base:  16px;
+  --text-md:    17px;
+  --text-lg:    19.5px;
+  --text-xl:    24px;
+  --text-2xl:   30px;
+  --text-3xl:   37px;
+  --text-4xl:   48px;
+  --text-hero:  clamp(34px, 7.6vw, 112px);
+  --text-h2:    clamp(32px, 4.6vw, 64px);
+  --text-h3:    clamp(24px, 2.8vw, 33px);
+  --text-mark:  clamp(52px, 14vw, 168px);
+
+  --leading-tight: 1.15;
+  --leading-snug:  1.4;
+  --leading-base:  1.85;
+  --leading-mono:  1.7;
+
+  /* Layout */
+  --gutter-sp:    20px;
+  --gutter-mid:   48px;
+  --gutter-pc:    88px;
+  --container:    1440px;
+
+  --section-y-sp: 64px;
+  --section-y-pc: 120px;
+  --hero-y-sp:    96px;
+  --hero-y-pc:    180px;
+
+  /* Lines / radius */
+  --radius-0:     0;
+  --radius-sm:    4px;
+  --radius:       10px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 400ms;
+
+  /* Z-index */
+  --z-header:  100;
+  --z-overlay: 200;
+  --z-cursor:  900;
+  --z-loader:  999;
+}

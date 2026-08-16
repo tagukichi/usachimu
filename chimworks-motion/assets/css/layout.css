@@ -1,0 +1,229 @@
+/* Layout: page shell, sections, section headers, common heads. */
+
+.site {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+}
+
+.site-main {
+  flex: 1;
+}
+
+/* Sections — full-bleed dividers, large vertical padding */
+.section {
+  position: relative;
+  padding-block: var(--section-y-sp);
+  padding-inline: var(--gutter-sp);
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 720px) {
+  .section {
+    padding-block: 88px;
+    padding-inline: var(--gutter-mid);
+  }
+}
+
+@media (min-width: 1101px) {
+  .section {
+    padding-block: var(--section-y-pc);
+    padding-inline: 64px;
+  }
+}
+
+@media (min-width: 1441px) {
+  .section {
+    padding-inline: var(--gutter-pc);
+  }
+}
+
+.section--dark {
+  background: var(--dark-bg);
+  color: var(--dark-fg);
+  border-bottom: 0;
+}
+
+.section__inner {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+/* Section header (§ NN + serif title + meta) */
+.sec-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 36px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--ink);
+}
+
+@media (min-width: 720px) {
+  .sec-head {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 64px;
+    padding-bottom: 18px;
+  }
+}
+
+.section--dark .sec-head {
+  border-bottom-color: rgba(242,245,242,0.4);
+}
+
+.sec-head__l {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+@media (min-width: 720px) {
+  .sec-head__l { gap: 24px; }
+}
+
+.sec-head__num {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--dark-accent);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.section--dark .sec-head__num { color: var(--dark-accent); }
+
+.sec-head__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-h2);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.sec-head__meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--mute);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section--dark .sec-head__meta { color: rgba(242,245,242,0.5); }
+
+/* Page-head for standalone pages */
+.page-head {
+  padding-block: 80px 32px;
+}
+
+@media (min-width: 1101px) {
+  .page-head { padding-block: 120px 48px; }
+}
+
+.page-head__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--mute);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.page-head__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-h2);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Prose */
+.prose p,
+.prose ul,
+.prose ol {
+  font-size: var(--text-md);
+  color: var(--ink-3);
+  line-height: var(--leading-base);
+}
+
+.prose p + p { margin-top: 1em; }
+
+.prose ul,
+.prose ol {
+  list-style: revert;
+  padding-left: 1.5em;
+}
+
+.prose ul li,
+.prose ol li { margin-bottom: 0.4em; }
+
+.prose h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-h3);
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+}
+
+.prose h3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  margin-top: 1.8em;
+  margin-bottom: 0.4em;
+}
+
+.prose a {
+  border-bottom: 1px solid currentColor;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  padding-block: 16px;
+  padding-inline: var(--gutter-sp);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--mute);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1101px) {
+  .breadcrumb { padding-inline: 64px; }
+}
+
+.breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+.breadcrumb__item + .breadcrumb__item::before {
+  content: "/";
+  margin-right: 12px;
+  color: var(--mute-2);
+}
+
+/* Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
