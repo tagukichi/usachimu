@@ -92,11 +92,16 @@ function splitChars(root) {
   return chars;
 }
 
-/* ---- 1. ローダー ------------------------------------------------------ */
+/* ---- 1. ローダー（レトロゲーム風） ------------------------------------
+   steps イージングでゲージがブロック単位にカクカク進み、ドット絵の
+   ウサギがぴょんぴょん跳ねながらゲージ先端を走る。100% で READY! を
+   点滅させてからカーテンリフト。 */
 function initLoader(gsap, lenis, heroTl) {
   const loader = document.querySelector('[data-loader]');
   const count  = document.querySelector('[data-loader-count]');
   const bar    = document.querySelector('[data-loader-bar]');
+  const text   = document.querySelector('[data-loader-text]');
+  const sprite = document.querySelector('[data-loader-sprite]');
 
   const done = () => {
     if (lenis) lenis.start();
@@ -111,24 +116,56 @@ function initLoader(gsap, lenis, heroTl) {
   loader.classList.add('is-on');
   if (lenis) lenis.stop();
 
+  // ウサギ：その場でぴょんぴょん（走行は left で表現）
+  let hop = null;
+  if (sprite) {
+    hop = gsap.to(sprite, {
+      y: -12,
+      duration: 0.16,
+      ease: 'power1.out',
+      yoyo: true,
+      repeat: -1,
+      repeatDelay: 0.08,
+    });
+  }
+
+  const STEPS = 20;
   const state = { n: 0 };
   const tl = gsap.timeline({ onComplete: done });
 
   tl.to(state, {
     n: 100,
-    duration: 1.05,
-    ease: 'power2.inOut',
+    duration: 1.4,
+    ease: `steps(${STEPS})`,
     onUpdate: () => {
-      count.textContent = String(Math.round(state.n));
+      const n = Math.round(state.n);
+      count.textContent = String(n).padStart(3, '0');
+      if (sprite) sprite.style.left = `${n}%`;
     },
   }, 0);
-  tl.to(bar, { scaleX: 1, duration: 1.05, ease: 'power2.inOut' }, 0);
+  tl.to(bar, { width: '100%', duration: 1.4, ease: `steps(${STEPS})` }, 0);
+
+  // 100% → READY! を点滅
+  tl.add(() => {
+    if (hop) hop.pause();
+    if (text) text.textContent = 'READY!';
+  });
+  if (text) {
+    // repeat は偶数に（yoyo の反復が奇数回で終わり、表示状態で確定する）
+    tl.fromTo(text, { autoAlpha: 0 }, {
+      autoAlpha: 1,
+      duration: 0.14,
+      repeat: 4,
+      yoyo: true,
+    }, '+=0.05');
+  }
+
   tl.to(loader, {
     yPercent: -100,
-    duration: 0.75,
+    duration: 0.7,
     ease: 'power4.inOut',
     onComplete: () => loader.remove(),
-  }, '+=0.1');
+  }, '+=0.15');
 }
 
 /* ---- 2. カスタムカーソル ---------------------------------------------- */

@@ -22,9 +22,31 @@ if ( is_front_page() ) {
 <a class="screen-reader-text" href="#site-main"><?php esc_html_e( 'メインコンテンツへスキップ', 'fde-usachim' ); ?></a>
 
 <div class="loader" data-loader aria-hidden="true">
-	<span class="loader__label">CHIMWORKS — LOADING</span>
-	<span class="loader__count" data-loader-count>0</span>
-	<span class="loader__bar"><span data-loader-bar></span></span>
+	<div class="loader__inner">
+		<div class="loader__title mono" data-loader-text>NOW LOADING<span class="loader__dots">...</span></div>
+		<div class="loader__gauge-wrap">
+			<span class="loader__sprite" data-loader-sprite>
+				<svg viewBox="0 0 10 8" shape-rendering="crispEdges" aria-hidden="true">
+					<g fill="currentColor">
+						<rect x="2" y="0" width="1" height="2"/>
+						<rect x="5" y="0" width="1" height="2"/>
+						<rect x="1" y="2" width="6" height="1"/>
+						<rect x="0" y="3" width="5" height="1"/>
+						<rect x="6" y="3" width="1" height="1"/>
+						<rect x="0" y="4" width="9" height="1"/>
+						<rect x="0" y="5" width="10" height="1"/>
+						<rect x="1" y="6" width="8" height="1"/>
+						<rect x="2" y="7" width="2" height="1"/>
+						<rect x="6" y="7" width="2" height="1"/>
+					</g>
+				</svg>
+			</span>
+			<span class="loader__gauge"><span class="loader__gauge-fill" data-loader-bar></span></span>
+		</div>
+		<div class="loader__pct mono"><span data-loader-count>000</span>%</div>
+	</div>
+	<div class="loader__tip mono">TIP: SCROLL TO EXPLORE</div>
+	<div class="loader__scan" aria-hidden="true"></div>
 </div>
 
 <div class="mcursor" data-cursor aria-hidden="true">
