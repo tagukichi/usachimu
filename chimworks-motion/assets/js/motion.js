@@ -93,15 +93,13 @@ function splitChars(root) {
 }
 
 /* ---- 1. ローダー（モダンゲーム UI 風） --------------------------------
-   ヘアラインの進捗バーが滑らかに満ち、グラデーションのウサギの
-   シルエットが軽やかに駆けながらバー先端を追う。100% で LOADED に
-   切り替え、バーが一度強く光ってからフェードアウト。 */
+   ヘアラインの進捗バーが滑らかに満ちる。100% で LOADED に切り替え、
+   バーが一度強く光ってからフェードアウト。 */
 function initLoader(gsap, lenis, heroTl) {
   const loader = document.querySelector('[data-loader]');
   const count  = document.querySelector('[data-loader-count]');
   const bar    = document.querySelector('[data-loader-bar]');
   const text   = document.querySelector('[data-loader-text]');
-  const sprite = document.querySelector('[data-loader-sprite]');
 
   const done = () => {
     if (lenis) lenis.start();
@@ -116,36 +114,21 @@ function initLoader(gsap, lenis, heroTl) {
   loader.classList.add('is-on');
   if (lenis) lenis.stop();
 
-  // ウサギ：駆けるようなソフトなバウンド（走行は left で表現）
-  let gallop = null;
-  if (sprite) {
-    gallop = gsap.to(sprite, {
-      y: -8,
-      rotation: -4,
-      duration: 0.3,
-      ease: 'sine.inOut',
-      yoyo: true,
-      repeat: -1,
-    });
-  }
-
   const state = { n: 0 };
   const tl = gsap.timeline({ onComplete: done });
 
   tl.to(state, {
     n: 100,
-    duration: 1.7,
+    duration: 1.6,
     ease: 'power2.inOut',
     onUpdate: () => {
       count.textContent = String(Math.round(state.n));
-      if (sprite) sprite.style.left = `${state.n}%`;
     },
   }, 0);
-  tl.to(bar, { width: '100%', duration: 1.7, ease: 'power2.inOut' }, 0);
+  tl.to(bar, { width: '100%', duration: 1.6, ease: 'power2.inOut' }, 0);
 
   // 100%：LOADED に切り替え、バーがひと呼吸強く光る
   tl.add(() => {
-    if (gallop) gallop.pause();
     if (text) text.textContent = 'LOADED';
   });
   tl.to(bar, {

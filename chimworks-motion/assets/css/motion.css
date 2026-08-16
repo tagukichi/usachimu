@@ -64,20 +64,7 @@ html.lenis, html.lenis body { height: auto; }
 
 .loader__track-wrap {
   position: relative;
-  padding-top: 56px; /* ウサギの走行レーン */
 }
-
-/* ウサギ：バーの先端に合わせて滑らかに走る（JS が left を更新） */
-.loader__rabbit {
-  position: absolute;
-  bottom: 14px;
-  left: 0;
-  width: clamp(64px, 9vw, 96px);
-  margin-left: clamp(-48px, -4.5vw, -32px);
-  filter: drop-shadow(0 6px 18px rgba(10, 228, 72, 0.45));
-}
-
-.loader__rabbit svg { display: block; width: 100%; height: auto; }
 
 /* ヘアラインの進捗バー */
 .loader__bar {

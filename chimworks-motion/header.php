@@ -26,22 +26,6 @@ if ( is_front_page() ) {
 	<div class="loader__glow loader__glow--b" aria-hidden="true"></div>
 	<div class="loader__inner">
 		<div class="loader__track-wrap">
-			<span class="loader__rabbit" data-loader-sprite>
-				<svg viewBox="0 0 140 70" fill="none" aria-hidden="true">
-					<defs>
-						<linearGradient id="fde-rabbit-g" x1="0" y1="0" x2="1" y2="0">
-							<stop offset="0" stop-color="#0ae448"/>
-							<stop offset="1" stop-color="#00bae2"/>
-						</linearGradient>
-					</defs>
-					<g fill="url(#fde-rabbit-g)">
-						<path d="M127,22 C130,25 129,29 125,32 C119,35 112,36 105,37 C109,43 116,50 122,57 C123,59 121,61 119,59 C112,54 105,48 100,43 C88,46 74,46 62,43 C52,50 40,59 28,67 C25,69 22,68 23,65 C27,59 32,52 37,46 C30,43 26,37 25,30 C21,28 20,24 23,21 C27,18 32,17 37,16 C54,9 76,8 93,12 C102,10 110,12 116,15 C122,17 125,19 127,22 Z"/>
-						<path d="M108,15 C100,8 88,3 78,1 C74,0 72,2 75,5 C83,9 93,13 102,17 C104,18 107,17 108,15 Z"/>
-						<path d="M113,18 C104,13 94,9 85,8 C81,8 80,11 84,13 C92,16 100,19 107,21 C110,22 112,20 113,18 Z"/>
-					</g>
-					<circle cx="115" cy="21" r="2.4" fill="#0b0d0c"/>
-				</svg>
-			</span>
 			<span class="loader__bar"><span class="loader__bar-fill" data-loader-bar></span></span>
 		</div>
 		<div class="loader__meta">
