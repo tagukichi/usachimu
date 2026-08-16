@@ -32,35 +32,6 @@ $fde_lede    = (string) fde_field(
 	<div class="hero__inner">
 
 		<h1 class="hero__statement jp">
-			<span class="hero__decor hero__decor--flower" data-decor="flower" aria-hidden="true">
-				<svg viewBox="0 0 100 100" fill="none">
-					<defs>
-						<linearGradient id="fde-flower-g" x1="0" y1="0" x2="1" y2="1">
-							<stop offset="0" stop-color="#ff8709"/>
-							<stop offset="1" stop-color="#fec5fb"/>
-						</linearGradient>
-					</defs>
-					<g fill="url(#fde-flower-g)">
-						<ellipse cx="50" cy="22" rx="15" ry="21"/>
-						<ellipse cx="78" cy="50" rx="21" ry="15"/>
-						<ellipse cx="50" cy="78" rx="15" ry="21"/>
-						<ellipse cx="22" cy="50" rx="21" ry="15"/>
-					</g>
-					<circle cx="50" cy="50" r="9" fill="#0e100f"/>
-				</svg>
-			</span>
-			<span class="hero__decor hero__decor--coil" data-decor="coil" aria-hidden="true">
-				<svg viewBox="0 0 70 100" fill="none">
-					<defs>
-						<linearGradient id="fde-coil-g" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="0" stop-color="#9d95ff"/>
-							<stop offset="1" stop-color="#7c7cf8"/>
-						</linearGradient>
-					</defs>
-					<path d="M8 14 C8 4, 62 4, 62 16 C62 28, 8 26, 8 38 C8 50, 62 48, 62 60 C62 72, 8 70, 8 82 C8 94, 62 94, 62 86"
-						stroke="url(#fde-coil-g)" stroke-width="11" stroke-linecap="round"/>
-				</svg>
-			</span>
 			<span class="hero__statement-line">
 				<?php echo esc_html( $fde_stmt_l1 ); ?>
 			</span>

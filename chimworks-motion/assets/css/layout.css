@@ -74,7 +74,7 @@
 }
 
 .section--dark .sec-head {
-  border-bottom-color: rgba(242,245,242,0.4);
+  border-bottom-color: rgba(14,16,15,0.4);
 }
 
 .sec-head__l {
@@ -114,7 +114,7 @@
   text-transform: uppercase;
 }
 
-.section--dark .sec-head__meta { color: rgba(242,245,242,0.5); }
+.section--dark .sec-head__meta { color: rgba(14,16,15,0.5); }
 
 /* Page-head for standalone pages */
 .page-head {

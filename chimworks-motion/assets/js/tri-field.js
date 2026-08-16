@@ -26,7 +26,7 @@ const PALETTE = [
   [255, 215, 38],  // yellow
 ];
 
-const GREY = [82, 90, 84]; // dark slate — 色づく前の欠片
+const GREY = [193, 199, 193]; // light grey — 色づく前の欠片
 
 const COLOR_STAGGER = 320;  // ms — 1枚ごとの色づき開始の間隔
 const COLOR_DUR = 1500;     // ms — グレー→色 のブレンド時間
