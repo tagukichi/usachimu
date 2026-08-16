@@ -21,6 +21,9 @@ export function initMotion() {
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'power3.out', duration: 0.9 });
 
+  // CSS 側のフォールバック用エンターアニメーションを無効化するフラグ
+  document.documentElement.classList.add('has-motion');
+
   const lenis = initLenis(gsap, ScrollTrigger);
   initCursor(gsap);
 
@@ -151,7 +154,10 @@ function initCursor(gsap) {
   });
 }
 
-/* ---- 3a. Hero イントロ（paused で構築、ローダー後に再生） -------------- */
+/* ---- 3a. Hero イントロ（paused で構築、ローダー後に再生） --------------
+   gsap.com の "Animate anything" 風：クリーム色の極太文字が 1 文字ずつ
+   ランダム順にポップイン（back オーバーシュート）し、装飾シェイプが
+   弾みながら現れる。ホバーで文字が跳ねる。 */
 function buildHeroIntro(gsap) {
   const hero = document.querySelector('.hero');
   if (!hero) return null;
@@ -160,29 +166,76 @@ function buildHeroIntro(gsap) {
   const lede   = hero.querySelector('.hero__lede');
   const scroll = hero.querySelector('.hero__scroll');
   const globe  = hero.querySelector('.hero__globe');
+  const decors = hero.querySelectorAll('.hero__decor');
+
+  // 文字分割。グラデ clip は transform された子 span で壊れる（緑のブロブ化）
+  // ため、-em は clip をやめて各文字へ補間したソリッドカラーを与える。
+  const allChars = [];
+  lines.forEach((line) => {
+    allChars.push(...splitChars(line));
+  });
+
+  hero.querySelectorAll('.hero__statement-em').forEach((em) => {
+    em.classList.add('is-split');
+    const chars = em.querySelectorAll('.split-char');
+    const colorAt = gsap.utils.interpolate(['#abff84', '#0ae448', '#00bae2']);
+    chars.forEach((c, i) => {
+      c.style.color = colorAt(chars.length > 1 ? i / (chars.length - 1) : 0.5);
+    });
+  });
 
   const tl = gsap.timeline({ paused: true });
 
-  lines.forEach((line, i) => {
-    line.classList.add('split-line');
-    const chars = splitChars(line);
-    if (!chars.length) return;
-    tl.from(chars, {
-      yPercent: 120,
-      rotateX: -40,
+  if (allChars.length) {
+    tl.from(allChars, {
+      yPercent: () => gsap.utils.random(-140, -60),
+      rotation: () => gsap.utils.random(-28, 28),
+      scale: 0.2,
       autoAlpha: 0,
-      duration: 1.0,
-      ease: 'power4.out',
-      stagger: 0.035,
-    }, i * 0.16);
+      duration: 0.9,
+      ease: 'back.out(1.7)',
+      stagger: { each: 0.04, from: 'random' },
+    }, 0);
+  }
+
+  // 装飾シェイプ：エラスティックにポップ → ゆったり待機モーション
+  decors.forEach((decor, i) => {
+    tl.from(decor, {
+      scale: 0,
+      rotation: i % 2 ? 120 : -120,
+      autoAlpha: 0,
+      duration: 1.1,
+      ease: 'elastic.out(1, 0.5)',
+    }, 0.55 + i * 0.15);
+
+    if (decor.getAttribute('data-decor') === 'flower') {
+      gsap.to(decor, { rotation: '+=360', duration: 26, ease: 'none', repeat: -1, delay: 2 });
+    } else {
+      gsap.to(decor, { y: 10, scaleY: 0.92, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2 });
+    }
   });
 
-  if (lede)   tl.from(lede,   { y: 30, autoAlpha: 0, duration: 0.9 }, '-=0.55');
+  if (lede)   tl.from(lede,   { y: 30, autoAlpha: 0, duration: 0.9 }, '-=0.5');
   if (scroll) tl.from(scroll, { autoAlpha: 0, duration: 0.8 }, '-=0.4');
   if (globe) {
     // 配置 transform / opacity は CSS の --fx-* 変数経由（衝突回避）
     tl.fromTo(globe, { '--fx-fade': 0 }, { '--fx-fade': 1, duration: 1.6, ease: 'power2.out' }, 0.35);
   }
+
+  // ホバーで文字が跳ねる（PC のみ）
+  if (window.matchMedia('(pointer: fine)').matches) {
+    allChars.forEach((ch) => {
+      let busy = false;
+      ch.addEventListener('mouseenter', () => {
+        if (busy) return;
+        busy = true;
+        gsap.timeline({ onComplete: () => { busy = false; } })
+          .to(ch, { yPercent: -22, scale: 1.12, rotation: gsap.utils.random(-10, 10), duration: 0.16, ease: 'power2.out' })
+          .to(ch, { yPercent: 0, scale: 1, rotation: 0, duration: 0.9, ease: 'elastic.out(1, 0.35)' });
+      });
+    });
+  }
+
   return tl;
 }
 
