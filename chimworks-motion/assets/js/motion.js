@@ -27,6 +27,16 @@ export function initMotion() {
   const lenis = initLenis(gsap, ScrollTrigger);
   initCursor(gsap);
 
+  // モバイル Safari 等はリロード時に前回のスクロール位置を復元する。
+  // ピン演出（scrub）が途中の進行度から初期化されるとフェード用
+  // トゥイーンが誤った開始値をキャプチャし、FV の球体が表示されなく
+  // なるため、FV のあるページは常にトップから開始する。
+  if (document.querySelector('.hero') && 'scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+  }
+
   const heroTl = buildHeroIntro(gsap); // paused — loader 完了後に再生
   initLoader(gsap, lenis, heroTl);
 
@@ -258,7 +268,14 @@ function heroPin(gsap) {
     '--fx-x': () => (isPc() ? `${measureOffset().toFixed(1)}px` : '0px'),
     duration: 1,
   }, 0);
-  tl.to(globe, { '--fx-fade': 0, duration: 0.3, overwrite: 'auto' }, 0.62);
+  // fromTo で両端を明示：初回描画がどの進行度で起きても開始値 1 が保証され、
+  // トップへ戻れば球体が必ず再表示される
+  tl.fromTo(
+    globe,
+    { '--fx-fade': 1 },
+    { '--fx-fade': 0, duration: 0.3, immediateRender: false, overwrite: 'auto' },
+    0.62
+  );
 
   if (inner) {
     tl.to(inner, { y: -80, autoAlpha: 0, skewY: -2, duration: 0.55 }, 0);

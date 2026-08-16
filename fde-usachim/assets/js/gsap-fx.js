@@ -20,6 +20,14 @@ export function initGsapFx() {
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'power3.out', duration: 0.9 });
 
+  // モバイル Safari 等はリロード時に前回のスクロール位置を復元する。
+  // ピン演出（scrub）が途中の進行度から初期化されると球体が表示され
+  // なくなるため、FV のあるページは常にトップから開始する。
+  if (document.querySelector('.hero') && 'scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  }
+
   heroIntro(gsap);
   heroPin(gsap, ScrollTrigger);
   sectionHeads(gsap);
@@ -104,8 +112,15 @@ function heroPin(gsap, ScrollTrigger) {
     '--fx-x': () => (isPc() ? `${measureOffset().toFixed(1)}px` : '0px'),
     duration: 1,
   }, 0);
+  // fromTo で両端を明示：初回描画がどの進行度で起きても開始値 1 が保証され、
+  // トップへ戻れば球体が必ず再表示される。
   // overwrite:'auto' — イントロの --fx-fade トゥイーンが残っていれば停止させる
-  tl.to(globe, { '--fx-fade': 0, duration: 0.3, overwrite: 'auto' }, 0.62);
+  tl.fromTo(
+    globe,
+    { '--fx-fade': 1 },
+    { '--fx-fade': 0, duration: 0.3, immediateRender: false, overwrite: 'auto' },
+    0.62
+  );
 
   // Hero テキスト：上へ抜けながら退場（前半）
   if (inner) {
