@@ -19,10 +19,26 @@ add_action(
 			null
 		);
 
+		// GSAP（テーマ同梱・自己ホスト）。main.js より先に読み込む。
+		wp_enqueue_script(
+			'fde-gsap',
+			fde_asset_url( 'assets/js/vendor/gsap.min.js' ),
+			[],
+			'3.12.5',
+			true
+		);
+		wp_enqueue_script(
+			'fde-gsap-scrolltrigger',
+			fde_asset_url( 'assets/js/vendor/ScrollTrigger.min.js' ),
+			[ 'fde-gsap' ],
+			'3.12.5',
+			true
+		);
+
 		wp_enqueue_script(
 			'fde-usachim',
 			fde_asset_url( 'assets/js/main.js' ),
-			[],
+			[ 'fde-gsap', 'fde-gsap-scrolltrigger' ],
 			null,
 			true
 		);
