@@ -92,10 +92,10 @@ function splitChars(root) {
   return chars;
 }
 
-/* ---- 1. ローダー（レトロゲーム風） ------------------------------------
-   steps イージングでゲージがブロック単位にカクカク進み、ドット絵の
-   ウサギがぴょんぴょん跳ねながらゲージ先端を走る。100% で READY! を
-   点滅させてからカーテンリフト。 */
+/* ---- 1. ローダー（モダンゲーム UI 風） --------------------------------
+   ヘアラインの進捗バーが滑らかに満ち、グラデーションのウサギの
+   シルエットが軽やかに駆けながらバー先端を追う。100% で LOADED に
+   切り替え、バーが一度強く光ってからフェードアウト。 */
 function initLoader(gsap, lenis, heroTl) {
   const loader = document.querySelector('[data-loader]');
   const count  = document.querySelector('[data-loader-count]');
@@ -116,56 +116,54 @@ function initLoader(gsap, lenis, heroTl) {
   loader.classList.add('is-on');
   if (lenis) lenis.stop();
 
-  // ウサギ：その場でぴょんぴょん（走行は left で表現）
-  let hop = null;
+  // ウサギ：駆けるようなソフトなバウンド（走行は left で表現）
+  let gallop = null;
   if (sprite) {
-    hop = gsap.to(sprite, {
-      y: -12,
-      duration: 0.16,
-      ease: 'power1.out',
+    gallop = gsap.to(sprite, {
+      y: -8,
+      rotation: -4,
+      duration: 0.3,
+      ease: 'sine.inOut',
       yoyo: true,
       repeat: -1,
-      repeatDelay: 0.08,
     });
   }
 
-  const STEPS = 20;
   const state = { n: 0 };
   const tl = gsap.timeline({ onComplete: done });
 
   tl.to(state, {
     n: 100,
-    duration: 1.4,
-    ease: `steps(${STEPS})`,
+    duration: 1.7,
+    ease: 'power2.inOut',
     onUpdate: () => {
-      const n = Math.round(state.n);
-      count.textContent = String(n).padStart(3, '0');
-      if (sprite) sprite.style.left = `${n}%`;
+      count.textContent = String(Math.round(state.n));
+      if (sprite) sprite.style.left = `${state.n}%`;
     },
   }, 0);
-  tl.to(bar, { width: '100%', duration: 1.4, ease: `steps(${STEPS})` }, 0);
+  tl.to(bar, { width: '100%', duration: 1.7, ease: 'power2.inOut' }, 0);
 
-  // 100% → READY! を点滅
+  // 100%：LOADED に切り替え、バーがひと呼吸強く光る
   tl.add(() => {
-    if (hop) hop.pause();
-    if (text) text.textContent = 'READY!';
+    if (gallop) gallop.pause();
+    if (text) text.textContent = 'LOADED';
   });
-  if (text) {
-    // repeat は偶数に（yoyo の反復が奇数回で終わり、表示状態で確定する）
-    tl.fromTo(text, { autoAlpha: 0 }, {
-      autoAlpha: 1,
-      duration: 0.14,
-      repeat: 4,
-      yoyo: true,
-    }, '+=0.05');
-  }
+  tl.to(bar, {
+    boxShadow: '0 0 42px rgba(10, 228, 72, 1)',
+    duration: 0.22,
+    yoyo: true,
+    repeat: 1,
+    ease: 'power2.inOut',
+  }, '+=0.05');
 
+  // フェード＋わずかなスケールで本編へ（モダンゲームのシーン遷移風）
   tl.to(loader, {
-    yPercent: -100,
-    duration: 0.7,
-    ease: 'power4.inOut',
+    autoAlpha: 0,
+    scale: 1.04,
+    duration: 0.6,
+    ease: 'power2.inOut',
     onComplete: () => loader.remove(),
-  }, '+=0.15');
+  }, '+=0.1');
 }
 
 /* ---- 2. カスタムカーソル ---------------------------------------------- */
