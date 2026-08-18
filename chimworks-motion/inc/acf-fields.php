@@ -135,6 +135,17 @@ add_action(
 		];
 		$top_fields[] = fde_acf_textarea( 'svc_web_hp_desc', 'svc_web_hp_desc', __( 'ホームページ制作 — 説明', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_textarea( 'svc_sys_desc', 'svc_sys_desc', __( 'システム開発・アプリ開発 — 説明', 'fde-usachim' ), 3 );
+		$top_fields[] = [
+			'key'           => 'field_fde_chousoku_show',
+			'label'         => __( '調速（自社サービス）— セクションを表示', 'fde-usachim' ),
+			'name'          => 'chousoku_show',
+			'type'          => 'true_false',
+			'ui'            => 1,
+			'ui_on_text'    => __( '表示', 'fde-usachim' ),
+			'ui_off_text'   => __( '非表示', 'fde-usachim' ),
+			'default_value' => 1,
+			'instructions'  => __( 'オフにすると Service 内の調速フィーチャー枠をまるごと非表示にします。', 'fde-usachim' ),
+		];
 		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '調速（自社サービス）— 説明文', 'fde-usachim' ), 3 );
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_logo',

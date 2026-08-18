@@ -24,6 +24,8 @@ $fde_sys_desc = (string) fde_field(
 	'svc_sys_desc',
 	'業務システム・Webアプリ・API連携まで、現場の課題に合わせてゼロから設計・開発します。生成AIやMCPサーバーを組み込んだ、次世代のアプリケーション開発も得意としています。'
 );
+// 調速フィーチャーの表示切替（ACF のトグル。未設定時は表示）
+$fde_chousoku_show = (bool) fde_field( 'chousoku_show', true );
 $fde_chousoku_desc = (string) fde_field(
 	'chousoku_desc',
 	'不動産の物件調査をスムーズに行うための、AI搭載アプリ。物件情報の収集・整理を自動化し、調査業務にかかる時間を大幅に短縮します。'
@@ -103,6 +105,7 @@ foreach ( [ 1, 2, 3 ] as $n ) {
 			</div>
 
 			<!-- ============ 自社サービス：調速 フィーチャー ============ -->
+			<?php if ( $fde_chousoku_show ) : ?>
 			<div class="svc-feature glass">
 				<div class="svc-feature__grid">
 					<div class="svc-feature__brand">
@@ -127,6 +130,7 @@ foreach ( [ 1, 2, 3 ] as $n ) {
 					</div>
 				</div>
 			</div>
+			<?php endif; ?>
 		</article>
 
 		<!-- ============ Block 2 : 業務効率化支援 ============ -->
