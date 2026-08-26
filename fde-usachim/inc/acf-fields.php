@@ -202,6 +202,34 @@ add_action(
 		$top_fields[] = fde_acf_textarea( 'contact_note', 'contact_note', __( 'Contact 補足', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_text( 'cf7_shortcode_top', 'cf7_shortcode', __( 'CF7 ショートコード', 'fde-usachim' ), '[contact-form-7 id="123" title="お問い合わせ"]' );
 
+		// ---------- Footer 会社概要 ----------
+		// フッターは全ページ共通だが、ACF 無料版には options ページが
+		// ないため、フロントページのフィールドとして登録する
+		// （fde_field() は常に page_on_front を読むため全ページで機能する）。
+		$top_fields[] = fde_acf_tab( 'company', __( 'フッター会社概要', 'fde-usachim' ) );
+		$top_fields[] = [
+			'key'           => 'field_fde_company_show',
+			'label'         => __( 'フッターに会社概要を表示', 'fde-usachim' ),
+			'name'          => 'company_show',
+			'type'          => 'true_false',
+			'ui'            => 1,
+			'ui_on_text'    => __( '表示', 'fde-usachim' ),
+			'ui_off_text'   => __( '非表示', 'fde-usachim' ),
+			'default_value' => 0,
+			'instructions'  => __( '入力済みの項目だけがフッターに並びます。', 'fde-usachim' ),
+		];
+		$top_fields[] = fde_acf_text( 'company_heading', 'company_heading', __( '見出し', 'fde-usachim' ), '会社概要' );
+		$top_fields[] = fde_acf_text( 'company_name',    'company_name',    __( '商号', 'fde-usachim' ), '合同会社CHIM WORKS' );
+		$top_fields[] = fde_acf_text( 'company_founded', 'company_founded', __( '設立', 'fde-usachim' ), '2026年8月' );
+		$top_fields[] = fde_acf_text( 'company_ceo',     'company_ceo',     __( '代表者', 'fde-usachim' ), '代表社員 ○○ ○○' );
+		$top_fields[] = fde_acf_text( 'company_capital', 'company_capital', __( '資本金', 'fde-usachim' ), '1,000,000円' );
+		$top_fields[] = fde_acf_textarea( 'company_address', 'company_address', __( '所在地', 'fde-usachim' ), 2 );
+		$top_fields[] = fde_acf_textarea( 'company_business', 'company_business', __( '事業内容', 'fde-usachim' ), 3 );
+		foreach ( [ 1, 2 ] as $n ) {
+			$top_fields[] = fde_acf_text( "company_extra_{$n}_k", "company_extra_{$n}_k", sprintf( __( '自由項目 %d — 見出し', 'fde-usachim' ), $n ), '取引銀行' );
+			$top_fields[] = fde_acf_text( "company_extra_{$n}_v", "company_extra_{$n}_v", sprintf( __( '自由項目 %d — 内容', 'fde-usachim' ), $n ) );
+		}
+
 		acf_add_local_field_group(
 			[
 				'key'      => 'group_fde_front_page',

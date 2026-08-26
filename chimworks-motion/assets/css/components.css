@@ -498,3 +498,55 @@ body.is-nav-open { overflow: hidden; }
   color: var(--dark-fg);
   background: transparent;
 }
+
+/* ============================================================
+   Footer — 会社概要
+   ============================================================ */
+.site-footer__company {
+  padding-top: 32px;
+  margin-top: 32px;
+  border-top: 1px solid var(--dark-line);
+}
+
+.site-footer__company-head {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dark-fg-mute);
+  margin: 0 0 18px;
+  font-weight: 500;
+}
+
+.company-list {
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+.company-list__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px 24px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--dark-line-2);
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+.company-list__row:last-child { border-bottom: 0; }
+
+.company-list__k {
+  color: var(--dark-fg-mute);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.company-list__v {
+  margin: 0;
+  color: var(--dark-fg);
+}
+
+@media (min-width: 720px) {
+  .company-list__row { grid-template-columns: 132px minmax(0, 1fr); }
+  .company-list__k { font-size: 13px; }
+}

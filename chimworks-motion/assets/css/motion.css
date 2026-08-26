@@ -731,3 +731,27 @@ html.has-motion .nav-panel[data-nav-open="true"] {
 html.has-motion .hero__grid {
   transform: translate(var(--px, 0px), var(--py, 0px));
 }
+
+/* ---- メニュー展開中のカーソル ----------------------------------------
+   パネルがネオングリーンで塗りつぶされるため、同色のカーソルは
+   背景に溶けて見えなくなる。開いている間だけ白に反転させる。 */
+body.is-nav-open .mcursor__dot {
+  background: #ffffff;
+}
+
+body.is-nav-open .mcursor__ring {
+  border-color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+}
+
+body.is-nav-open .mcursor.is-hover .mcursor__ring {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+body.is-nav-open .mcursor.is-label .mcursor__ring {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+body.is-nav-open .mcursor__label { color: #0e100f; }

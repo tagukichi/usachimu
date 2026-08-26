@@ -135,6 +135,24 @@ function initLoader(gsap, lenis, heroTl) {
     return;
   }
 
+  // ローダーはセッションの最初の 1 回だけ。ページ遷移のたびに
+  // 再生されると煩わしいため、2 回目以降は本編から始める。
+  // （プライベートモード等で sessionStorage が落ちても動くように try/catch）
+  const SEEN = 'chimworks:loaded';
+  let seen = false;
+  try {
+    seen = window.sessionStorage.getItem(SEEN) === '1';
+    window.sessionStorage.setItem(SEEN, '1');
+  } catch (e) {
+    seen = false;
+  }
+
+  if (seen) {
+    loader.remove();
+    done();
+    return;
+  }
+
   loader.classList.add('is-on');
   if (lenis) lenis.stop();
 
