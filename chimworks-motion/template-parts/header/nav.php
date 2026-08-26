@@ -11,6 +11,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $fde_nav       = fde_main_nav_items();
 $fde_cta_label = (string) fde_option( 'cta_label', 'お問い合わせ' );
+
+// PC はこのナビだけが導線になる（ハンバーガー / CTA は CSS で非表示）
+// ため、Contact を末尾に加えて問い合わせ動線を確保する。
+$fde_nav[] = [
+	'label' => 'Contact',
+	'url'   => home_url( '/' ) . '#contact',
+];
 ?>
 <nav class="site-nav" aria-label="<?php esc_attr_e( 'プライマリ', 'fde-usachim' ); ?>">
 	<?php foreach ( $fde_nav as $item ) : ?>
