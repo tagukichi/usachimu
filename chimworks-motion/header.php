@@ -37,9 +37,13 @@ if ( is_front_page() ) {
 </div>
 
 <div class="mcursor" data-cursor aria-hidden="true">
-	<span class="mcursor__ring" data-cursor-ring></span>
+	<span class="mcursor__ring" data-cursor-ring>
+		<span class="mcursor__label mono" data-cursor-label></span>
+	</span>
 	<span class="mcursor__dot" data-cursor-dot></span>
 </div>
+
+<div class="page-curtain" data-curtain aria-hidden="true"></div>
 
 <header class="site-header" role="banner">
 	<div class="site-header__inner">

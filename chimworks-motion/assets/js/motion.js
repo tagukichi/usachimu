@@ -10,6 +10,19 @@
 // GSAP 不在・prefers-reduced-motion では false を返し、main.js が
 // 従来の IntersectionObserver 実装へフォールバックする。
 
+/* ---- モーショントークン（motion.css の --mo-* と対になる値） ----------
+   duration / easing / stagger をここに集約し、サイト全体の演出が
+   同じリズムで鳴るようにする。 */
+const MO = {
+  fast: 0.2,   // ホバー反応・カーソル・下線
+  base: 0.6,   // リビール・カード登場
+  hero: 1.1,   // FV・メニュー・ページ遷移
+  out:  'expo.out',        // 標準の登場
+  snap: 'back.out(1.7)',   // ポップな止まり際（要所限定）
+  stagChar: 0.03,
+  stagCard: 0.08,
+};
+
 export function initMotion() {
   const gsap = window.gsap;
   const ScrollTrigger = window.ScrollTrigger;
@@ -19,7 +32,7 @@ export function initMotion() {
   if (reduce) return false;
 
   gsap.registerPlugin(ScrollTrigger);
-  gsap.defaults({ ease: 'power3.out', duration: 0.9 });
+  gsap.defaults({ ease: MO.out, duration: MO.base });
 
   // CSS 側のフォールバック用エンターアニメーションを無効化するフラグ
   document.documentElement.classList.add('has-motion');
@@ -49,6 +62,17 @@ export function initMotion() {
   parallax(gsap);
   magneticButtons(gsap);
   anchorScroll(lenis);
+
+  // Phase 1 — 手触り
+  cardTilt(gsap);
+  // Phase 2 — セクションの見せ場
+  heroPointerParallax(gsap);
+  conceptScrub(ScrollTrigger);
+  aboutTimeline(gsap, ScrollTrigger);
+  bigCta(gsap);
+  // Phase 3 — サイト体験の接続
+  fullscreenMenu(gsap, lenis);
+  pageTransition(gsap);
 
   return true;
 }
@@ -174,10 +198,35 @@ function initCursor(gsap) {
   }, { passive: true });
 
   const hoverables = 'a, button, .btn, .site-cta, [data-nav-toggle]';
+
+  // 対象ごとにカーソルのラベルを変える（触れるものの意味を伝える）
+  const label = document.querySelector('[data-cursor-label]');
+  const LABELS = [
+    ['.blog2-card, .blog-card, .side-post__link', 'READ'],
+    ['a[target="_blank"]', 'OPEN ↗'],
+    ['[data-slider], .svc-work', 'DRAG'],
+  ];
+
+  const labelFor = (target) => {
+    for (const [sel, text] of LABELS) {
+      if (target.closest(sel)) return text;
+    }
+    return '';
+  };
+
   document.addEventListener('mouseover', (e) => {
+    const text = label ? labelFor(e.target) : '';
+    if (text) {
+      label.textContent = text;
+      wrap.classList.add('is-label');
+      wrap.classList.remove('is-hover');
+      return;
+    }
     if (e.target.closest(hoverables)) wrap.classList.add('is-hover');
   });
+
   document.addEventListener('mouseout', (e) => {
+    if (label && labelFor(e.target)) wrap.classList.remove('is-label');
     if (e.target.closest(hoverables)) wrap.classList.remove('is-hover');
   });
 }
@@ -570,5 +619,319 @@ function anchorScroll(lenis) {
       e.preventDefault();
       lenis.scrollTo(target, { offset: -72, duration: 1.4 });
     });
+  });
+}
+
+/* ============================================================
+   PHASE 1 — 手触りの底上げ
+   ============================================================ */
+
+/* ---- カードの 3D チルト＋光沢スイープ（PC のみ） ---------------------- */
+function cardTilt(gsap) {
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  const cards = document.querySelectorAll('.svc-sub, .svc-feature, .blog2-card, .blog-card');
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
+    card.classList.add('tilt');
+    // perspective は親ではなくカード自身に持たせ、レイアウトに影響させない
+    gsap.set(card, { transformPerspective: 900 });
+
+    const rotX = gsap.quickTo(card, 'rotationX', { duration: 0.5, ease: 'power3.out' });
+    const rotY = gsap.quickTo(card, 'rotationY', { duration: 0.5, ease: 'power3.out' });
+
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      rotY((px - 0.5) * 7);
+      rotX((0.5 - py) * 7);
+      card.style.setProperty('--tilt-mx', `${(px * 100).toFixed(1)}%`);
+      card.style.setProperty('--tilt-my', `${(py * 100).toFixed(1)}%`);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      rotX(0);
+      rotY(0);
+    });
+  });
+}
+
+/* ============================================================
+   PHASE 2 — セクションの見せ場
+   ============================================================ */
+
+/* ---- FV：マウス追従パララックス（球体とオーロラが逆方向に微視差） ----- */
+function heroPointerParallax(gsap) {
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  const hero  = document.querySelector('.hero');
+  const globe = document.querySelector('.hero__globe');
+  // オーロラは CSS keyframe が transform を占有しているため、
+  // 視差レイヤーにはグリッド層を使う（球体と逆方向に動かして奥行きを出す）
+  const grid  = document.querySelector('.hero__grid');
+  if (!hero || (!globe && !grid)) return;
+
+  // 球体は --fx-* 経由で配置済みのため、ごく浅い translate を
+  // 別変数（--px/--py）で足し込む（CSS 側で transform に合成）
+  const layers = [];
+  if (globe) layers.push({ el: globe, amt: -14 });
+  if (grid)  layers.push({ el: grid,  amt: 22 });
+
+  const setters = layers.map(({ el, amt }) => ({
+    amt,
+    x: gsap.quickSetter(el, '--px', 'px'),
+    y: gsap.quickSetter(el, '--py', 'px'),
+  }));
+
+  const state = { mx: 0, my: 0 };
+
+  hero.addEventListener('mousemove', (e) => {
+    const r = hero.getBoundingClientRect();
+    state.mx = (e.clientX - r.left) / r.width - 0.5;
+    state.my = (e.clientY - r.top) / r.height - 0.5;
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => {
+    state.mx = 0;
+    state.my = 0;
+  });
+
+  // 慣性つきで追従
+  const cur = { x: 0, y: 0 };
+  gsap.ticker.add(() => {
+    cur.x += (state.mx - cur.x) * 0.06;
+    cur.y += (state.my - cur.y) * 0.06;
+    setters.forEach((s) => {
+      s.x(cur.x * s.amt);
+      s.y(cur.y * s.amt);
+    });
+  });
+}
+
+/* ---- Concept：スクラブ・テキストリビール ------------------------------
+   本文を単語単位に分割し、スクロール進行に応じて薄グレー→本来色へ
+   順に染めていく（読み進む実感を動きにする）。 */
+function conceptScrub(ScrollTrigger) {
+  const body = document.querySelector('.concept__body');
+  if (!body) return;
+
+  // テキストノードを単語（日本語は文字）単位で span 化
+  const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  const words = [];
+  nodes.forEach((node) => {
+    const text = node.nodeValue;
+    if (!text.trim()) return;
+    const frag = document.createDocumentFragment();
+    // 英単語はまとめ、日本語は 1 文字ずつ（自然な改行位置を保つ）
+    const parts = text.match(/[A-Za-z0-9._%+-]+|\s+|[^A-Za-z0-9\s]/g) || [];
+    parts.forEach((part) => {
+      if (!part.trim()) {
+        frag.appendChild(document.createTextNode(part));
+        return;
+      }
+      const span = document.createElement('span');
+      span.className = 'scrub-word';
+      span.textContent = part;
+      frag.appendChild(span);
+      words.push(span);
+    });
+    node.parentNode.replaceChild(frag, node);
+  });
+
+  if (!words.length) return;
+
+  ScrollTrigger.create({
+    trigger: body,
+    start: 'top 78%',
+    end: 'bottom 62%',
+    scrub: true,
+    onUpdate: (self) => {
+      const lit = Math.round(self.progress * words.length);
+      words.forEach((w, i) => w.classList.toggle('is-lit', i < lit));
+    },
+  });
+}
+
+/* ---- About：タイムライン描画（線が伸び、ドットが順に点灯） ------------ */
+function aboutTimeline(gsap, ScrollTrigger) {
+  const tl = document.querySelector('.about2__tl');
+  if (!tl) return;
+
+  const rows = tl.querySelectorAll('.about2__tl-row');
+  const setProgress = gsap.quickSetter(tl, '--tl-progress');
+
+  ScrollTrigger.create({
+    trigger: tl,
+    start: 'top 80%',
+    end: 'bottom 70%',
+    scrub: 0.4,
+    onUpdate: (self) => {
+      setProgress(self.progress);
+      const lit = Math.ceil(self.progress * rows.length);
+      rows.forEach((row, i) => row.classList.toggle('is-lit', i < lit));
+    },
+  });
+}
+
+/* ---- Contact：巨大タイポ CTA（ホバーで文字が波打つ） ------------------ */
+function bigCta(gsap) {
+  const text = document.querySelector('[data-bigcta-text]');
+  const cta  = document.querySelector('[data-bigcta]');
+  if (!text || !cta) return;
+
+  const chars = [];
+  const source = text.textContent;
+  text.textContent = '';
+  Array.from(source).forEach((ch) => {
+    const span = document.createElement('span');
+    span.className = 'bigcta__char';
+    span.textContent = ch;
+    text.appendChild(span);
+    chars.push(span);
+  });
+
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  let wave = null;
+  cta.addEventListener('mouseenter', () => {
+    if (wave) wave.kill();
+    wave = gsap.fromTo(
+      chars,
+      { yPercent: 0 },
+      {
+        yPercent: -18,
+        duration: 0.34,
+        ease: 'sine.inOut',
+        stagger: { each: 0.035, yoyo: true, repeat: 1 },
+      }
+    );
+  });
+}
+
+/* ============================================================
+   PHASE 3 — サイト体験の接続
+   ============================================================ */
+
+/* ---- フルスクリーンメニュー -------------------------------------------
+   開閉の状態管理（ARIA / フォーカストラップ / ESC）は nav.js が担当。
+   ここは data-nav-open の変化を監視して演出だけを担う。 */
+function fullscreenMenu(gsap, lenis) {
+  const panel = document.querySelector('[data-nav-panel]');
+  if (!panel) return;
+
+  const curtain = panel.querySelector('.nav-panel__curtain');
+  const items   = panel.querySelectorAll('.nav-panel__item a');
+  const meta    = panel.querySelector('.nav-panel__meta');
+  const close   = panel.querySelector('.nav-panel__close');
+
+  const hidden = { yPercent: 110, autoAlpha: 0 };
+  gsap.set([...items], hidden);
+  if (meta) gsap.set(meta, { autoAlpha: 0, y: 20 });
+  if (close) gsap.set(close, { autoAlpha: 0, rotate: -90 });
+
+  let tl = null;
+
+  const open = () => {
+    if (tl) tl.kill();
+    if (lenis) lenis.stop();
+    tl = gsap.timeline();
+    if (curtain) {
+      tl.fromTo(curtain,
+        { scaleY: 0, transformOrigin: 'bottom center' },
+        { scaleY: 1, duration: 0.55, ease: 'power4.inOut' }, 0);
+    }
+    tl.to(items, {
+      yPercent: 0,
+      autoAlpha: 1,
+      duration: 0.7,
+      ease: MO.out,
+      stagger: 0.06,
+    }, 0.3);
+    if (meta)  tl.to(meta,  { autoAlpha: 1, y: 0, duration: 0.5 }, 0.6);
+    if (close) tl.to(close, { autoAlpha: 1, rotate: 0, duration: 0.5 }, 0.4);
+  };
+
+  const shut = () => {
+    if (tl) tl.kill();
+    tl = gsap.timeline({ onComplete: () => { if (lenis) lenis.start(); } });
+    tl.to([...items].reverse(), {
+      yPercent: -60,
+      autoAlpha: 0,
+      duration: 0.32,
+      ease: 'power3.in',
+      stagger: 0.035,
+    }, 0);
+    if (meta)  tl.to(meta,  { autoAlpha: 0, duration: 0.2 }, 0);
+    if (close) tl.to(close, { autoAlpha: 0, duration: 0.2 }, 0.1);
+    if (curtain) {
+      tl.to(curtain, {
+        scaleY: 0,
+        transformOrigin: 'top center',
+        duration: 0.5,
+        ease: 'power4.inOut',
+        onComplete: () => gsap.set(items, hidden),
+      }, 0.28);
+    } else {
+      tl.add(() => gsap.set(items, hidden));
+    }
+  };
+
+  const observer = new MutationObserver(() => {
+    panel.getAttribute('data-nav-open') === 'true' ? open() : shut();
+  });
+  observer.observe(panel, { attributes: true, attributeFilter: ['data-nav-open'] });
+}
+
+/* ---- ページ遷移カーテン -----------------------------------------------
+   内部リンクのクリックでカーテンを閉じてから遷移し、到着後に開く。
+   WordPress の MPA 構成のまま「ひとつのサイト体験」に見せる。 */
+function pageTransition(gsap) {
+  const curtain = document.querySelector('[data-curtain]');
+  if (!curtain) return;
+
+  // 到着時：カーテンを上へ抜く
+  gsap.set(curtain, { scaleY: 1, transformOrigin: 'top center' });
+  gsap.to(curtain, {
+    scaleY: 0,
+    duration: 0.6,
+    ease: 'power4.inOut',
+    onComplete: () => gsap.set(curtain, { scaleY: 0 }),
+  });
+
+  const isInternal = (a) => {
+    if (!a || !a.href) return false;
+    if (a.target === '_blank' || a.hasAttribute('download')) return false;
+    const url = new URL(a.href, window.location.href);
+    if (url.origin !== window.location.origin) return false;
+    // 同一ページ内アンカーは対象外（Lenis のスムーススクロールに任せる）
+    if (url.pathname === window.location.pathname && url.hash) return false;
+    if (url.href === window.location.href) return false;
+    return !/\.(zip|pdf|jpe?g|png|gif|svg|webp|mp4)$/i.test(url.pathname);
+  };
+
+  document.addEventListener('click', (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    const a = e.target.closest('a');
+    if (!isInternal(a)) return;
+
+    e.preventDefault();
+    const href = a.href;
+    gsap.set(curtain, { transformOrigin: 'bottom center' });
+    gsap.to(curtain, {
+      scaleY: 1,
+      duration: 0.5,
+      ease: 'power4.inOut',
+      onComplete: () => { window.location.href = href; },
+    });
+  });
+
+  // ブラウザバックで bfcache から復帰したときにカーテンが残らないように
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) gsap.set(curtain, { scaleY: 0 });
   });
 }

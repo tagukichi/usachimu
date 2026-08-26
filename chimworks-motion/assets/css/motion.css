@@ -2,6 +2,17 @@
    ローダー、カスタムカーソル、マーキー、文字分割、巨大タイポの
    オーバーライドなど「動き」のための専用スタイル。 */
 
+/* ---- モーショントークン（全演出の共通言語） -------------------------
+   JS 側（motion.js の MO 定数）と対になる値。CSS トランジションは
+   ここを参照し、サイト全体で同じリズムを鳴らす。 */
+:root {
+  --mo-fast: 0.2s;   /* ホバー反応・カーソル・下線 */
+  --mo-base: 0.6s;   /* リビール・カード登場 */
+  --mo-hero: 1.1s;   /* FV・メニュー・ページ遷移 */
+  --mo-out:  cubic-bezier(0.16, 1, 0.3, 1);      /* expo.out 相当 */
+  --mo-snap: cubic-bezier(0.34, 1.56, 0.64, 1);  /* back.out 相当 */
+}
+
 /* ---- Lenis smooth scroll ------------------------------------------- */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
@@ -292,4 +303,431 @@ html.has-motion .hero__statement-line {
   .loader,
   .mcursor { display: none !important; }
   .marquee__track { transform: none !important; }
+}
+
+/* ============================================================
+   PHASE 1 — 手触りの底上げ
+   ============================================================ */
+
+/* ---- リンク下線：左へ抜けて右から戻る（サイト共通言語） -------------- */
+.site-nav a,
+.nav-panel__meta-v,
+.contact__channel-v a,
+.blog2-more__link,
+.prose a,
+.single-blog__side a {
+  position: relative;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  transition: background-size var(--mo-fast) var(--mo-out);
+  border-bottom: 0; /* 既存の border 下線があれば無効化 */
+}
+
+.site-nav a { background-size: 0 1px; background-position: 100% 100%; }
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  opacity: 1;
+}
+
+.nav-panel__meta-v:hover,
+.contact__channel-v a:hover,
+.blog2-more__link:hover,
+.prose a:hover,
+.single-blog__side a:hover {
+  background-size: 0 1px;
+  background-position: 100% 100%;
+}
+
+/* ---- カードの 3D チルト＋光沢スイープ -------------------------------- */
+.tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* 光沢：カーソル位置（--tilt-mx/my）を中心にやわらかく走る */
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    260px circle at var(--tilt-mx, 50%) var(--tilt-my, 50%),
+    rgba(10, 228, 72, 0.16),
+    transparent 62%
+  );
+  transition: opacity var(--mo-fast) var(--mo-out);
+}
+
+.tilt:hover::after { opacity: 1; }
+
+/* ---- カーソルのラベル（READ / OPEN ↗ / DRAG） ------------------------ */
+.mcursor__ring {
+  display: grid;
+  place-items: center;
+}
+
+.mcursor__label {
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  color: #0e100f;
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity var(--mo-fast) var(--mo-out);
+}
+
+.mcursor.is-label .mcursor__ring {
+  width: 74px;
+  height: 74px;
+  background: var(--dark-accent);
+  border-color: var(--dark-accent);
+}
+
+.mcursor.is-label .mcursor__label { opacity: 1; }
+.mcursor.is-label .mcursor__dot   { opacity: 0; }
+
+.mcursor__dot { transition: opacity var(--mo-fast) var(--mo-out); }
+
+/* ---- Blog カードのホバー --------------------------------------------- */
+.blog2-card {
+  transition: transform var(--mo-base) var(--mo-out);
+}
+
+.blog2-card:hover { transform: translateY(-6px); }
+
+.blog2-card__date {
+  display: inline-block;
+  transition: transform var(--mo-base) var(--mo-out),
+              color var(--mo-fast) var(--mo-out);
+}
+
+.blog2-card:hover .blog2-card__date {
+  transform: translateX(6px);
+  color: var(--accent-text);
+}
+
+/* ---- 「すべての記事を見る」矢印の走り抜け ---------------------------- */
+.blog2-more__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+/* ---- フォーム：フォーカスで下線が中央から伸びる ---------------------- */
+.contact__form .wpcf7 p,
+.contact__form .wpcf7 label { position: relative; }
+
+.contact__form .wpcf7 input[type="text"],
+.contact__form .wpcf7 input[type="email"],
+.contact__form .wpcf7 input[type="tel"],
+.contact__form .wpcf7 input[type="url"],
+.contact__form .wpcf7 input[type="number"],
+.contact__form .wpcf7 textarea,
+.contact__form .wpcf7 select {
+  background-image: linear-gradient(90deg, var(--dark-accent), var(--accent-2));
+  background-repeat: no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size var(--mo-base) var(--mo-out),
+              border-color var(--mo-fast) var(--mo-out);
+}
+
+.contact__form .wpcf7 input:focus,
+.contact__form .wpcf7 textarea:focus,
+.contact__form .wpcf7 select:focus {
+  background-size: 100% 2px;
+}
+
+/* 送信ボタン：ホバーで塗りが左から満ちる */
+.contact__form .wpcf7 input[type="submit"] {
+  position: relative;
+  background-image: linear-gradient(90deg, var(--accent-2), var(--accent-2));
+  background-repeat: no-repeat;
+  background-size: 0 100%;
+  background-position: 0 0;
+  transition: background-size var(--mo-base) var(--mo-out);
+}
+
+.contact__form .wpcf7 input[type="submit"]:hover { background-size: 100% 100%; }
+
+/* ============================================================
+   PHASE 2 — セクションの見せ場
+   ============================================================ */
+
+/* ---- Concept：スクラブ・テキストリビール ----------------------------- */
+.concept__body .scrub-word {
+  display: inline-block;
+  white-space: pre;
+  color: var(--mute-2);
+  transition: color 0.18s linear;
+}
+
+.concept__body .scrub-word.is-lit { color: var(--dark-fg); }
+
+/* ---- About：タイムライン描画 ----------------------------------------- */
+.about2__tl {
+  position: relative;
+  padding-left: 26px;
+}
+
+/* 縦線（スクロールで伸びる。--tl-progress を JS が更新） */
+.about2__tl::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 5px;
+  width: 1px;
+  background: var(--dark-line);
+}
+
+.about2__tl::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 1px;
+  height: calc((100% - 12px) * var(--tl-progress, 0));
+  background: linear-gradient(180deg, var(--dark-accent), var(--accent-2));
+}
+
+.about2__tl-row { position: relative; }
+
+/* ドット：点灯前はアウトライン、点灯でネオン */
+.about2__tl-row::before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  top: 0.75em;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--dark-bg);
+  border: 1.5px solid var(--dark-line);
+  transform: scale(0.7);
+  transition: transform var(--mo-base) var(--mo-snap),
+              background var(--mo-base) var(--mo-out),
+              border-color var(--mo-base) var(--mo-out),
+              box-shadow var(--mo-base) var(--mo-out);
+}
+
+.about2__tl-row.is-lit::before {
+  transform: scale(1);
+  background: var(--dark-accent);
+  border-color: var(--dark-accent);
+  box-shadow: 0 0 0 4px rgba(10, 228, 72, 0.16);
+}
+
+/* ---- Contact：巨大タイポ CTA ----------------------------------------- */
+.bigcta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 8px 0 clamp(40px, 6vw, 72px);
+  padding-bottom: clamp(18px, 3vw, 30px);
+  border-bottom: 2px solid var(--dark-fg);
+  color: var(--dark-fg);
+  text-decoration: none;
+}
+
+.bigcta__text {
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 11vw, 152px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* 文字は JS で分割。ホバーで波打ち＋ネオンが走る */
+.bigcta__char {
+  display: inline-block;
+  white-space: pre;
+  will-change: transform;
+  transition: color var(--mo-fast) var(--mo-out);
+}
+
+.bigcta:hover .bigcta__char { color: var(--accent-text); }
+
+.bigcta__arrow {
+  font-size: clamp(28px, 5vw, 64px);
+  line-height: 1;
+  color: var(--accent-text);
+  transition: transform var(--mo-base) var(--mo-out);
+}
+
+.bigcta:hover .bigcta__arrow { transform: translateX(14px); }
+
+/* ============================================================
+   PHASE 3 — サイト体験の接続
+   ============================================================ */
+
+/* ---- ハンバーガーを全ブレークポイントで表示 -------------------------- */
+@media (min-width: 900px) {
+  .nav-toggle { display: flex; }
+}
+
+/* ---- フルスクリーンメニュー ------------------------------------------ */
+/* GSAP 有効時のみ全画面パネル化。無効時は既存のスライドダウンが残る */
+html.has-motion .nav-panel {
+  display: block;
+  background: transparent;
+  overflow: hidden;
+  padding: 0;
+  transform: none;
+  /* 閉じアニメーションの再生時間だけ visibility の消灯を遅らせる */
+  transition: visibility 0s linear var(--mo-hero);
+}
+
+html.has-motion .nav-panel[data-nav-open="true"] {
+  transform: none;
+  transition: visibility 0s linear 0s;
+}
+
+/* 背景カーテン：開くときに下から迫り上がる */
+.nav-panel__curtain {
+  position: absolute;
+  inset: 0;
+  background: var(--dark-accent);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+.nav-panel__inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(28px, 5vw, 56px);
+  padding: clamp(72px, 10vw, 120px) clamp(24px, 8vw, 120px);
+}
+
+.nav-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 1vw, 10px);
+}
+
+.nav-panel__item { overflow: hidden; }
+
+.nav-panel__item a {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(12px, 2vw, 28px);
+  color: #0e100f;
+  text-decoration: none;
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 8.5vw, 104px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  transition: transform var(--mo-base) var(--mo-out),
+              opacity var(--mo-fast) var(--mo-out);
+  will-change: transform;
+}
+
+.nav-panel__no {
+  font-size: clamp(11px, 1.4vw, 15px);
+  letter-spacing: 0.18em;
+  opacity: 0.45;
+  transition: opacity var(--mo-fast) var(--mo-out);
+}
+
+@media (pointer: fine) {
+  .nav-panel__item a:hover { transform: translateX(clamp(12px, 2vw, 32px)); }
+  .nav-panel__item a:hover .nav-panel__no { opacity: 1; }
+  /* ホバー中の項目以外を沈める */
+  .nav-panel__list:hover .nav-panel__item a { opacity: 0.4; }
+  .nav-panel__list:hover .nav-panel__item a:hover { opacity: 1; }
+}
+
+.nav-panel__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+  padding-top: clamp(18px, 3vw, 28px);
+  border-top: 1px solid rgba(14, 16, 15, 0.2);
+}
+
+.nav-panel__meta-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  color: #0e100f;
+}
+
+.nav-panel__meta-k { font-size: 10px; opacity: 0.55; }
+
+.nav-panel__meta-v {
+  color: #0e100f;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav-panel__close { color: #0e100f; z-index: 2; }
+.nav-panel__close-bar { background: currentColor; }
+
+/* ---- ページ遷移カーテン ---------------------------------------------- */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  background: var(--dark-accent);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-curtain,
+  .nav-panel__curtain { display: none !important; }
+  .concept__body .scrub-word { color: var(--dark-fg); }
+  .about2__tl::after { height: calc(100% - 12px); }
+  .about2__tl-row::before {
+    transform: scale(1);
+    background: var(--dark-accent);
+    border-color: var(--dark-accent);
+  }
+}
+
+/* ---- FV マウス視差：既存 transform に --px/--py を合成 ----------------
+   球体の配置 transform は sections.css のブレークポイントごとに
+   異なるため、同じ条件で上書きして視差分を足し込む。 */
+@media (max-width: 1100px) {
+  html.has-motion .hero__visual--lg {
+    transform: translateX(-50%) translateY(var(--fx-y, 0px))
+               translate(var(--px, 0px), var(--py, 0px))
+               scale(var(--fx-scale, 1));
+  }
+}
+
+@media (min-width: 1101px) {
+  html.has-motion .hero__visual--lg {
+    transform: translateY(-50%) translateX(var(--fx-x, 0px))
+               translate(var(--px, 0px), var(--py, 0px))
+               scale(var(--fx-scale, 1));
+  }
+}
+
+html.has-motion .hero__grid {
+  transform: translate(var(--px, 0px), var(--py, 0px));
 }

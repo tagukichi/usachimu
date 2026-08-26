@@ -29,6 +29,11 @@ $fde_x_h   = (string) fde_option( 'sns_x_handle', '' );
 			<span class="sec-head__meta"><?php echo esc_html( $fde_meta ); ?></span>
 		</header>
 
+		<a class="bigcta" href="#contact-form" data-bigcta>
+			<span class="bigcta__text" data-bigcta-text>LET'S TALK</span>
+			<span class="bigcta__arrow" aria-hidden="true">→</span>
+		</a>
+
 		<div class="contact__grid contact__grid--single">
 			<aside class="contact__aside">
 				<p class="contact__aside-lead"><?php echo esc_html( $fde_lead ); ?></p>
@@ -50,7 +55,7 @@ $fde_x_h   = (string) fde_option( 'sns_x_handle', '' );
 				</div>
 			</aside>
 
-			<div class="contact__form">
+			<div class="contact__form" id="contact-form">
 				<?php if ( $fde_cf7 ) : ?>
 					<?php echo do_shortcode( $fde_cf7 ); ?>
 				<?php else : ?>
