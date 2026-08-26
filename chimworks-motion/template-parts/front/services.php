@@ -16,14 +16,28 @@ $fde_web_desc = (string) fde_field(
 	'svc_web_desc',
 	'ホームページ制作からシステム・アプリ開発まで。企画から公開後の運用まで、一貫体制で対応します。'
 );
-$fde_web_hp_desc = (string) fde_field(
-	'svc_web_hp_desc',
-	'通算200件以上の制作実績。コーポレートサイトからLP、ECサイトまで、目的に合わせて設計・制作します。'
-);
-$fde_sys_desc = (string) fde_field(
-	'svc_sys_desc',
-	'業務システム・Webアプリ・API連携まで、現場の課題に合わせてゼロから設計・開発します。生成AIやMCPサーバーを組み込んだ、次世代のアプリケーション開発も得意としています。'
-);
+// 扱う領域。件数などの数字は出さず、WEBデザインという傘の下に
+// 領域がゆるやかに漂う見せ方にする（順序＝配置レーンの順序）。
+$fde_domain_defaults = [
+	[ 'WEBサイト', 'コーポレート / LP / EC' ],
+	[ 'WEBシステム', '業務システム・API連携' ],
+	[ 'WEBアプリ', '現場で使う道具づくり' ],
+	[ 'UI・UXデザイン', '設計から画面まで' ],
+	[ '動画制作', 'YouTube / ショート・リール' ],
+	[ '生成AI活用', 'AI を組み込んだ体験' ],
+];
+$fde_domains = [];
+foreach ( $fde_domain_defaults as $fde_di => $fde_dd ) {
+	$fde_dn    = $fde_di + 1;
+	$fde_label = (string) fde_field( "svc_domain_{$fde_dn}_label", $fde_dd[0] );
+	if ( '' === trim( $fde_label ) ) {
+		continue;
+	}
+	$fde_domains[] = [
+		'label' => $fde_label,
+		'desc'  => (string) fde_field( "svc_domain_{$fde_dn}_desc", $fde_dd[1] ),
+	];
+}
 // 調速フィーチャーの表示切替（ACF のトグル。未設定時は表示）
 $fde_chousoku_show = (bool) fde_field( 'chousoku_show', true );
 $fde_chousoku_desc = (string) fde_field(
@@ -65,11 +79,11 @@ foreach ( [ 1, 2, 3 ] as $n ) {
 			<span class="sec-head__meta">事業内容</span>
 		</header>
 
-		<!-- ============ Block 1 : WEB開発 ============ -->
+		<!-- ============ Block 1 : WEBデザイン ============ -->
 		<article class="svc-block">
 			<header class="svc-block__head">
 				<span class="svc-block__no mono">SERVICE 01</span>
-				<h3 class="svc-block__title">WEB開発</h3>
+				<h3 class="svc-block__title">WEBデザイン</h3>
 				<p class="svc-block__desc jp"><?php echo esc_html( $fde_web_desc ); ?></p>
 			</header>
 
@@ -81,28 +95,21 @@ foreach ( [ 1, 2, 3 ] as $n ) {
 				</figure>
 			<?php endif; ?>
 
-			<div class="svc-block__subs">
-				<div class="svc-sub glass">
-					<span class="svc-sub__label mono">01 — WEBSITE</span>
-					<h4 class="svc-sub__title">ホームページ制作</h4>
-					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_web_hp_desc ); ?></p>
-					<div class="svc-sub__stat">
-						<span class="svc-sub__stat-v serif">200<span class="svc-sub__stat-unit">件+</span></span>
-						<span class="svc-sub__stat-k mono">PROJECTS DELIVERED</span>
-					</div>
-				</div>
-
-				<div class="svc-sub glass">
-					<span class="svc-sub__label mono">02 — SYSTEM / APP</span>
-					<h4 class="svc-sub__title">システム開発・アプリ開発</h4>
-					<p class="svc-sub__desc jp"><?php echo esc_html( $fde_sys_desc ); ?></p>
-					<ul class="svc-sub__list jp">
-						<li>業務システム・Webアプリ開発</li>
-						<li>API・外部サービス連携</li>
-						<li>生成AI・MCPサーバーの実装</li>
+			<?php if ( $fde_domains ) : ?>
+				<div class="dfield" data-dfield>
+					<span class="dfield__ghost" aria-hidden="true">WEB DESIGN</span>
+					<ul class="dfield__list">
+						<?php foreach ( $fde_domains as $fde_dkey => $fde_domain ) : ?>
+							<li class="dfield__item dfield__item--<?php echo (int) ( $fde_dkey % 6 ) + 1; ?>" data-dfield-item>
+								<span class="dfield__label"><?php echo esc_html( $fde_domain['label'] ); ?></span>
+								<?php if ( '' !== trim( $fde_domain['desc'] ) ) : ?>
+									<span class="dfield__desc mono"><?php echo esc_html( $fde_domain['desc'] ); ?></span>
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
-			</div>
+			<?php endif; ?>
 
 			<!-- ============ 自社サービス：調速 フィーチャー ============ -->
 			<?php if ( $fde_chousoku_show ) : ?>

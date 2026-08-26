@@ -67,6 +67,7 @@ export function initMotion() {
   cardTilt(gsap);
   // Phase 2 — セクションの見せ場
   heroPointerParallax(gsap);
+  domainField(gsap, ScrollTrigger);
   conceptScrub(ScrollTrigger);
   aboutTimeline(gsap, ScrollTrigger);
   bigCta(gsap);
@@ -952,4 +953,82 @@ function pageTransition(gsap) {
   window.addEventListener('pageshow', (e) => {
     if (e.persisted) gsap.set(curtain, { scaleY: 0 });
   });
+}
+
+/* ---- Service：領域フィールド -------------------------------------------
+   「WEBデザインの中に色々ある」を輪郭のぼやけた漂いで表現する。
+     1. リビール：ぼけた状態から順にピントが合い、浮き上がる
+     2. アンビエント：各要素が別々の周期でゆっくり漂い続ける
+     3. スクロール：レーンごとに異なる速度で流れ、奥行きを出す
+     4. ゴースト文字：背後で逆方向にゆっくり流れる */
+function domainField(gsap, ScrollTrigger) {
+  const field = document.querySelector('[data-dfield]');
+  if (!field) return;
+
+  const items = gsap.utils.toArray('[data-dfield-item]');
+  if (!items.length) return;
+
+  const ghost = field.querySelector('.dfield__ghost');
+
+  // 1. ぼけ → ピント合わせ
+  gsap.set(items, { autoAlpha: 0, y: 40, scale: 0.94, filter: 'blur(14px)' });
+  gsap.to(items, {
+    autoAlpha: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    duration: 1.2,
+    ease: MO.out,
+    stagger: { each: 0.09, from: 'random' },
+    scrollTrigger: { trigger: field, start: 'top 82%', once: true },
+    onComplete: () => {
+      // 完了後に filter を外し、ホバー時の再描画を軽くする
+      gsap.set(items, { clearProps: 'filter' });
+      startDrift();
+    },
+  });
+
+  // 2. アンビエント：それぞれ違う周期で漂う。
+  //    y はリビールでも使うため、必ずリビール完了後に開始する
+  //    （同時に走らせると y の取り合いになり、着地位置がずれる）。
+  const startDrift = () => {
+    items.forEach((item, i) => {
+      gsap.to(item, {
+        y: i % 2 ? 12 : -12,
+        duration: 3.2 + (i % 4) * 0.7,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: i * 0.25,
+      });
+    });
+  };
+
+  // 3. スクロールでレーンごとに横流れ
+  items.forEach((item, i) => {
+    const lane = (i % 3) - 1; // -1, 0, 1
+    if (!lane) return;
+    gsap.fromTo(
+      item,
+      { x: lane * 40 },
+      {
+        x: lane * -40,
+        ease: 'none',
+        scrollTrigger: { trigger: field, start: 'top bottom', end: 'bottom top', scrub: true },
+      }
+    );
+  });
+
+  // 4. 背後のゴースト文字は逆方向へ
+  if (ghost) {
+    gsap.fromTo(
+      ghost,
+      { xPercent: -52, yPercent: -50 },
+      {
+        xPercent: -48,
+        ease: 'none',
+        scrollTrigger: { trigger: field, start: 'top bottom', end: 'bottom top', scrub: true },
+      }
+    );
+  }
 }

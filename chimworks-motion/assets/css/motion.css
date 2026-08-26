@@ -760,3 +760,115 @@ body.is-nav-open .mcursor.is-label .mcursor__ring {
 }
 
 body.is-nav-open .mcursor__label { color: #0e100f; }
+
+/* ============================================================
+   Service — 領域フィールド（WEB DESIGN の傘の下に漂う領域）
+   数字や箇条書きで固めず、枠のないテキストがゆるく漂う配置で
+   「扱う幅の広さ」だけを伝える
+   ============================================================ */
+.dfield {
+  position: relative;
+  margin-top: clamp(24px, 4vw, 48px);
+  padding: clamp(20px, 4vw, 48px) 0;
+  overflow: hidden;
+}
+
+/* 背後に薄く敷く巨大なゴースト文字（テクスチャとして） */
+.dfield__ghost {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 9vw, 132px);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(14, 16, 15, 0.07);
+  pointer-events: none;
+  user-select: none;
+}
+
+.dfield__list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(22px, 4vw, 44px) clamp(26px, 5vw, 64px);
+  justify-content: center;
+}
+
+/* 枠も背景も持たない：文字そのものが漂う */
+.dfield__item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  text-align: center;
+  will-change: transform, filter;
+}
+
+.dfield__label {
+  position: relative;
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 2.6vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--dark-fg);
+  transition: color var(--mo-fast) var(--mo-out);
+}
+
+/* ホバーで下から引かれる細い線 */
+.dfield__label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--dark-accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--mo-base) var(--mo-out);
+}
+
+.dfield__desc {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--dark-fg-mute);
+}
+
+/* PC は要素ごとに高さをずらし、意図的に不揃いな漂いをつくる */
+@media (min-width: 900px) {
+  .dfield { min-height: clamp(320px, 30vw, 420px); }
+
+  .dfield__list {
+    justify-content: flex-start;
+    gap: clamp(26px, 3vw, 44px) clamp(40px, 6vw, 96px);
+    padding-inline: clamp(0px, 3vw, 48px);
+  }
+
+  .dfield__item--1 { margin-top: 3%;  margin-left: 2%; }
+  .dfield__item--2 { margin-top: 13%; }
+  .dfield__item--3 { margin-top: 1%;  margin-left: 5%; }
+  .dfield__item--4 { margin-top: 10%; margin-left: 1%; }
+  .dfield__item--5 { margin-top: 3%;  margin-left: 7%; }
+  .dfield__item--6 { margin-top: 14%; }
+}
+
+/* ホバー：触れた領域だけがくっきり、他は退く */
+@media (pointer: fine) {
+  .dfield__item:hover .dfield__label { color: var(--accent-text); }
+  .dfield__item:hover .dfield__label::after { transform: scaleX(1); }
+  .dfield__list:hover .dfield__item:not(:hover) { opacity: 0.45; }
+  .dfield__item { transition: opacity var(--mo-fast) var(--mo-out); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dfield__item { filter: none !important; opacity: 1 !important; }
+}

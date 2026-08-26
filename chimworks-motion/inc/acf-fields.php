@@ -133,8 +133,21 @@ add_action(
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
 		];
-		$top_fields[] = fde_acf_textarea( 'svc_web_hp_desc', 'svc_web_hp_desc', __( 'ホームページ制作 — 説明', 'fde-usachim' ), 3 );
-		$top_fields[] = fde_acf_textarea( 'svc_sys_desc', 'svc_sys_desc', __( 'システム開発・アプリ開発 — 説明', 'fde-usachim' ), 3 );
+		// 領域（WEBデザインの傘の下に漂うキーワード群）。
+		// 件数などは出さず、扱う領域だけをゆるやかに見せる。
+		$fde_domain_defaults = [
+			[ 'WEBサイト', 'コーポレート / LP / EC' ],
+			[ 'WEBシステム', '業務システム・API連携' ],
+			[ 'WEBアプリ', '現場で使う道具づくり' ],
+			[ 'UI・UXデザイン', '設計から画面まで' ],
+			[ '動画制作', 'YouTube / ショート・リール' ],
+			[ '生成AI活用', 'AI を組み込んだ体験' ],
+		];
+		foreach ( $fde_domain_defaults as $fde_di => $fde_dd ) {
+			$fde_dn = $fde_di + 1;
+			$top_fields[] = fde_acf_text( "svc_domain_{$fde_dn}_label", "svc_domain_{$fde_dn}_label", sprintf( __( '領域 %d — 名称', 'fde-usachim' ), $fde_dn ), $fde_dd[0] );
+			$top_fields[] = fde_acf_text( "svc_domain_{$fde_dn}_desc", "svc_domain_{$fde_dn}_desc", sprintf( __( '領域 %d — 補足（短く）', 'fde-usachim' ), $fde_dn ), $fde_dd[1] );
+		}
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_show',
 			'label'         => __( '調速（自社サービス）— セクションを表示', 'fde-usachim' ),
