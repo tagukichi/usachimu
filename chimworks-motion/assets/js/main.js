@@ -7,6 +7,7 @@ import { initSliders } from './slider.js';
 import { initImgFade } from './img-fade.js';
 import { initScrollFx } from './scroll-fx.js';
 import { initMotion } from './motion.js';
+import { initThreeScene } from './three-scene.js';
 
 const boot = () => {
   initNav();
@@ -21,6 +22,10 @@ const boot = () => {
   if (!initMotion()) {
     initReveal();
     initScrollFx();
+  } else {
+    // WebGL パーティクルシーン。使えない環境では false が返り、
+    // 既存の SVG 球体がそのまま表示される。
+    initThreeScene();
   }
 };
 

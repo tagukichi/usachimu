@@ -67,7 +67,6 @@ export function initMotion() {
   cardTilt(gsap);
   // Phase 2 — セクションの見せ場
   heroPointerParallax(gsap);
-  serviceFlow(gsap, ScrollTrigger);
   conceptScrub(ScrollTrigger);
   aboutTimeline(gsap, ScrollTrigger);
   bigCta(gsap);
@@ -952,58 +951,5 @@ function pageTransition(gsap) {
   // ブラウザバックで bfcache から復帰したときにカーテンが残らないように
   window.addEventListener('pageshow', (e) => {
     if (e.persisted) gsap.set(curtain, { scaleY: 0 });
-  });
-}
-
-/* ---- Service：流動レイヤー ---------------------------------------------
-   ストリーム本体のループは marquees() が担当するため、ここでは
-   背景の波と画像ストリップの流れを受け持つ。
-     1. 波：2 枚を別速度で無限に横流し（低速の常時アニメーション）
-     2. 画像ストリップ：スクロール量に連動して横へ流れる
-     3. ストリームの見出し語：初回表示時に下から立ち上がる */
-function serviceFlow(gsap, ScrollTrigger) {
-  // 1. 背景の波（-50% でちょうど 1 周期ぶん＝継ぎ目なくループ）
-  gsap.utils.toArray('[data-wave]').forEach((wave) => {
-    const speed = parseFloat(wave.getAttribute('data-wave-speed')) || 40;
-    gsap.fromTo(
-      wave,
-      { xPercent: 0 },
-      { xPercent: -50, duration: speed, ease: 'none', repeat: -1 }
-    );
-  });
-
-  // 2. 画像ストリップはスクロールに連れて流れる
-  const strip = document.querySelector('[data-strip-track]');
-  if (strip) {
-    gsap.fromTo(
-      strip,
-      { xPercent: 0 },
-      {
-        xPercent: -18,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: strip.closest('[data-strip]') || strip,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 0.6,
-        },
-      }
-    );
-  }
-
-  // 3. ストリームの登場：下から立ち上がりつつピントが合う
-  gsap.utils.toArray('.stream').forEach((stream) => {
-    const rows = stream.querySelectorAll('.marquee');
-    if (!rows.length) return;
-    gsap.from(rows, {
-      yPercent: 60,
-      autoAlpha: 0,
-      filter: 'blur(10px)',
-      duration: 1.1,
-      ease: MO.out,
-      stagger: 0.12,
-      scrollTrigger: { trigger: stream, start: 'top 86%', once: true },
-      onComplete: () => gsap.set(rows, { clearProps: 'filter' }),
-    });
   });
 }
