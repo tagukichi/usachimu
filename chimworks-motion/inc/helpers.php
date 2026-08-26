@@ -193,3 +193,67 @@ function fde_split_lines( string $text ): array {
 	}
 	return $out;
 }
+
+/**
+ * Render a flowing "stream" of service domains.
+ *
+ * 大きな見出し語の行と、補足語の行を逆方向に流す 2 段構成。
+ * 見た目は装飾（aria-hidden）で、内容はスクリーンリーダー用の
+ * リストが担う。ループは marquee 用の JS（motion.js）が駆動する。
+ *
+ * @param array $items { label, desc } の配列。
+ * @param array $args  dir: 1|-1（流れる向き）, variant: 'a'|'b', label: 見出し。
+ */
+function fde_render_stream( array $items, array $args = [] ): void {
+	if ( ! $items ) {
+		return;
+	}
+
+	$dir     = isset( $args['dir'] ) && (int) $args['dir'] < 0 ? -1 : 1;
+	$variant = isset( $args['variant'] ) && 'b' === $args['variant'] ? 'b' : 'a';
+	$label   = (string) ( $args['label'] ?? '' );
+
+	// ループを途切れさせないため、少ない項目数のときは繰り返す
+	$repeat = count( $items ) < 4 ? 3 : 2;
+	$loop   = [];
+	for ( $i = 0; $i < $repeat; $i++ ) {
+		$loop = array_merge( $loop, $items );
+	}
+	?>
+	<div class="stream stream--<?php echo esc_attr( $variant ); ?>">
+		<?php if ( $label ) : ?>
+			<h4 class="screen-reader-text"><?php echo esc_html( $label ); ?></h4>
+		<?php endif; ?>
+
+		<ul class="screen-reader-text">
+			<?php foreach ( $items as $item ) : ?>
+				<li>
+					<?php echo esc_html( $item['label'] ); ?>
+					<?php if ( '' !== trim( $item['desc'] ) ) : ?>
+						— <?php echo esc_html( $item['desc'] ); ?>
+					<?php endif; ?>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+
+		<div class="marquee marquee--stream" data-marquee data-marquee-dir="<?php echo (int) $dir; ?>" aria-hidden="true">
+			<div class="marquee__track" data-marquee-track>
+				<?php foreach ( $loop as $item ) : ?>
+					<span class="stream__word"><?php echo esc_html( $item['label'] ); ?></span>
+					<span class="stream__sep" aria-hidden="true">/</span>
+				<?php endforeach; ?>
+			</div>
+		</div>
+
+		<div class="marquee marquee--stream marquee--sub" data-marquee data-marquee-dir="<?php echo (int) ( $dir * -1 ); ?>" aria-hidden="true">
+			<div class="marquee__track" data-marquee-track>
+				<?php foreach ( $loop as $item ) : ?>
+					<?php if ( '' === trim( $item['desc'] ) ) : continue; endif; ?>
+					<span class="stream__sub mono"><?php echo esc_html( $item['desc'] ); ?></span>
+					<span class="stream__dot" aria-hidden="true">●</span>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+	<?php
+}

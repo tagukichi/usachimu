@@ -67,7 +67,7 @@ export function initMotion() {
   cardTilt(gsap);
   // Phase 2 — セクションの見せ場
   heroPointerParallax(gsap);
-  domainField(gsap, ScrollTrigger);
+  serviceFlow(gsap, ScrollTrigger);
   conceptScrub(ScrollTrigger);
   aboutTimeline(gsap, ScrollTrigger);
   bigCta(gsap);
@@ -955,80 +955,55 @@ function pageTransition(gsap) {
   });
 }
 
-/* ---- Service：領域フィールド -------------------------------------------
-   「WEBデザインの中に色々ある」を輪郭のぼやけた漂いで表現する。
-     1. リビール：ぼけた状態から順にピントが合い、浮き上がる
-     2. アンビエント：各要素が別々の周期でゆっくり漂い続ける
-     3. スクロール：レーンごとに異なる速度で流れ、奥行きを出す
-     4. ゴースト文字：背後で逆方向にゆっくり流れる */
-function domainField(gsap, ScrollTrigger) {
-  const field = document.querySelector('[data-dfield]');
-  if (!field) return;
-
-  const items = gsap.utils.toArray('[data-dfield-item]');
-  if (!items.length) return;
-
-  const ghost = field.querySelector('.dfield__ghost');
-
-  // 1. ぼけ → ピント合わせ
-  gsap.set(items, { autoAlpha: 0, y: 40, scale: 0.94, filter: 'blur(14px)' });
-  gsap.to(items, {
-    autoAlpha: 1,
-    y: 0,
-    scale: 1,
-    filter: 'blur(0px)',
-    duration: 1.2,
-    ease: MO.out,
-    stagger: { each: 0.09, from: 'random' },
-    scrollTrigger: { trigger: field, start: 'top 82%', once: true },
-    onComplete: () => {
-      // 完了後に filter を外し、ホバー時の再描画を軽くする
-      gsap.set(items, { clearProps: 'filter' });
-      startDrift();
-    },
-  });
-
-  // 2. アンビエント：それぞれ違う周期で漂う。
-  //    y はリビールでも使うため、必ずリビール完了後に開始する
-  //    （同時に走らせると y の取り合いになり、着地位置がずれる）。
-  const startDrift = () => {
-    items.forEach((item, i) => {
-      gsap.to(item, {
-        y: i % 2 ? 12 : -12,
-        duration: 3.2 + (i % 4) * 0.7,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-        delay: i * 0.25,
-      });
-    });
-  };
-
-  // 3. スクロールでレーンごとに横流れ
-  items.forEach((item, i) => {
-    const lane = (i % 3) - 1; // -1, 0, 1
-    if (!lane) return;
+/* ---- Service：流動レイヤー ---------------------------------------------
+   ストリーム本体のループは marquees() が担当するため、ここでは
+   背景の波と画像ストリップの流れを受け持つ。
+     1. 波：2 枚を別速度で無限に横流し（低速の常時アニメーション）
+     2. 画像ストリップ：スクロール量に連動して横へ流れる
+     3. ストリームの見出し語：初回表示時に下から立ち上がる */
+function serviceFlow(gsap, ScrollTrigger) {
+  // 1. 背景の波（-50% でちょうど 1 周期ぶん＝継ぎ目なくループ）
+  gsap.utils.toArray('[data-wave]').forEach((wave) => {
+    const speed = parseFloat(wave.getAttribute('data-wave-speed')) || 40;
     gsap.fromTo(
-      item,
-      { x: lane * 40 },
-      {
-        x: lane * -40,
-        ease: 'none',
-        scrollTrigger: { trigger: field, start: 'top bottom', end: 'bottom top', scrub: true },
-      }
+      wave,
+      { xPercent: 0 },
+      { xPercent: -50, duration: speed, ease: 'none', repeat: -1 }
     );
   });
 
-  // 4. 背後のゴースト文字は逆方向へ
-  if (ghost) {
+  // 2. 画像ストリップはスクロールに連れて流れる
+  const strip = document.querySelector('[data-strip-track]');
+  if (strip) {
     gsap.fromTo(
-      ghost,
-      { xPercent: -52, yPercent: -50 },
+      strip,
+      { xPercent: 0 },
       {
-        xPercent: -48,
+        xPercent: -18,
         ease: 'none',
-        scrollTrigger: { trigger: field, start: 'top bottom', end: 'bottom top', scrub: true },
+        scrollTrigger: {
+          trigger: strip.closest('[data-strip]') || strip,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.6,
+        },
       }
     );
   }
+
+  // 3. ストリームの登場：下から立ち上がりつつピントが合う
+  gsap.utils.toArray('.stream').forEach((stream) => {
+    const rows = stream.querySelectorAll('.marquee');
+    if (!rows.length) return;
+    gsap.from(rows, {
+      yPercent: 60,
+      autoAlpha: 0,
+      filter: 'blur(10px)',
+      duration: 1.1,
+      ease: MO.out,
+      stagger: 0.12,
+      scrollTrigger: { trigger: stream, start: 'top 86%', once: true },
+      onComplete: () => gsap.set(rows, { clearProps: 'filter' }),
+    });
+  });
 }

@@ -762,113 +762,151 @@ body.is-nav-open .mcursor.is-label .mcursor__ring {
 body.is-nav-open .mcursor__label { color: #0e100f; }
 
 /* ============================================================
-   Service — 領域フィールド（WEB DESIGN の傘の下に漂う領域）
-   数字や箇条書きで固めず、枠のないテキストがゆるく漂う配置で
-   「扱う幅の広さ」だけを伝える
+   Service — 流動デザイン
+   扱う領域を「流れ」として通り過ぎさせ、数字や箇条書きで固めない。
+   Block 1 と Block 2 は流れる向きを反転させ、対の関係を作る。
    ============================================================ */
-.dfield {
-  position: relative;
-  margin-top: clamp(24px, 4vw, 48px);
-  padding: clamp(20px, 4vw, 48px) 0;
+.svc--flow { position: relative; overflow: hidden; }
+
+/* ---- 背景の波 -------------------------------------------------------- */
+.svc-waves {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(180px, 26vw, 320px);
+  pointer-events: none;
   overflow: hidden;
 }
 
-/* 背後に薄く敷く巨大なゴースト文字（テクスチャとして） */
-.dfield__ghost {
+.svc-waves__svg {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: var(--font-serif);
-  font-size: clamp(40px, 9vw, 132px);
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  line-height: 1;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(14, 16, 15, 0.07);
-  pointer-events: none;
-  user-select: none;
-}
-
-.dfield__list {
-  position: relative;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(22px, 4vw, 44px) clamp(26px, 5vw, 64px);
-  justify-content: center;
-}
-
-/* 枠も背景も持たない：文字そのものが漂う */
-.dfield__item {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  align-items: center;
-  text-align: center;
-  will-change: transform, filter;
-}
-
-.dfield__label {
-  position: relative;
-  font-family: var(--font-serif);
-  font-size: clamp(19px, 2.6vw, 34px);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  color: var(--dark-fg);
-  transition: color var(--mo-fast) var(--mo-out);
-}
-
-/* ホバーで下から引かれる細い線 */
-.dfield__label::after {
-  content: "";
-  position: absolute;
+  bottom: 0;
   left: 0;
-  bottom: -6px;
-  width: 100%;
-  height: 1.5px;
-  background: linear-gradient(90deg, var(--dark-accent), var(--accent-2));
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform var(--mo-base) var(--mo-out);
+  width: 200%;   /* 2 周期ぶん。JS が -50% まで動かしてループする */
+  height: 100%;
+  will-change: transform;
 }
 
-.dfield__desc {
-  font-size: 10.5px;
-  letter-spacing: 0.1em;
+.svc-waves__svg--a { fill: rgba(10, 228, 72, 0.06); }
+.svc-waves__svg--b { fill: rgba(0, 186, 226, 0.05); bottom: -6%; }
+
+/* ---- ストリーム ------------------------------------------------------ */
+.stream {
+  position: relative;
+  margin-top: clamp(26px, 4vw, 48px);
+}
+
+/* marquee のコンポーネントを流用しつつ、枠と背景を外す */
+.marquee--stream {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  z-index: auto;
+}
+
+.marquee--stream .marquee__track {
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 34px);
+  padding-right: clamp(16px, 2.4vw, 34px);
+}
+
+.stream__word {
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 6.4vw, 88px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--dark-fg);
+}
+
+/* 1 語おきにアウトライン抜きにして、流れに濃淡のリズムをつくる。
+   word と sep が交互に並ぶため、word は常に奇数番目。
+   1 語おきに当てるには 4n+3 を使う。 */
+.stream__word:nth-of-type(4n + 3) {
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(14, 16, 15, 0.42);
+}
+
+.stream__sep {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 4vw, 56px);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--accent-text);
+  opacity: 0.55;
+}
+
+/* 補足の行は逆方向へ、細く小さく */
+.marquee--sub {
+  margin-top: clamp(8px, 1.4vw, 16px);
+  opacity: 0.9;
+}
+
+.marquee--sub .marquee__track { gap: clamp(14px, 2vw, 26px); }
+
+.stream__sub {
+  font-size: clamp(10.5px, 1.1vw, 13px);
+  letter-spacing: 0.14em;
   color: var(--dark-fg-mute);
+  white-space: nowrap;
 }
 
-/* PC は要素ごとに高さをずらし、意図的に不揃いな漂いをつくる */
-@media (min-width: 900px) {
-  .dfield { min-height: clamp(320px, 30vw, 420px); }
-
-  .dfield__list {
-    justify-content: flex-start;
-    gap: clamp(26px, 3vw, 44px) clamp(40px, 6vw, 96px);
-    padding-inline: clamp(0px, 3vw, 48px);
-  }
-
-  .dfield__item--1 { margin-top: 3%;  margin-left: 2%; }
-  .dfield__item--2 { margin-top: 13%; }
-  .dfield__item--3 { margin-top: 1%;  margin-left: 5%; }
-  .dfield__item--4 { margin-top: 10%; margin-left: 1%; }
-  .dfield__item--5 { margin-top: 3%;  margin-left: 7%; }
-  .dfield__item--6 { margin-top: 14%; }
+.stream__dot {
+  font-size: 7px;
+  color: var(--dark-accent);
+  opacity: 0.7;
 }
 
-/* ホバー：触れた領域だけがくっきり、他は退く */
-@media (pointer: fine) {
-  .dfield__item:hover .dfield__label { color: var(--accent-text); }
-  .dfield__item:hover .dfield__label::after { transform: scaleX(1); }
-  .dfield__list:hover .dfield__item:not(:hover) { opacity: 0.45; }
-  .dfield__item { transition: opacity var(--mo-fast) var(--mo-out); }
+/* Block 2 は色を反転させ、対の関係を明確にする */
+.stream--b .stream__word:nth-of-type(4n + 3) {
+  -webkit-text-stroke-color: rgba(0, 134, 184, 0.45);
+}
+
+.stream--b .stream__sep { color: var(--accent-2); }
+.stream--b .stream__dot { color: var(--accent-2); }
+
+/* ---- ブロックの本文 -------------------------------------------------- */
+.svc-block--flow { position: relative; }
+
+.svc-block__detail {
+  max-width: 62ch;
+  margin-top: clamp(20px, 3vw, 34px);
+  font-size: var(--text-md);
+  line-height: var(--leading-base);
+  color: var(--dark-fg-mid);
+}
+
+/* ---- 流れる画像ストリップ（業務効率化支援） -------------------------- */
+.svc-strip {
+  margin-top: clamp(24px, 4vw, 44px);
+  overflow: hidden;
+}
+
+.svc-strip__track {
+  display: flex;
+  gap: clamp(12px, 2vw, 24px);
+  will-change: transform;
+}
+
+.svc-strip__item {
+  flex: 0 0 auto;
+  width: clamp(220px, 30vw, 400px);
+  margin: 0;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid var(--dark-line-2);
+}
+
+.svc-strip__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dfield__item { filter: none !important; opacity: 1 !important; }
+  .svc-waves__svg,
+  .svc-strip__track { transform: none !important; }
 }

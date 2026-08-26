@@ -125,14 +125,6 @@ add_action(
 		// ---------- 02 Service ----------
 		$top_fields[] = fde_acf_tab( 'services', __( '02 Service', 'fde-usachim' ) );
 		$top_fields[] = fde_acf_textarea( 'svc_web_desc', 'svc_web_desc', __( 'WEB開発 — 概要', 'fde-usachim' ), 3 );
-		$top_fields[] = [
-			'key'           => 'field_fde_service_1_image',
-			'label'         => __( 'WEB開発 — イメージ画像（任意）', 'fde-usachim' ),
-			'name'          => 'service_1_image',
-			'type'          => 'image',
-			'return_format' => 'array',
-			'preview_size'  => 'medium',
-		];
 		// 領域（WEBデザインの傘の下に漂うキーワード群）。
 		// 件数などは出さず、扱う領域だけをゆるやかに見せる。
 		$fde_domain_defaults = [
@@ -177,6 +169,20 @@ add_action(
 		];
 		$top_fields[] = fde_acf_textarea( 'svc_dx_desc', 'svc_dx_desc', __( '業務効率化支援 — 概要（見出し下・1行推奨）', 'fde-usachim' ), 2 );
 		$top_fields[] = fde_acf_textarea( 'svc_dx_detail', 'svc_dx_detail', __( '行政や企業におけるDX推進支援 — 説明', 'fde-usachim' ), 4 );
+		// 業務効率化支援の領域（Block 1 と同じく、流れるストリームで見せる）
+		$fde_dx_defaults = [
+			[ '生成AI研修', '職員・社員向けの実践研修' ],
+			[ 'AIアプリ作成', '現場で使う業務ツール' ],
+			[ '業務フロー改善', '手戻りをなくす設計' ],
+			[ 'PoC作成', '小さく試して見極める' ],
+			[ 'Google Workspace', '導入と定着の支援' ],
+			[ 'インフラ検討', '環境整備・個別サポート' ],
+		];
+		foreach ( $fde_dx_defaults as $fde_xi => $fde_xd ) {
+			$fde_xn = $fde_xi + 1;
+			$top_fields[] = fde_acf_text( "svc_dx_item_{$fde_xn}_label", "svc_dx_item_{$fde_xn}_label", sprintf( __( '効率化 領域 %d — 名称', 'fde-usachim' ), $fde_xn ), $fde_xd[0] );
+			$top_fields[] = fde_acf_text( "svc_dx_item_{$fde_xn}_desc", "svc_dx_item_{$fde_xn}_desc", sprintf( __( '効率化 領域 %d — 補足（短く）', 'fde-usachim' ), $fde_xn ), $fde_xd[1] );
+		}
 		foreach ( [ 1, 2, 3 ] as $n ) {
 			$top_fields[] = [
 				'key'           => "field_fde_service_2_image_{$n}",
