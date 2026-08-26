@@ -2,23 +2,27 @@
 // サイト全体の背面に固定した WebGL キャンバスで、約 2,600 個の
 // パーティクルがスクロールに合わせて形態を変えながらページを貫く。
 //
-//   FV       : 球体（SVG 球体の 3D 版。右寄り、マウスに視差反応）
-//   Concept  : 球体がほどけて全画面に散らばる粒子野
-//   Service  : うねる波のグリッド
-//   About    : らせん（キャリアの積み上がりのメタファ）
-//   Contact  : 中央へ収束するリング
+//   FV       : 球体（右寄り。テキストは左で干渉しない）
+//   Concept  : 周縁に散らばる粒子野（中央は本文のため空けておく）
+//   Service  : 画面を額縁のように囲む 2 本の軌道リング（中央は空）
+//   About    : 左マージンのらせん（ポートレート側。本文は右）
+//   Contact  : 中央下へ収束するリング
 //
+// どの形状も「本文が載る領域を避ける」を第一条件に設計している。
 // 形態遷移は GSAP ScrollTrigger の scrub がグローバル進行度 p (0..4)
 // を駆動し、フレームごとに隣接シェイプ間を CPU 補間する。
-// WebGL が使えない環境では false を返し、既存の SVG 球体がそのまま残る。
+// TOP（FV があるページ）だけで動作し、ブログなど下層ページでは
+// 起動しない。WebGL 不可なら false を返し SVG 球体が残る。
 
 import * as THREE from './vendor/three.module.min.js';
 
+// 白背景の上で本文を邪魔しない、淡いパステル基調のパレット。
+// 濃色は使わず、締めのグリーンもごく少量にとどめる。
 const PALETTE = [
-  [0.086, 0.129, 0.227], // deep navy ink（主役 — 白背景で締まる）
-  [0.039, 0.894, 0.282], // neon green
-  [0.0, 0.729, 0.886],   // cyan
-  [0.616, 0.584, 1.0],   // violet
+  [0.62, 0.69, 0.80],  // light slate blue（主役 — 薄く上品に）
+  [0.55, 0.85, 0.65],  // pale green
+  [0.55, 0.80, 0.90],  // pale cyan
+  [0.039, 0.894, 0.282], // neon green（少量のアクセント）
 ];
 
 export function initThreeScene() {
@@ -26,6 +30,10 @@ export function initThreeScene() {
   const ScrollTrigger = window.ScrollTrigger;
   if (!gsap || !ScrollTrigger) return false;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+
+  // TOP ページ（FV があるページ）専用。ブログなど下層ページでは
+  // 記事の読みやすさを優先してパーティクルを出さない。
+  if (!document.querySelector('[data-hero-scroll]')) return false;
 
   // WebGL 対応チェック（失敗したら SVG 球体のまま）
   let renderer;
@@ -36,7 +44,7 @@ export function initThreeScene() {
   }
 
   const isPc = window.innerWidth >= 1101;
-  const COUNT = isPc ? 2600 : 1400;
+  const COUNT = isPc ? 1800 : 900;
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -64,12 +72,13 @@ export function initThreeScene() {
   const sizes  = new Float32Array(COUNT);
   const seeds  = new Float32Array(COUNT);
   for (let i = 0; i < COUNT; i++) {
-    // 7 割は濃紺、残りをアクセント色に（白背景で品よく締める）
-    const c = PALETTE[Math.random() < 0.7 ? 0 : 1 + Math.floor(Math.random() * 3)];
+    // 6 割は淡スレート、3.5 割をパステル、ネオングリーンは 5% だけ
+    const rr = Math.random();
+    const c = PALETTE[rr < 0.6 ? 0 : rr < 0.95 ? 1 + Math.floor(Math.random() * 2) : 3];
     colors[i * 3] = c[0];
     colors[i * 3 + 1] = c[1];
     colors[i * 3 + 2] = c[2];
-    sizes[i] = 0.6 + Math.random() * 1.8;
+    sizes[i] = 0.45 + Math.random() * 1.1;
     seeds[i] = Math.random() * Math.PI * 2;
   }
   geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
@@ -82,6 +91,7 @@ export function initThreeScene() {
     uniforms: {
       uScale: { value: window.innerHeight * 0.5 },
       uAlpha: { value: 0 }, // ローダー後にフェードイン
+      uBoost: { value: 1.6 }, // FV（球体）だけ少し濃く見せる
     },
     vertexShader: `
       attribute float aSize;
@@ -97,11 +107,12 @@ export function initThreeScene() {
     fragmentShader: `
       varying vec3 vColor;
       uniform float uAlpha;
+      uniform float uBoost;
       void main() {
         float d = length(gl_PointCoord - 0.5);
         if (d > 0.5) discard;
         float soft = smoothstep(0.5, 0.18, d);
-        gl_FragColor = vec4(vColor, soft * uAlpha);
+        gl_FragColor = vec4(vColor, min(1.0, soft * uAlpha * uBoost));
       }
     `,
     vertexColors: true,
@@ -142,7 +153,8 @@ export function initThreeScene() {
   }
 
   /* ---- ローダー後のフェードイン -------------------------------------- */
-  gsap.to(material.uniforms.uAlpha, { value: 0.7, duration: 2.2, ease: 'power2.out', delay: 0.4 });
+  // 読みやすさ最優先：全体の不透明度は低め（SP はさらに薄く）
+  gsap.to(material.uniforms.uAlpha, { value: isPc ? 0.42 : 0.3, duration: 2.2, ease: 'power2.out', delay: 0.4 });
 
   /* ---- フレームループ（gsap.ticker に同期） --------------------------- */
   const pos = geometry.attributes.position.array;
@@ -163,12 +175,15 @@ export function initThreeScene() {
     // 隣接シェイプの補間 + 各粒子の呼吸（seed ごとに位相をずらす）
     for (let i = 0; i < COUNT; i++) {
       const j = i * 3;
-      const wob = Math.sin(time * 0.7 + seeds[i]) * 0.045;
+      const wob = Math.sin(time * 0.7 + seeds[i]) * 0.03;
       pos[j]     = from[j]     + (to[j]     - from[j])     * t + wob;
-      pos[j + 1] = from[j + 1] + (to[j + 1] - from[j + 1]) * t + Math.cos(time * 0.6 + seeds[i]) * 0.045;
+      pos[j + 1] = from[j + 1] + (to[j + 1] - from[j + 1]) * t + Math.cos(time * 0.6 + seeds[i]) * 0.03;
       pos[j + 2] = from[j + 2] + (to[j + 2] - from[j + 2]) * t;
     }
     geometry.attributes.position.needsUpdate = true;
+
+    // FV（p=0 付近）だけ球体を少し濃く。Concept 以降は等倍へ
+    material.uniforms.uBoost.value = 1 + 0.6 * Math.max(0, 1 - p * 1.6);
 
     // ゆっくり回転 + スクロール進行でわずかに加速
     rotY += 0.0012;
@@ -197,20 +212,21 @@ export function initThreeScene() {
 }
 
 /* ---- シェイプ生成 ------------------------------------------------------
-   すべて COUNT * 3 の Float32Array。単位はワールド座標（カメラ z=10）。 */
+   すべて COUNT * 3 の Float32Array。単位はワールド座標（カメラ z=10）。
+   本文の載る領域（中央のコンテンツ幅）を避けることを最優先に設計。 */
 function buildShapes(count, isPc) {
-  const sphere   = new Float32Array(count * 3);
-  const field    = new Float32Array(count * 3);
-  const wave     = new Float32Array(count * 3);
-  const helix    = new Float32Array(count * 3);
-  const ring     = new Float32Array(count * 3);
+  const sphere = new Float32Array(count * 3);
+  const field  = new Float32Array(count * 3);
+  const orbit  = new Float32Array(count * 3);
+  const helix  = new Float32Array(count * 3);
+  const ring   = new Float32Array(count * 3);
 
   const offX = isPc ? 3.4 : 0; // FV では球体を右へ寄せる（テキストが左）
 
   for (let i = 0; i < count; i++) {
     const j = i * 3;
 
-    // 球体：フィボナッチ格子で均等に
+    // FV 球体：フィボナッチ格子で均等に
     const k = i + 0.5;
     const phi = Math.acos(1 - (2 * k) / count);
     const theta = Math.PI * (1 + Math.sqrt(5)) * k;
@@ -219,33 +235,58 @@ function buildShapes(count, isPc) {
     sphere[j + 1] = Math.cos(phi) * r;
     sphere[j + 2] = Math.sin(theta) * Math.sin(phi) * r;
 
-    // 粒子野：全画面へゆるく散らばる
-    field[j]     = (Math.random() - 0.5) * 16;
-    field[j + 1] = (Math.random() - 0.5) * 10;
-    field[j + 2] = (Math.random() - 0.5) * 6 - 1;
+    // Concept 粒子野：楕円の環状に散らし、中央（本文）は空けておく
+    {
+      const a  = Math.random() * Math.PI * 2;
+      const rx = 5.5 + Math.random() * 3.5;  // 横半径 5.5〜9
+      const ry = 3.2 + Math.random() * 2.2;  // 縦半径 3.2〜5.4
+      field[j]     = Math.cos(a) * rx;
+      field[j + 1] = Math.sin(a) * ry;
+      field[j + 2] = (Math.random() - 0.5) * 4 - 1;
+    }
 
-    // 波グリッド：uneven な海面
-    const gx = (i % 64) / 64 - 0.5;
-    const gz = Math.floor(i / 64) / (count / 64) - 0.5;
-    wave[j]     = gx * 18;
-    wave[j + 1] = Math.sin(gx * 9) * 0.9 + Math.cos(gz * 7) * 0.7 - 1.5;
-    wave[j + 2] = gz * 8;
+    // Service 軌道リング：画面を額縁のように囲む 2 本の大きな楕円軌道。
+    // 中央は空になり、コンテンツがそのまま読める
+    {
+      const t = (i / count) * Math.PI * 4; // 2 周ぶん → 2 本に分配
+      const second = i % 2 === 1;
+      const spread = (Math.random() - 0.5) * 0.5; // 軌道の太さ
+      const rx = 8.2 + spread;
+      const ry = 4.6 + spread;
+      const x = Math.cos(t) * rx;
+      const y = Math.sin(t) * ry;
+      if (second) {
+        // 2 本目は逆傾き
+        orbit[j]     = x;
+        orbit[j + 1] = -y * 0.75 + 0.4;
+        orbit[j + 2] = Math.sin(t) * 2.4;
+      } else {
+        orbit[j]     = x;
+        orbit[j + 1] = y * 0.75 - 0.4;
+        orbit[j + 2] = Math.cos(t) * 2.4;
+      }
+    }
 
-    // らせん：2 本の帯が絡む
-    const ht = (i / count) * Math.PI * 6;
-    const arm = i % 2 ? 0 : Math.PI;
-    helix[j]     = Math.cos(ht + arm) * 2.2;
-    helix[j + 1] = (i / count - 0.5) * 8;
-    helix[j + 2] = Math.sin(ht + arm) * 2.2;
+    // About らせん：左マージン（ポートレート側）で細く立ち上る
+    {
+      const ht = (i / count) * Math.PI * 7;
+      const arm = i % 2 ? 0 : Math.PI;
+      const hx = isPc ? -5.6 : 0;
+      helix[j]     = Math.cos(ht + arm) * 1.4 + hx;
+      helix[j + 1] = (i / count - 0.5) * 9;
+      helix[j + 2] = Math.sin(ht + arm) * 1.4;
+    }
 
-    // 収束リング：中央のトーラス
-    const rt = (i / count) * Math.PI * 2;
-    const tube = 0.35 + Math.random() * 0.25;
-    const ta = Math.random() * Math.PI * 2;
-    ring[j]     = (2.4 + tube * Math.cos(ta)) * Math.cos(rt);
-    ring[j + 1] = (2.4 + tube * Math.cos(ta)) * Math.sin(rt) * 0.55;
-    ring[j + 2] = tube * Math.sin(ta);
+    // Contact 収束リング：中央やや下のトーラス（CTA の背面で細く光る）
+    {
+      const rt = (i / count) * Math.PI * 2;
+      const tube = 0.3 + Math.random() * 0.2;
+      const ta = Math.random() * Math.PI * 2;
+      ring[j]     = (3.0 + tube * Math.cos(ta)) * Math.cos(rt);
+      ring[j + 1] = (3.0 + tube * Math.cos(ta)) * Math.sin(rt) * 0.45 - 0.8;
+      ring[j + 2] = tube * Math.sin(ta);
+    }
   }
 
-  return [sphere, field, wave, helix, ring];
+  return [sphere, field, orbit, helix, ring];
 }
