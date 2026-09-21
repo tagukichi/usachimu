@@ -1,8 +1,6 @@
 <?php
 /**
- * Fullscreen nav overlay panel.
- * 全ブレークポイントで使用。開閉は nav.js（ARIA / フォーカストラップ）、
- * 演出は motion.js が data-nav-open の変化を監視して駆動する。
+ * Mobile nav overlay panel（タブレット以下）。開閉は nav.js が担当。
  *
  * @package fde-usachim
  */
@@ -12,7 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $fde_items   = fde_main_nav_items();
-$fde_items[] = [ 'label' => 'Contact', 'url' => home_url( '/' ) . '#contact' ];
 
 $fde_panel_email = (string) fde_option( 'contact_email', '' );
 $fde_panel_x_url = (string) fde_option( 'sns_x_url', '' );
@@ -24,8 +21,6 @@ $fde_panel_x_h   = (string) fde_option( 'sns_x_handle', '' );
 	aria-label="<?php esc_attr_e( 'メニュー', 'fde-usachim' ); ?>"
 	data-nav-panel
 >
-	<span class="nav-panel__curtain" aria-hidden="true"></span>
-
 	<button
 		type="button"
 		class="nav-panel__close"

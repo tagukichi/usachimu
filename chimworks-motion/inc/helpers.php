@@ -140,11 +140,12 @@ function fde_tri_field( string $variant = 'br', int $count = 10, int $seed = 0 )
  */
 function fde_main_nav_items(): array {
 	$home = home_url( '/' );
+	$blog = get_option( 'page_for_posts' ) ? get_permalink( (int) get_option( 'page_for_posts' ) ) : home_url( '/?post_type=post' );
 	return [
-		[ 'label' => 'Concept', 'url' => $home . '#concept' ],
-		[ 'label' => 'Service', 'url' => $home . '#services' ],
-		[ 'label' => 'About',   'url' => $home . '#about' ],
-		[ 'label' => 'Blog',    'url' => $home . '#blog' ],
+		[ 'label' => '事業内容',   'url' => $home . '#services' ],
+		[ 'label' => '会社概要',   'url' => $home . '#company' ],
+		[ 'label' => 'お問い合わせ', 'url' => $home . '#contact' ],
+		[ 'label' => 'Blog',      'url' => $blog ],
 	];
 }
 

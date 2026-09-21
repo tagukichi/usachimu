@@ -1,0 +1,323 @@
+/* CHIMWORKS MOTION — 1 ページ構成向けの軽いスタイル層。
+   FV の大型タイポ、事業内容の行、会社概要の表、読みやすいフォーム、
+   ヘッダー導線の整理をここで担う。派手な演出用 CSS は持たない。 */
+
+/* ---- Lenis smooth scroll ------------------------------------------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+::selection {
+  background: var(--dark-accent);
+  color: #0e100f;
+}
+
+/* ---- ヘッダー：PC はインラインナビ 1 本、タブレット以下はハンバーガー ---- */
+@media (min-width: 900px) {
+  .nav-toggle,
+  .site-cta { display: none; }
+}
+
+.nav-panel__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.nav-panel__item a {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.nav-panel__no { font-size: 11px; opacity: 0.5; letter-spacing: 0.16em; }
+
+.nav-panel__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--dark-line);
+}
+
+.nav-panel__meta-row { display: flex; gap: 12px; align-items: baseline; }
+.nav-panel__meta-k { font-size: 10px; opacity: 0.55; letter-spacing: 0.16em; }
+.nav-panel__meta-v { font-size: 14px; color: inherit; }
+
+/* ---- テキストリンクの共通下線（左へ抜けて右から戻る） ------------------ */
+.site-nav a,
+.contact__channel-v a,
+.svc-row__link,
+.prose a {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  transition: background-size 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border-bottom: 0;
+}
+
+.site-nav a { background-size: 0 1px; background-position: 100% 100%; }
+.site-nav a:hover,
+.site-nav a:focus-visible { background-size: 100% 1px; background-position: 0 100%; opacity: 1; }
+
+.contact__channel-v a:hover,
+.svc-row__link:hover,
+.prose a:hover { background-size: 0 1px; background-position: 100% 100%; }
+
+/* ---- FV --------------------------------------------------------------- */
+/* GSAP 有効時は CSS 側の行エンターアニメーションを止め、文字単位の
+   ポップインに一本化する */
+html.has-motion .hero__statement-line {
+  transform: none;
+  opacity: 1;
+  animation: none;
+}
+
+.hero__statement {
+  position: relative;
+  font-weight: 900;
+  font-size: clamp(36px, 7.8vw, 116px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.split-char {
+  display: inline-block;
+  white-space: pre;
+  will-change: transform;
+  cursor: default;
+}
+
+/* 文字分割時：親のグラデ clip は transform 子要素で壊れるため無効化し、
+   各文字に補間したソリッドカラーを与える（motion.js 側で設定） */
+.hero__statement-em.is-split { background: none; color: inherit; }
+.hero__statement-em.is-split .split-char { -webkit-text-fill-color: currentColor; }
+
+/* マウス視差：既存の配置 transform に --px/--py を合成 */
+@media (max-width: 1100px) {
+  html.has-motion .hero__visual--lg {
+    transform: translateX(-50%) translateY(var(--fx-y, 0px))
+               translate(var(--px, 0px), var(--py, 0px))
+               scale(var(--fx-scale, 1));
+  }
+}
+
+@media (min-width: 1101px) {
+  html.has-motion .hero__visual--lg {
+    transform: translateY(-50%) translateX(var(--fx-x, 0px))
+               translate(var(--px, 0px), var(--py, 0px))
+               scale(var(--fx-scale, 1));
+  }
+}
+
+.hero__globe { filter: drop-shadow(0 0 32px rgba(10, 228, 72, 0.22)); }
+
+/* ---- セクション見出し ------------------------------------------------- */
+.sec-head__title {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.sec-head__num {
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1.2px var(--accent-text);
+  font-size: var(--text-lg);
+}
+
+/* ---- 01 事業内容 ------------------------------------------------------ */
+.svc-intro {
+  max-width: 40em;
+  margin: 0 0 clamp(28px, 4vw, 48px);
+  font-size: var(--text-md);
+  line-height: var(--leading-base);
+  color: var(--dark-fg-mid);
+}
+
+.svc-rows {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--dark-line);
+}
+
+.svc-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px 40px;
+  padding: clamp(26px, 4vw, 44px) 0;
+  border-bottom: 1px solid var(--dark-line);
+}
+
+@media (min-width: 900px) {
+  .svc-row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+}
+
+.svc-row__head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.svc-row__no {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent-text);
+}
+
+.svc-row__title {
+  font-family: var(--font-jp);
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--dark-fg);
+}
+
+.svc-row__logo {
+  display: block;
+  max-width: 220px;
+  height: auto;
+}
+
+.svc-row__read {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--dark-fg-mute);
+  vertical-align: middle;
+}
+
+.svc-row__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.svc-row__desc {
+  margin: 0;
+  font-size: var(--text-md);
+  line-height: var(--leading-base);
+  color: var(--dark-fg-mid);
+}
+
+.svc-row__tags {
+  margin: 0;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: var(--dark-fg-mute);
+}
+
+.svc-row__link {
+  align-self: flex-start;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+
+.svc-row--product { background: linear-gradient(90deg, rgba(10, 228, 72, 0.06), transparent 60%); }
+
+/* ---- 02 会社概要 ------------------------------------------------------ */
+.company-list--section { border-top: 1px solid var(--dark-line); }
+
+.company-list--section .company-list__row {
+  padding: 16px 0;
+  font-size: 15px;
+}
+
+@media (min-width: 720px) {
+  .company-list--section .company-list__row { grid-template-columns: 180px minmax(0, 1fr); }
+  .company-list--section .company-list__k { font-size: 14px; }
+}
+
+/* ---- 03 お問い合わせ：読みやすいフォーム ------------------------------ */
+.contact__form--card {
+  padding: clamp(20px, 3vw, 32px);
+  background: #ffffff;
+  border: 1px solid var(--dark-line);
+  border-radius: 10px;
+}
+
+.contact__form .wpcf7 form { gap: 20px; }
+
+/* ラベルは日本語のまま、はっきり読める太さとサイズに */
+.contact__form .wpcf7 label {
+  font-family: var(--font-jp);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--dark-fg);
+}
+
+.contact__form .wpcf7 .wpcf7-form-control-wrap { margin-top: 8px; }
+
+/* 入力欄は下線だけでなく、輪郭のある箱に */
+.contact__form .wpcf7 input[type="text"],
+.contact__form .wpcf7 input[type="email"],
+.contact__form .wpcf7 input[type="tel"],
+.contact__form .wpcf7 input[type="url"],
+.contact__form .wpcf7 input[type="number"],
+.contact__form .wpcf7 textarea,
+.contact__form .wpcf7 select {
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid rgba(14, 16, 15, 0.2);
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact__form .wpcf7 textarea { min-height: 180px; }
+
+.contact__form .wpcf7 input:focus,
+.contact__form .wpcf7 textarea:focus,
+.contact__form .wpcf7 select:focus {
+  border-color: var(--accent-text);
+  box-shadow: 0 0 0 3px rgba(10, 155, 75, 0.15);
+}
+
+.contact__form .wpcf7 input::placeholder,
+.contact__form .wpcf7 textarea::placeholder { color: rgba(14, 16, 15, 0.4); }
+
+.contact__form .wpcf7 p:has(.wpcf7-submit) { text-align: left; margin-top: 4px; }
+
+.contact__form .wpcf7 .wpcf7-submit {
+  width: 100%;
+  padding: 16px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  background: var(--dark-accent);
+  color: #0e100f;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.contact__form .wpcf7 .wpcf7-submit:hover { filter: brightness(0.95); transform: translateY(-1px); }
+
+@media (min-width: 720px) {
+  .contact__form .wpcf7 .wpcf7-submit { width: auto; min-width: 220px; }
+}
+
+/* CF7 の送信結果メッセージを枠つきで見やすく */
+.contact__form .wpcf7-response-output {
+  margin: 16px 0 0;
+  padding: 12px 16px;
+  border: 1px solid var(--dark-line) !important;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.contact__form .wpcf7-not-valid-tip {
+  display: block;
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--color-error);
+}
+
+/* ---- フッター --------------------------------------------------------- */
+.site-footer { background: var(--paper-2); }
