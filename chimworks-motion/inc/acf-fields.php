@@ -141,8 +141,9 @@ add_action(
 			'default_value' => 0,
 			'instructions'  => __( 'オンにすると FV の直下に調速のセクションが出て、ナビにも「調速」が加わります。', 'fde-usachim' ),
 		];
-		$top_fields[] = fde_acf_text( 'chousoku_lead', 'chousoku_lead', __( 'ビジョンとのつなぎ（見出し下の一文）', 'fde-usachim' ), '「明日が少し待ち遠しくなる」を、まず現場の仕事から。' );
-		$top_fields[] = fde_acf_text( 'chousoku_tagline', 'chousoku_tagline', __( 'タグライン（大きな一言）', 'fde-usachim' ), '物件調査を、速く。' );
+		$top_fields[] = fde_acf_text( 'chousoku_category', 'chousoku_category', __( '名前の横の短いラベル', 'fde-usachim' ), '物件調査アプリ' );
+		$top_fields[] = fde_acf_text( 'chousoku_lead', 'chousoku_lead', __( '見出し下の一文（任意・空欄なら非表示）', 'fde-usachim' ) );
+		$top_fields[] = fde_acf_text( 'chousoku_tagline', 'chousoku_tagline', __( 'タグライン（任意・空欄なら非表示）', 'fde-usachim' ) );
 		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '説明文', 'fde-usachim' ), 3 );
 		foreach ( [ 1, 2, 3 ] as $n ) {
 			$top_fields[] = fde_acf_text( "chousoku_point_{$n}_k", "chousoku_point_{$n}_k", sprintf( __( '特長 %d — 見出し', 'fde-usachim' ), $n ) );

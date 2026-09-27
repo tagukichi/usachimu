@@ -176,9 +176,10 @@ html.has-motion .hero__statement-line {
   color: var(--dark-fg);
 }
 
-.product__read {
-  font-size: 11px;
-  letter-spacing: 0.22em;
+.product__cat {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--accent-text);
 }
 

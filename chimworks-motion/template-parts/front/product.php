@@ -15,8 +15,9 @@ if ( ! (bool) fde_field( 'chousoku_show', false ) ) {
 	return;
 }
 
-$fde_lead    = (string) fde_field( 'chousoku_lead', '「明日が少し待ち遠しくなる」を、まず現場の仕事から。' );
-$fde_tagline = (string) fde_field( 'chousoku_tagline', '物件調査を、速く。' );
+$fde_lead    = (string) fde_field( 'chousoku_lead', '' );      // 任意。空なら出さない
+$fde_tagline = (string) fde_field( 'chousoku_tagline', '' );   // 任意。空なら出さない
+$fde_cat     = (string) fde_field( 'chousoku_category', '物件調査アプリ' );
 $fde_desc    = (string) fde_field(
 	'chousoku_desc',
 	'不動産の物件調査をスムーズに行うためのAI搭載アプリ。物件情報の収集・整理を自動化し、調査業務にかかる時間を大幅に短縮します。'
@@ -67,11 +68,15 @@ $fde_has_image = is_array( $fde_image ) && ! empty( $fde_image['url'] );
 						     loading="lazy">
 					<?php else : ?>
 						<span class="product__name">調速</span>
-						<span class="product__read mono">CHO-HAYA</span>
+					<?php endif; ?>
+					<?php if ( '' !== trim( $fde_cat ) ) : ?>
+						<span class="product__cat jp"><?php echo esc_html( $fde_cat ); ?></span>
 					<?php endif; ?>
 				</div>
 
-				<h3 class="product__tagline jp"><?php echo esc_html( $fde_tagline ); ?></h3>
+				<?php if ( '' !== trim( $fde_tagline ) ) : ?>
+					<h3 class="product__tagline jp"><?php echo esc_html( $fde_tagline ); ?></h3>
+				<?php endif; ?>
 				<p class="product__desc jp"><?php echo esc_html( $fde_desc ); ?></p>
 
 				<?php if ( $fde_url ) : ?>
