@@ -151,12 +151,12 @@ add_action(
 		}
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_logo',
-			'label'         => __( 'ロゴ画像（任意）', 'fde-usachim' ),
+			'label'         => __( 'ロゴマーク（「調速」の左に表示）', 'fde-usachim' ),
 			'name'          => 'chousoku_logo',
 			'type'          => 'image',
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
-			'instructions'  => __( '未設定時はテキストで「調速」と表示。', 'fde-usachim' ),
+			'instructions'  => __( '文字の入っていないマーク部分だけの画像（正方形・透過PNG/SVG推奨）。「調速」の文字は自動で右に並びます。', 'fde-usachim' ),
 		];
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_image',

@@ -1,6 +1,6 @@
 <?php
 /**
- * 調速 — ビジョンを形にする取り組みの 1 つ。
+ * 調速 — 物件調査アプリ。
  * FV（ビジョン）の直下に置き、事業内容より先に見せる。
  * ACF のトグル（chousoku_show）が OFF のあいだは丸ごと出力しない。
  *
@@ -43,6 +43,14 @@ foreach (
 }
 
 $fde_has_image = is_array( $fde_image ) && ! empty( $fde_image['url'] );
+$fde_has_logo  = is_array( $fde_logo ) && ! empty( $fde_logo['url'] );
+
+// 特長カードのアイコン（並び順＝ 収集 → AI 整理 → 時間短縮）
+$fde_point_icons = [
+	'<path d="M12 3v10"/><path d="M8 9l4 4 4-4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>',
+	'<path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.7 1.8 1.8.7-1.8.7L19 20l-.7-1.8-1.8-.7 1.8-.7z"/>',
+	'<path d="M4.5 17a8 8 0 1 1 15 0"/><path d="M12 13.5l4-4.5"/><circle cx="12" cy="13.5" r="1.3"/>',
+];
 ?>
 <section class="section section--dark product" id="product" data-section="product">
 	<div class="section__inner">
@@ -51,7 +59,6 @@ $fde_has_image = is_array( $fde_image ) && ! empty( $fde_image['url'] );
 				<span class="sec-head__num"><?php echo esc_html( fde_section_no() ); ?></span>
 				<h2 class="sec-head__title">Product</h2>
 			</div>
-			<span class="sec-head__meta">ビジョンを形にする取り組み</span>
 		</header>
 
 		<?php if ( '' !== trim( $fde_lead ) ) : ?>
@@ -61,21 +68,20 @@ $fde_has_image = is_array( $fde_image ) && ! empty( $fde_image['url'] );
 		<div class="product__grid<?php echo $fde_has_image ? ' product__grid--media' : ''; ?>">
 			<div class="product__main">
 				<div class="product__brand">
-					<?php if ( is_array( $fde_logo ) && ! empty( $fde_logo['url'] ) ) : ?>
-						<img class="product__logo"
+					<?php if ( $fde_has_logo ) : ?>
+						<img class="product__mark"
 						     src="<?php echo esc_url( $fde_logo['url'] ); ?>"
-						     alt="<?php echo esc_attr( ! empty( $fde_logo['alt'] ) ? $fde_logo['alt'] : '調速' ); ?>"
+						     alt=""
 						     loading="lazy">
-					<?php else : ?>
-						<span class="product__name">調速</span>
 					<?php endif; ?>
+					<h3 class="product__name">調速</h3>
 					<?php if ( '' !== trim( $fde_cat ) ) : ?>
 						<span class="product__cat jp"><?php echo esc_html( $fde_cat ); ?></span>
 					<?php endif; ?>
 				</div>
 
 				<?php if ( '' !== trim( $fde_tagline ) ) : ?>
-					<h3 class="product__tagline jp"><?php echo esc_html( $fde_tagline ); ?></h3>
+					<p class="product__tagline jp"><?php echo esc_html( $fde_tagline ); ?></p>
 				<?php endif; ?>
 				<p class="product__desc jp"><?php echo esc_html( $fde_desc ); ?></p>
 
@@ -99,10 +105,13 @@ $fde_has_image = is_array( $fde_image ) && ! empty( $fde_image['url'] );
 			<ul class="product__points">
 				<?php foreach ( $fde_points as $fde_i => $fde_pt ) : ?>
 					<li class="product__point">
-						<span class="product__point-no mono"><?php echo esc_html( sprintf( '%02d', $fde_i + 1 ) ); ?></span>
-						<span class="product__point-k jp"><?php echo esc_html( $fde_pt['k'] ); ?></span>
+						<span class="product__point-no" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $fde_i + 1 ) ); ?></span>
+						<span class="product__point-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $fde_point_icons[ $fde_i % 3 ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- 固定の SVG パス ?></svg>
+						</span>
+						<h4 class="product__point-k jp"><?php echo esc_html( $fde_pt['k'] ); ?></h4>
 						<?php if ( '' !== trim( $fde_pt['v'] ) ) : ?>
-							<span class="product__point-v jp"><?php echo esc_html( $fde_pt['v'] ); ?></span>
+							<p class="product__point-v jp"><?php echo esc_html( $fde_pt['v'] ); ?></p>
 						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
