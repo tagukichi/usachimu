@@ -1,8 +1,8 @@
 <?php
 /**
- * 01 — 事業内容。
+ * 事業内容。
  * 数字や実績は出さず、扱っている事業を 1〜2 文ずつ、読みやすい行で並べる。
- * 調速（自社サービス）は ACF のトグルで表示/非表示を切り替える。
+ * 調速は product.php で独立セクションとして扱う。
  *
  * @package fde-usachim
  */
@@ -45,21 +45,12 @@ $fde_services = [
 		'tags'  => (string) fde_field( 'svc_video_tags', 'YouTube / ショート動画 / リール動画' ),
 	],
 ];
-
-// 調速（自社サービス）— 然るべきタイミングで公開するため、既定は非表示
-$fde_chousoku_show = (bool) fde_field( 'chousoku_show', false );
-$fde_chousoku_desc = (string) fde_field(
-	'chousoku_desc',
-	'不動産の物件調査をスムーズに行うためのAI搭載アプリ。物件情報の収集・整理を自動化し、調査業務にかかる時間を大幅に短縮します。'
-);
-$fde_chousoku_logo = fde_field( 'chousoku_logo' );
-$fde_chousoku_url  = (string) fde_field( 'chousoku_url', 'https://usachim.com/cho-haya/' );
 ?>
 <section class="section section--dark svc" id="services" data-section="services">
 	<div class="section__inner">
 		<header class="sec-head">
 			<div class="sec-head__l">
-				<span class="sec-head__num">01</span>
+				<span class="sec-head__num"><?php echo esc_html( fde_section_no() ); ?></span>
 				<h2 class="sec-head__title">Service</h2>
 			</div>
 			<span class="sec-head__meta">事業内容</span>
@@ -85,32 +76,6 @@ $fde_chousoku_url  = (string) fde_field( 'chousoku_url', 'https://usachim.com/ch
 					</div>
 				</article>
 			<?php endforeach; ?>
-
-			<?php if ( $fde_chousoku_show ) : ?>
-				<article class="svc-row svc-row--product">
-					<div class="svc-row__head">
-						<span class="svc-row__no mono">PRODUCT</span>
-						<h3 class="svc-row__title">
-							<?php if ( is_array( $fde_chousoku_logo ) && ! empty( $fde_chousoku_logo['url'] ) ) : ?>
-								<img class="svc-row__logo"
-								     src="<?php echo esc_url( $fde_chousoku_logo['url'] ); ?>"
-								     alt="<?php echo esc_attr( ! empty( $fde_chousoku_logo['alt'] ) ? $fde_chousoku_logo['alt'] : '調速' ); ?>"
-								     loading="lazy">
-							<?php else : ?>
-								調速<span class="svc-row__read mono">ちょうはや</span>
-							<?php endif; ?>
-						</h3>
-					</div>
-					<div class="svc-row__body">
-						<p class="svc-row__desc jp"><?php echo esc_html( $fde_chousoku_desc ); ?></p>
-						<?php if ( $fde_chousoku_url ) : ?>
-							<a class="svc-row__link" href="<?php echo esc_url( $fde_chousoku_url ); ?>" target="_blank" rel="noopener">
-								調速のサービスサイトを見る<span aria-hidden="true"> →</span>
-							</a>
-						<?php endif; ?>
-					</div>
-				</article>
-			<?php endif; ?>
 		</div>
 	</div>
 </section>

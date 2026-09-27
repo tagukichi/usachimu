@@ -126,22 +126,31 @@ add_action(
 		$top_fields[] = fde_acf_textarea( 'svc_video_desc', 'svc_video_desc', __( '動画制作 — 説明', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_text( 'svc_video_tags', 'svc_video_tags', __( '動画制作 — キーワード（/ 区切り）', 'fde-usachim' ), 'YouTube / ショート動画 / リール動画' );
 
-		// 調速（自社サービス）— 然るべきタイミングで公開するため既定は非表示
+		// ---------- 調速（ビジョンを形にする取り組み） ----------
+		// FV の直下に独立セクションとして出る。トグル OFF のあいだは
+		// セクションもナビ項目も出ない（既定 OFF。然るべきタイミングで ON に）。
+		$top_fields[] = fde_acf_tab( 'product', __( '調速（取り組み）', 'fde-usachim' ) );
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_show',
-			'label'         => __( '調速（自社サービス）を表示', 'fde-usachim' ),
+			'label'         => __( '調速セクションを表示', 'fde-usachim' ),
 			'name'          => 'chousoku_show',
 			'type'          => 'true_false',
 			'ui'            => 1,
 			'ui_on_text'    => __( '表示', 'fde-usachim' ),
 			'ui_off_text'   => __( '非表示', 'fde-usachim' ),
 			'default_value' => 0,
-			'instructions'  => __( 'オンにすると事業内容の末尾に調速の行が追加されます。', 'fde-usachim' ),
+			'instructions'  => __( 'オンにすると FV の直下に調速のセクションが出て、ナビにも「調速」が加わります。', 'fde-usachim' ),
 		];
-		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '調速 — 説明文', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_text( 'chousoku_lead', 'chousoku_lead', __( 'ビジョンとのつなぎ（見出し下の一文）', 'fde-usachim' ), '「明日が少し待ち遠しくなる」を、まず現場の仕事から。' );
+		$top_fields[] = fde_acf_text( 'chousoku_tagline', 'chousoku_tagline', __( 'タグライン（大きな一言）', 'fde-usachim' ), '物件調査を、速く。' );
+		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '説明文', 'fde-usachim' ), 3 );
+		foreach ( [ 1, 2, 3 ] as $n ) {
+			$top_fields[] = fde_acf_text( "chousoku_point_{$n}_k", "chousoku_point_{$n}_k", sprintf( __( '特長 %d — 見出し', 'fde-usachim' ), $n ) );
+			$top_fields[] = fde_acf_text( "chousoku_point_{$n}_v", "chousoku_point_{$n}_v", sprintf( __( '特長 %d — 説明（短く）', 'fde-usachim' ), $n ) );
+		}
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_logo',
-			'label'         => __( '調速 — ロゴ画像（任意）', 'fde-usachim' ),
+			'label'         => __( 'ロゴ画像（任意）', 'fde-usachim' ),
 			'name'          => 'chousoku_logo',
 			'type'          => 'image',
 			'return_format' => 'array',
@@ -149,11 +158,21 @@ add_action(
 			'instructions'  => __( '未設定時はテキストで「調速」と表示。', 'fde-usachim' ),
 		];
 		$top_fields[] = [
+			'key'           => 'field_fde_chousoku_image',
+			'label'         => __( 'アプリ画面などの画像（任意）', 'fde-usachim' ),
+			'name'          => 'chousoku_image',
+			'type'          => 'image',
+			'return_format' => 'array',
+			'preview_size'  => 'medium',
+			'instructions'  => __( '設定すると説明の右側に表示（SP は下）。未設定なら 1 カラム。', 'fde-usachim' ),
+		];
+		$top_fields[] = [
 			'key'   => 'field_fde_chousoku_url',
-			'label' => __( '調速 — サービスサイトの URL', 'fde-usachim' ),
+			'label' => __( 'サービスサイトの URL', 'fde-usachim' ),
 			'name'  => 'chousoku_url',
 			'type'  => 'url',
 		];
+		$top_fields[] = fde_acf_text( 'chousoku_cta_label', 'chousoku_cta_label', __( 'ボタンの文言', 'fde-usachim' ), '調速のサービスサイトを見る' );
 
 		// ---------- 02 会社概要 ----------
 		$top_fields[] = fde_acf_tab( 'company', __( '02 会社概要', 'fde-usachim' ) );
