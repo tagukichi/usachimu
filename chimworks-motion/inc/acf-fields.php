@@ -116,15 +116,15 @@ add_action(
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_b',     'hero_statement_l2_b', __( '2行目（グラデーション強調部分）', 'fde-usachim' ), '社会の実現へ。' );
 		$top_fields[] = fde_acf_textarea( 'hero_lede',      'hero_lede', __( 'サブコピー（ビジョン）', 'fde-usachim' ), 2, '**強調** で太字にできます。' );
 
-		// ---------- 01 事業内容 ----------
-		$top_fields[] = fde_acf_tab( 'services', __( '01 事業内容', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_textarea( 'svc_intro', 'svc_intro', __( '導入文（見出し下・1〜2文）', 'fde-usachim' ), 2 );
+		// ---------- 事業内容 ----------
+		$top_fields[] = fde_acf_tab( 'services', __( '事業内容', 'fde-usachim' ) );
+		$top_fields[] = fde_acf_textarea( 'svc_intro', 'svc_intro', __( '導入文（見出し下・1 行に収まる長さで）', 'fde-usachim' ), 2 );
 		$top_fields[] = fde_acf_textarea( 'svc_web_desc', 'svc_web_desc', __( 'WEB制作・システム開発 — 説明', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_text( 'svc_web_tags', 'svc_web_tags', __( 'WEB制作・システム開発 — キーワード（/ 区切り）', 'fde-usachim' ), 'WEBサイト / WEBシステム / WEBアプリ / UI・UXデザイン' );
+		$top_fields[] = [ 'key' => 'field_fde_svc_web_url', 'label' => __( 'WEB制作・システム開発 — 特設ページの URL（設定すると行がリンクになる）', 'fde-usachim' ), 'name' => 'svc_web_url', 'type' => 'url' ];
 		$top_fields[] = fde_acf_textarea( 'svc_dx_desc', 'svc_dx_desc', __( '業務効率化・DX支援 — 説明', 'fde-usachim' ), 3 );
 		$top_fields[] = fde_acf_text( 'svc_dx_tags', 'svc_dx_tags', __( '業務効率化・DX支援 — キーワード（/ 区切り）', 'fde-usachim' ), '生成AI研修 / AIアプリ作成 / 業務フロー改善 / PoC作成' );
-		$top_fields[] = fde_acf_textarea( 'svc_video_desc', 'svc_video_desc', __( '動画制作 — 説明', 'fde-usachim' ), 3 );
-		$top_fields[] = fde_acf_text( 'svc_video_tags', 'svc_video_tags', __( '動画制作 — キーワード（/ 区切り）', 'fde-usachim' ), 'YouTube / ショート動画 / リール動画' );
+		$top_fields[] = [ 'key' => 'field_fde_svc_dx_url', 'label' => __( '業務効率化・DX支援 — 特設ページの URL（設定すると行がリンクになる）', 'fde-usachim' ), 'name' => 'svc_dx_url', 'type' => 'url' ];
 
 		// ---------- 調速（ビジョンを形にする取り組み） ----------
 		// FV の直下に独立セクションとして出る。トグル OFF のあいだは
@@ -175,21 +175,21 @@ add_action(
 		];
 		$top_fields[] = fde_acf_text( 'chousoku_cta_label', 'chousoku_cta_label', __( 'ボタンの文言', 'fde-usachim' ), '調速のサービスサイトを見る' );
 
-		// ---------- 02 会社概要 ----------
-		$top_fields[] = fde_acf_tab( 'company', __( '02 会社概要', 'fde-usachim' ) );
+		// ---------- フッター会社概要 ----------
+		$top_fields[] = fde_acf_tab( 'company', __( 'フッター会社概要', 'fde-usachim' ) );
 		$top_fields[] = fde_acf_text( 'company_name',    'company_name',    __( '商号', 'fde-usachim' ), '合同会社CHIM WORKS' );
 		$top_fields[] = fde_acf_text( 'company_founded', 'company_founded', __( '設立', 'fde-usachim' ), '2026年8月' );
 		$top_fields[] = fde_acf_text( 'company_ceo',     'company_ceo',     __( '代表者', 'fde-usachim' ), '代表社員 ○○ ○○' );
 		$top_fields[] = fde_acf_text( 'company_capital', 'company_capital', __( '資本金', 'fde-usachim' ), '1,000,000円' );
 		$top_fields[] = fde_acf_textarea( 'company_address', 'company_address', __( '所在地', 'fde-usachim' ), 2 );
-		$top_fields[] = fde_acf_textarea( 'company_business', 'company_business', __( '事業内容（1行1項目）', 'fde-usachim' ), 3 );
+		$top_fields[] = fde_acf_textarea( 'company_business', 'company_business', __( '事業内容（1行1項目。空欄なら WEB制作・システム開発 / 業務効率化・DX支援）', 'fde-usachim' ), 3 );
 		foreach ( [ 1, 2 ] as $n ) {
 			$top_fields[] = fde_acf_text( "company_extra_{$n}_k", "company_extra_{$n}_k", sprintf( __( '自由項目 %d — 見出し', 'fde-usachim' ), $n ), '取引銀行' );
 			$top_fields[] = fde_acf_text( "company_extra_{$n}_v", "company_extra_{$n}_v", sprintf( __( '自由項目 %d — 内容', 'fde-usachim' ), $n ) );
 		}
 
-		// ---------- 03 お問い合わせ ----------
-		$top_fields[] = fde_acf_tab( 'contact', __( '03 お問い合わせ', 'fde-usachim' ) );
+		// ---------- お問い合わせ ----------
+		$top_fields[] = fde_acf_tab( 'contact', __( 'お問い合わせ', 'fde-usachim' ) );
 		$top_fields[] = fde_acf_text( 'contact_meta', 'contact_meta', __( '見出し横のメタ', 'fde-usachim' ), 'RESPONSE WITHIN 1 BIZ DAY' );
 		$top_fields[] = fde_acf_text( 'contact_lead', 'contact_lead', __( 'リード', 'fde-usachim' ), 'まずはお気軽にご相談ください。' );
 		$top_fields[] = fde_acf_textarea( 'contact_note', 'contact_note', __( '補足', 'fde-usachim' ), 3 );
@@ -213,6 +213,34 @@ add_action(
 				'style'           => 'default',
 				'label_placement' => 'top',
 				'active'          => true,
+			]
+		);
+
+		// ============================================================
+		// (3b) 特設ページ（3D）— page template で選んだ固定ページに表示
+		// ============================================================
+		acf_add_local_field_group(
+			[
+				'key'      => 'group_fde_special_3d',
+				'title'    => __( '特設ページ（3D）の設定', 'fde-usachim' ),
+				'fields'   => [
+					[
+						'key'           => 'field_fde_sp_scene',
+						'label'         => __( '3D シーン', 'fde-usachim' ),
+						'name'          => 'sp_scene',
+						'type'          => 'select',
+						'choices'       => [
+							'web' => __( 'WEB制作・システム開発（浮遊するワイヤーフレームの街）', 'fde-usachim' ),
+							'dx'  => __( '業務効率化・DX支援（脈打つネットワーク）', 'fde-usachim' ),
+						],
+						'default_value' => 'web',
+						'return_format' => 'value',
+					],
+					fde_acf_text( 'sp_eyebrow', 'sp_eyebrow', __( '見出し上の小さなラベル', 'fde-usachim' ), 'SERVICE 01' ),
+					fde_acf_textarea( 'sp_lead', 'sp_lead', __( 'リード文（FV に重ねる 1〜2 文）', 'fde-usachim' ), 2 ),
+				],
+				'location' => [ [ [ 'param' => 'page_template', 'operator' => '==', 'value' => 'template-3d.php' ] ] ],
+				'position' => 'normal',
 			]
 		);
 

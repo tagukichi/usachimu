@@ -14,6 +14,11 @@ const boot = () => {
   if (!initMotion()) {
     initReveal();
   }
+
+  // 特設ページ（3D）だけ Three.js を遅延読込（他ページに 670KB を配らない）
+  if (document.querySelector('[data-sp-scene]')) {
+    import('./special-scene.js').then((m) => m.initSpecialScene()).catch(() => {});
+  }
 };
 
 if (document.readyState === 'loading') {

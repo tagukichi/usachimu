@@ -2,7 +2,8 @@
 /**
  * 事業内容。
  * 数字や実績は出さず、扱っている事業を 1〜2 文ずつ、読みやすい行で並べる。
- * 調速は product.php で独立セクションとして扱う。
+ * 行ごとに特設ページの URL が設定されていれば、行全体がリンクになり、
+ * ホバーで緑の帯が走って文字が白抜きになる。
  *
  * @package fde-usachim
  */
@@ -13,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $fde_svc_intro = (string) fde_field(
 	'svc_intro',
-	'WEBサイトやシステムの制作から、行政・企業の業務効率化まで。企画から運用まで一貫して対応します。'
+	'WEBサイト・システムの制作から、行政・企業の業務効率化まで対応します。'
 );
 
 $fde_services = [
@@ -25,6 +26,7 @@ $fde_services = [
 			'コーポレートサイトやLPの制作から、業務システム・Webアプリ・API連携の開発まで。生成AIを組み込んだアプリケーション開発にも対応します。'
 		),
 		'tags'  => (string) fde_field( 'svc_web_tags', 'WEBサイト / WEBシステム / WEBアプリ / UI・UXデザイン' ),
+		'url'   => (string) fde_field( 'svc_web_url', '' ),
 	],
 	[
 		'no'    => '02',
@@ -34,15 +36,7 @@ $fde_services = [
 			'行政職員としての経験を活かし、自治体・企業の現場に伴走して業務のデジタル化を支援します。生成AI研修、AIアプリや業務ツールの作成、業務フロー改善、PoC作成など。'
 		),
 		'tags'  => (string) fde_field( 'svc_dx_tags', '生成AI研修 / AIアプリ作成 / 業務フロー改善 / PoC作成 / Google Workspace' ),
-	],
-	[
-		'no'    => '03',
-		'title' => '動画制作',
-		'desc'  => (string) fde_field(
-			'svc_video_desc',
-			'YouTube動画やショート・リール動画の企画・撮影・編集。WEBと組み合わせた発信の設計もあわせて行います。'
-		),
-		'tags'  => (string) fde_field( 'svc_video_tags', 'YouTube / ショート動画 / リール動画' ),
+		'url'   => (string) fde_field( 'svc_dx_url', '' ),
 	],
 ];
 ?>
@@ -62,8 +56,16 @@ $fde_services = [
 
 		<div class="svc-rows">
 			<?php foreach ( $fde_services as $fde_svc ) : ?>
-				<?php if ( '' === trim( $fde_svc['desc'] ) ) : continue; endif; ?>
-				<article class="svc-row">
+				<?php
+				if ( '' === trim( $fde_svc['desc'] ) ) {
+					continue;
+				}
+				$fde_is_link = '' !== trim( $fde_svc['url'] );
+				$fde_tag     = $fde_is_link ? 'a' : 'article';
+				?>
+				<<?php echo $fde_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- 'a' か 'article' の固定値 ?>
+					class="svc-row<?php echo $fde_is_link ? ' svc-row--link' : ''; ?>"
+					<?php if ( $fde_is_link ) : ?>href="<?php echo esc_url( $fde_svc['url'] ); ?>"<?php endif; ?>>
 					<div class="svc-row__head">
 						<span class="svc-row__no mono"><?php echo esc_html( $fde_svc['no'] ); ?></span>
 						<h3 class="svc-row__title"><?php echo esc_html( $fde_svc['title'] ); ?></h3>
@@ -74,7 +76,12 @@ $fde_services = [
 							<p class="svc-row__tags mono"><?php echo esc_html( $fde_svc['tags'] ); ?></p>
 						<?php endif; ?>
 					</div>
-				</article>
+					<?php if ( $fde_is_link ) : ?>
+						<span class="svc-row__go" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+						</span>
+					<?php endif; ?>
+				</<?php echo $fde_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 			<?php endforeach; ?>
 		</div>
 	</div>
