@@ -1,7 +1,9 @@
 <?php
 /**
- * 調速 — 物件調査アプリ。
- * FV（ビジョン）の直下に置き、事業内容より先に見せる。
+ * 調速 — 不動産調査アプリ（LP の先頭部分を TOP に引用）。
+ * LP（usachim.com/cho-haya/）のヒーローをそのまま持ち込む：
+ * キャッチコピー・リード・4 つのポイント・製品モック（CSS 組み）。
+ * 色は LP のブルー系を使い、TOP の中で「引用」として読めるようにする。
  * ACF のトグル（chousoku_show）が OFF のあいだは丸ごと出力しない。
  *
  * @package fde-usachim
@@ -15,42 +17,47 @@ if ( ! (bool) fde_field( 'chousoku_show', false ) ) {
 	return;
 }
 
-$fde_lead    = (string) fde_field( 'chousoku_lead', '' );      // 任意。空なら出さない
-$fde_tagline = (string) fde_field( 'chousoku_tagline', '' );   // 任意。空なら出さない
-$fde_cat     = (string) fde_field( 'chousoku_category', '物件調査アプリ' );
-$fde_desc    = (string) fde_field(
-	'chousoku_desc',
-	'不動産の物件調査をスムーズに行うためのAI搭載アプリ。物件情報の収集・整理を自動化し、調査業務にかかる時間を大幅に短縮します。'
+// 見出し：LP のコピー。「約5分」はアクセント色（{{ }} で囲むと強調）
+$fde_title = (string) fde_field(
+	'chousoku_title',
+	"住所を入力して、{{約5分}}。\n不動産調査業務を効率化する\nクラウド型ソフトウェア。"
 );
-$fde_logo    = fde_field( 'chousoku_logo' );
-$fde_image   = fde_field( 'chousoku_image' );
-$fde_url     = (string) fde_field( 'chousoku_url', 'https://usachim.com/cho-haya/' );
-$fde_cta     = (string) fde_field( 'chousoku_cta_label', '調速のサービスサイトを見る' );
+$fde_lead = (string) fde_field(
+	'chousoku_lead',
+	"{{公的データ × AI}} で、不動産調査業務の生産性を最大化。\n公的データの取得・整理から提案文・A4資料の作成までを、1つの画面で支援します。"
+);
+$fde_logo  = fde_field( 'chousoku_logo' );
+$fde_url   = (string) fde_field( 'chousoku_url', 'https://usachim.com/cho-haya/' );
+$fde_cta   = (string) fde_field( 'chousoku_cta_label', '調速のサービスサイトを見る' );
+$fde_note  = (string) fde_field( 'chousoku_note', '弊社が開発・提供する、不動産調査アプリです。' );
 
 $fde_points = [];
 foreach (
 	[
-		1 => [ '情報収集を自動化', '物件に関する各種情報をまとめて取得します。' ],
-		2 => [ 'AIが整理・要約', '集めた情報を調査書式に沿って整理します。' ],
-		3 => [ '調査時間を大幅に短縮', '1件あたりの調査にかかる時間を圧縮します。' ],
+		1 => '調査業務の時間を約1/10に',
+		2 => '公的データ100%',
+		3 => 'スマホ対応',
+		4 => '案件管理ダッシュボード',
 	] as $fde_pn => $fde_pd
 ) {
-	$fde_pk = (string) fde_field( "chousoku_point_{$fde_pn}_k", $fde_pd[0] );
-	$fde_pv = (string) fde_field( "chousoku_point_{$fde_pn}_v", $fde_pd[1] );
+	$fde_pk = (string) fde_field( "chousoku_point_{$fde_pn}_k", $fde_pd );
 	if ( '' !== trim( $fde_pk ) ) {
-		$fde_points[] = [ 'k' => $fde_pk, 'v' => $fde_pv ];
+		$fde_points[] = $fde_pk;
 	}
 }
 
-$fde_has_image = is_array( $fde_image ) && ! empty( $fde_image['url'] );
-$fde_has_logo  = is_array( $fde_logo ) && ! empty( $fde_logo['url'] );
+$fde_logo_url = is_array( $fde_logo ) && ! empty( $fde_logo['url'] )
+	? $fde_logo['url']
+	: fde_asset_url( 'assets/img/chosoku-logo.png' );
 
-// 特長カードのアイコン（並び順＝ 収集 → AI 整理 → 時間短縮）
-$fde_point_icons = [
-	'<path d="M12 3v10"/><path d="M8 9l4 4 4-4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>',
-	'<path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.7 1.8 1.8.7-1.8.7L19 20l-.7-1.8-1.8-.7 1.8-.7z"/>',
-	'<path d="M4.5 17a8 8 0 1 1 15 0"/><path d="M12 13.5l4-4.5"/><circle cx="12" cy="13.5" r="1.3"/>',
-];
+/**
+ * {{強調}} をアクセント span に、改行を <br> に変換する。
+ */
+$fde_rich = static function ( string $text ): string {
+	$out = esc_html( $text );
+	$out = preg_replace( '/\{\{(.+?)\}\}/u', '<span class="chq__accent">$1</span>', $out );
+	return nl2br( $out );
+};
 ?>
 <section class="section section--dark product" id="product" data-section="product">
 	<div class="section__inner">
@@ -59,63 +66,88 @@ $fde_point_icons = [
 				<span class="sec-head__num"><?php echo esc_html( fde_section_no() ); ?></span>
 				<h2 class="sec-head__title">Product</h2>
 			</div>
+			<span class="sec-head__meta"><?php echo esc_html( $fde_note ); ?></span>
 		</header>
 
-		<?php if ( '' !== trim( $fde_lead ) ) : ?>
-			<p class="product__lead jp"><?php echo esc_html( $fde_lead ); ?></p>
-		<?php endif; ?>
+		<!-- LP ヒーローの引用ブロック -->
+		<div class="chq">
+			<div class="chq__bg" aria-hidden="true"></div>
 
-		<div class="product__grid<?php echo $fde_has_image ? ' product__grid--media' : ''; ?>">
-			<div class="product__main">
-				<div class="product__brand">
-					<?php if ( $fde_has_logo ) : ?>
-						<img class="product__mark"
-						     src="<?php echo esc_url( $fde_logo['url'] ); ?>"
-						     alt=""
-						     loading="lazy">
+			<div class="chq__inner">
+				<div class="chq__copy">
+					<a class="chq__logo" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
+						<img src="<?php echo esc_url( $fde_logo_url ); ?>" alt="調速 — 不動産調査アプリ" loading="lazy">
+					</a>
+
+					<h3 class="chq__title jp"><?php echo $fde_rich( $fde_title ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html 済み ?></h3>
+					<p class="chq__lead jp"><?php echo $fde_rich( $fde_lead ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html 済み ?></p>
+
+					<?php if ( $fde_points ) : ?>
+						<ul class="chq__points jp">
+							<?php foreach ( $fde_points as $fde_pt ) : ?>
+								<li>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+									<?php echo esc_html( $fde_pt ); ?>
+								</li>
+							<?php endforeach; ?>
+						</ul>
 					<?php endif; ?>
-					<h3 class="product__name">調速</h3>
-					<?php if ( '' !== trim( $fde_cat ) ) : ?>
-						<span class="product__cat jp"><?php echo esc_html( $fde_cat ); ?></span>
+
+					<?php if ( $fde_url ) : ?>
+						<a class="chq__cta" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
+							<?php echo esc_html( $fde_cta ); ?><span aria-hidden="true">→</span>
+						</a>
 					<?php endif; ?>
 				</div>
 
-				<?php if ( '' !== trim( $fde_tagline ) ) : ?>
-					<p class="product__tagline jp"><?php echo esc_html( $fde_tagline ); ?></p>
-				<?php endif; ?>
-				<p class="product__desc jp"><?php echo esc_html( $fde_desc ); ?></p>
+				<!-- 製品モック（PC + スマホ）：LP と同じ CSS 組み -->
+				<div class="chq__visual" aria-hidden="true">
+					<div class="mock-window">
+						<div class="mock-bar">
+							<span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+							<span class="mock-url">app.chosoku.jp</span>
+						</div>
+						<div class="mock-body">
+							<div class="mock-search">
+								<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+								<span class="mock-search-text">東京都〇〇区〇〇 1-2-3</span>
+								<span class="mock-search-btn">調査</span>
+							</div>
+							<div class="mock-grid">
+								<div class="mock-panel mock-panel--map">
+									<span class="mock-panel-tag">地図</span>
+									<div class="mock-map"><span class="mock-pin"></span></div>
+								</div>
+								<div class="mock-panel"><span class="mock-panel-tag">用途地域</span><span class="mock-skel w70"></span><span class="mock-skel w40"></span></div>
+								<div class="mock-panel"><span class="mock-panel-tag">建蔽率 / 容積率</span><span class="mock-skel w60"></span><span class="mock-skel w50"></span></div>
+								<div class="mock-panel"><span class="mock-panel-tag">ハザード</span><span><span class="mock-chip">浸水</span><span class="mock-chip">土砂</span><span class="mock-chip">地震</span></span></div>
+								<div class="mock-panel"><span class="mock-panel-tag">学区</span><span class="mock-skel w80"></span><span class="mock-skel w50"></span></div>
+								<div class="mock-panel"><span class="mock-panel-tag">地価</span><span class="mock-skel w70"></span><span class="mock-link-skel">国税庁で確認 ↗</span></div>
+								<div class="mock-panel"><span class="mock-panel-tag">取引事例</span><span class="mock-bars"><i style="height:40%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:85%"></i></span></div>
+								<div class="mock-panel"><span class="mock-panel-tag">生活利便施設</span><span class="mock-skel w90"></span><span class="mock-skel w60"></span></div>
+							</div>
+						</div>
+					</div>
 
-				<?php if ( $fde_url ) : ?>
-					<a class="btn btn--solid product__cta" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
-						<?php echo esc_html( $fde_cta ); ?><span aria-hidden="true">→</span>
-					</a>
-				<?php endif; ?>
+					<div class="mock-phone">
+						<div class="mock-phone-notch"></div>
+						<div class="mock-phone-screen">
+							<div class="mock-phone-search"><span></span></div>
+							<div class="mock-phone-map"><span class="mock-pin"></span></div>
+							<div class="mock-phone-panels">
+								<div class="mock-phone-panel"><span class="mock-panel-tag">用途地域</span><span class="mock-skel w70"></span></div>
+								<div class="mock-phone-panel"><span class="mock-panel-tag">ハザード</span><span><span class="mock-chip">浸水</span><span class="mock-chip">地震</span></span></div>
+								<div class="mock-phone-panel"><span class="mock-panel-tag">地価</span><span class="mock-skel w60"></span></div>
+								<div class="mock-phone-panel"><span class="mock-panel-tag">取引事例</span><span class="mock-bars"><i style="height:50%"></i><i style="height:80%"></i><i style="height:60%"></i></span></div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			<?php if ( $fde_has_image ) : ?>
-				<figure class="product__media">
-					<img src="<?php echo esc_url( $fde_image['url'] ); ?>"
-					     alt="<?php echo esc_attr( ! empty( $fde_image['alt'] ) ? $fde_image['alt'] : '調速の画面' ); ?>"
-					     loading="lazy">
-				</figure>
-			<?php endif; ?>
+			<a class="chq__source mono" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
+				FROM <?php echo esc_html( preg_replace( '#^https?://#', '', rtrim( $fde_url, '/' ) ) ); ?> ↗
+			</a>
 		</div>
-
-		<?php if ( $fde_points ) : ?>
-			<ul class="product__points">
-				<?php foreach ( $fde_points as $fde_i => $fde_pt ) : ?>
-					<li class="product__point">
-						<span class="product__point-no" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $fde_i + 1 ) ); ?></span>
-						<span class="product__point-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $fde_point_icons[ $fde_i % 3 ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- 固定の SVG パス ?></svg>
-						</span>
-						<h4 class="product__point-k jp"><?php echo esc_html( $fde_pt['k'] ); ?></h4>
-						<?php if ( '' !== trim( $fde_pt['v'] ) ) : ?>
-							<p class="product__point-v jp"><?php echo esc_html( $fde_pt['v'] ); ?></p>
-						<?php endif; ?>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		<?php endif; ?>
 	</div>
 </section>

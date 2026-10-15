@@ -126,10 +126,10 @@ add_action(
 		$top_fields[] = fde_acf_text( 'svc_dx_tags', 'svc_dx_tags', __( '業務効率化・DX支援 — キーワード（/ 区切り）', 'fde-usachim' ), '生成AI研修 / AIアプリ作成 / 業務フロー改善 / PoC作成' );
 		$top_fields[] = [ 'key' => 'field_fde_svc_dx_url', 'label' => __( '業務効率化・DX支援 — 特設ページの URL（設定すると行がリンクになる）', 'fde-usachim' ), 'name' => 'svc_dx_url', 'type' => 'url' ];
 
-		// ---------- 調速（ビジョンを形にする取り組み） ----------
+		// ---------- 調速（LP の先頭を引用） ----------
 		// FV の直下に独立セクションとして出る。トグル OFF のあいだは
 		// セクションもナビ項目も出ない（既定 OFF。然るべきタイミングで ON に）。
-		$top_fields[] = fde_acf_tab( 'product', __( '調速（取り組み）', 'fde-usachim' ) );
+		$top_fields[] = fde_acf_tab( 'product', __( '調速', 'fde-usachim' ) );
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_show',
 			'label'         => __( '調速セクションを表示', 'fde-usachim' ),
@@ -141,35 +141,24 @@ add_action(
 			'default_value' => 0,
 			'instructions'  => __( 'オンにすると FV の直下に調速のセクションが出て、ナビにも「調速」が加わります。', 'fde-usachim' ),
 		];
-		$top_fields[] = fde_acf_text( 'chousoku_category', 'chousoku_category', __( '名前の横の短いラベル', 'fde-usachim' ), '物件調査アプリ' );
-		$top_fields[] = fde_acf_text( 'chousoku_lead', 'chousoku_lead', __( '見出し下の一文（任意・空欄なら非表示）', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'chousoku_tagline', 'chousoku_tagline', __( 'タグライン（任意・空欄なら非表示）', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_textarea( 'chousoku_desc', 'chousoku_desc', __( '説明文', 'fde-usachim' ), 3 );
-		foreach ( [ 1, 2, 3 ] as $n ) {
-			$top_fields[] = fde_acf_text( "chousoku_point_{$n}_k", "chousoku_point_{$n}_k", sprintf( __( '特長 %d — 見出し', 'fde-usachim' ), $n ) );
-			$top_fields[] = fde_acf_text( "chousoku_point_{$n}_v", "chousoku_point_{$n}_v", sprintf( __( '特長 %d — 説明（短く）', 'fde-usachim' ), $n ) );
+		$top_fields[] = fde_acf_text( 'chousoku_note', 'chousoku_note', __( '見出し横の一言', 'fde-usachim' ), '弊社が開発・提供する、不動産調査アプリです。' );
+		$top_fields[] = fde_acf_textarea( 'chousoku_title', 'chousoku_title', __( 'キャッチコピー（LP と同じ。{{ }} で囲むと青のグラデ強調）', 'fde-usachim' ), 3, '空欄なら LP のコピーを表示：住所を入力して、{{約5分}}。／不動産調査業務を効率化する／クラウド型ソフトウェア。' );
+		$top_fields[] = fde_acf_textarea( 'chousoku_lead', 'chousoku_lead', __( 'リード文（{{ }} で強調可）', 'fde-usachim' ), 3, '空欄なら LP のリード文を表示。' );
+		foreach ( [ 1, 2, 3, 4 ] as $n ) {
+			$top_fields[] = fde_acf_text( "chousoku_point_{$n}_k", "chousoku_point_{$n}_k", sprintf( __( 'ポイント %d（チェック付きの短い一言）', 'fde-usachim' ), $n ) );
 		}
 		$top_fields[] = [
 			'key'           => 'field_fde_chousoku_logo',
-			'label'         => __( 'ロゴマーク（「調速」の左に表示）', 'fde-usachim' ),
+			'label'         => __( 'ロゴ画像（任意）', 'fde-usachim' ),
 			'name'          => 'chousoku_logo',
 			'type'          => 'image',
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
-			'instructions'  => __( '文字の入っていないマーク部分だけの画像（正方形・透過PNG/SVG推奨）。「調速」の文字は自動で右に並びます。', 'fde-usachim' ),
-		];
-		$top_fields[] = [
-			'key'           => 'field_fde_chousoku_image',
-			'label'         => __( 'アプリ画面などの画像（任意）', 'fde-usachim' ),
-			'name'          => 'chousoku_image',
-			'type'          => 'image',
-			'return_format' => 'array',
-			'preview_size'  => 'medium',
-			'instructions'  => __( '設定すると説明の右側に表示（SP は下）。未設定なら 1 カラム。', 'fde-usachim' ),
+			'instructions'  => __( '未設定ならテーマ同梱の横ロゴ（調速 チョーソク 不動産調査アプリ）を表示。', 'fde-usachim' ),
 		];
 		$top_fields[] = [
 			'key'   => 'field_fde_chousoku_url',
-			'label' => __( 'サービスサイトの URL', 'fde-usachim' ),
+			'label' => __( 'LP の URL', 'fde-usachim' ),
 			'name'  => 'chousoku_url',
 			'type'  => 'url',
 		];
