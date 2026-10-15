@@ -675,7 +675,7 @@ html.has-motion .hero__statement-line {
 }
 
 .contact-mail__addr {
-  margin: 0 0.15em;
+  margin: 0;
   color: var(--dark-fg);
   font-weight: 600;
   text-decoration: none;
@@ -688,11 +688,9 @@ html.has-motion .hero__statement-line {
 
 .contact-mail__addr:hover { color: var(--accent-text); background-size: 0 1px; background-position: 100% 100%; }
 
-.contact-mail__nowrap { white-space: nowrap; }
-
-@media (max-width: 719px) {
-  .contact-mail__notice { display: block; }
-}
+/* 改行なしの 1 行。PC・タブレットは本文サイズのまま、
+   スマホでは画面幅に合わせて文字だけ少し縮めて 1 行に収める */
+.contact-mail { white-space: nowrap; font-size: min(var(--text-md), calc(4.9vw - 2px)); }
 
 /* ---- フッター --------------------------------------------------------- */
 .site-footer { background: var(--paper-2); }

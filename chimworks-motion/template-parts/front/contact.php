@@ -15,20 +15,18 @@ if ( '' === $fde_email ) {
 }
 
 // 1 行の案内文。{email} の位置にメールアドレスのリンクが入る
-$fde_lead   = (string) fde_field( 'contact_lead', 'お問い合わせは {email} まで。' );
-$fde_notice = (string) fde_field( 'contact_notice', '営業・勧誘のご連絡はお断りしております。' );
+$fde_lead   = (string) fde_field( 'contact_lead', '{email} まで' );
+$fde_notice = (string) fde_field( 'contact_notice', '（営業お断り）' );
 
 $fde_link = sprintf( '<a class="contact-mail__addr" href="mailto:%1$s">%2$s</a>', esc_attr( $fde_email ), esc_html( $fde_email ) );
-// アドレスと直後の「まで。」は折り返さずに一塊で扱う
 if ( false !== strpos( $fde_lead, '{email}' ) ) {
 	list( $fde_before, $fde_after ) = array_pad( explode( '{email}', $fde_lead, 2 ), 2, '' );
-	$fde_line = esc_html( $fde_before ) . '<span class="contact-mail__nowrap">' . $fde_link . esc_html( $fde_after ) . '</span>';
+	$fde_line = esc_html( $fde_before ) . $fde_link . esc_html( $fde_after );
 } else {
-	$fde_line = esc_html( $fde_lead ) . ' <span class="contact-mail__nowrap">' . $fde_link . '</span>';
+	$fde_line = esc_html( $fde_lead ) . ' ' . $fde_link;
 }
 if ( '' !== trim( $fde_notice ) ) {
-	// PC では同じ行に続け、スマホでは 2 行目に送る（語の途中で折れないように）
-	$fde_line .= '<span class="contact-mail__notice">' . esc_html( $fde_notice ) . '</span>';
+	$fde_line .= esc_html( $fde_notice );
 }
 ?>
 <section class="section section--dark contact" id="contact" data-section="contact">

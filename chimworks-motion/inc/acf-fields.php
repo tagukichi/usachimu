@@ -174,9 +174,9 @@ add_action(
 
 		// ---------- Contact（フォームなし・メールのみ） ----------
 		$top_fields[] = fde_acf_tab( 'contact', __( 'Contact', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'contact_lead', 'contact_lead', __( '案内文（{email} の位置にメールアドレスが入る）', 'fde-usachim' ), 'お問い合わせは {email} まで。' );
+		$top_fields[] = fde_acf_text( 'contact_lead', 'contact_lead', __( '案内文（{email} の位置にメールアドレスが入る）', 'fde-usachim' ), '{email} まで' );
 		$top_fields[] = [ 'key' => 'field_fde_contact_email_top', 'label' => __( 'メールアドレス（空欄なら info@usachim.com）', 'fde-usachim' ), 'name' => 'contact_email', 'type' => 'email' ];
-		$top_fields[] = fde_acf_text( 'contact_notice', 'contact_notice', __( '注意書き（案内文の後ろに続けて表示）', 'fde-usachim' ), '営業・勧誘のご連絡はお断りしております。' );
+		$top_fields[] = fde_acf_text( 'contact_notice', 'contact_notice', __( '注意書き（案内文の後ろに続けて表示。スマホでも 1 行に収まるよう短めに）', 'fde-usachim' ), '（営業お断り）' );
 
 		acf_add_local_field_group(
 			[
