@@ -29,7 +29,6 @@ $fde_lead = (string) fde_field(
 $fde_logo  = fde_field( 'chousoku_logo' );
 $fde_url   = (string) fde_field( 'chousoku_url', 'https://usachim.com/cho-haya/' );
 $fde_cta   = (string) fde_field( 'chousoku_cta_label', '調速のサービスサイトを見る' );
-$fde_note  = (string) fde_field( 'chousoku_note', '事業の中から生まれた、自社の不動産調査アプリです。' );
 
 $fde_points = [];
 foreach (
@@ -66,7 +65,6 @@ $fde_rich = static function ( string $text ): string {
 				<span class="sec-head__num"><?php echo esc_html( fde_section_no() ); ?></span>
 				<h2 class="sec-head__title">Product</h2>
 			</div>
-			<span class="sec-head__meta"><?php echo esc_html( $fde_note ); ?></span>
 		</header>
 
 		<!-- LP ヒーローの引用ブロック -->
@@ -144,10 +142,6 @@ $fde_rich = static function ( string $text ): string {
 					</div>
 				</div>
 			</div>
-
-			<a class="chq__source mono" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
-				FROM <?php echo esc_html( preg_replace( '#^https?://#', '', rtrim( $fde_url, '/' ) ) ); ?> ↗
-			</a>
 		</div>
 	</div>
 </section>
