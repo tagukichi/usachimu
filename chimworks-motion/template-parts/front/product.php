@@ -52,10 +52,12 @@ $fde_logo_url = is_array( $fde_logo ) && ! empty( $fde_logo['url'] )
 /**
  * {{強調}} をアクセント span に、改行を <br> に変換する。
  */
-$fde_rich = static function ( string $text ): string {
+$fde_rich = static function ( string $text, bool $pc_only_breaks = false ): string {
 	$out = esc_html( $text );
 	$out = preg_replace( '/\{\{(.+?)\}\}/u', '<span class="chq__accent">$1</span>', $out );
-	return nl2br( $out );
+	return $pc_only_breaks
+		? str_replace( "\n", '<br class="chq__pc">', $out )
+		: nl2br( $out );
 };
 ?>
 <section class="section section--dark product" id="product" data-section="product">
@@ -72,13 +74,19 @@ $fde_rich = static function ( string $text ): string {
 			<div class="chq__bg" aria-hidden="true"></div>
 
 			<div class="chq__inner">
-				<div class="chq__copy">
-					<a class="chq__logo" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
-						<img src="<?php echo esc_url( $fde_logo_url ); ?>" alt="調速 — 不動産調査アプリ" loading="lazy">
-					</a>
+				<a class="chq__logo" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
+					<img src="<?php echo esc_url( $fde_logo_url ); ?>" alt="調速 — 不動産調査アプリ" loading="lazy">
+				</a>
 
+				<div class="chq__copy">
 					<h3 class="chq__title jp"><?php echo $fde_rich( $fde_title ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html 済み ?></h3>
-					<p class="chq__lead jp"><?php echo $fde_rich( $fde_lead ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html 済み ?></p>
+					<p class="chq__lead jp"><?php echo $fde_rich( $fde_lead, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html 済み ?></p>
+
+					<?php if ( $fde_url ) : ?>
+						<a class="chq__cta" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
+							<?php echo esc_html( $fde_cta ); ?><span aria-hidden="true">→</span>
+						</a>
+					<?php endif; ?>
 
 					<?php if ( $fde_points ) : ?>
 						<ul class="chq__points jp">
@@ -89,12 +97,6 @@ $fde_rich = static function ( string $text ): string {
 								</li>
 							<?php endforeach; ?>
 						</ul>
-					<?php endif; ?>
-
-					<?php if ( $fde_url ) : ?>
-						<a class="chq__cta" href="<?php echo esc_url( $fde_url ); ?>" target="_blank" rel="noopener">
-							<?php echo esc_html( $fde_cta ); ?><span aria-hidden="true">→</span>
-						</a>
 					<?php endif; ?>
 				</div>
 
@@ -120,7 +122,7 @@ $fde_rich = static function ( string $text ): string {
 								<div class="mock-panel"><span class="mock-panel-tag">建蔽率 / 容積率</span><span class="mock-skel w60"></span><span class="mock-skel w50"></span></div>
 								<div class="mock-panel"><span class="mock-panel-tag">ハザード</span><span><span class="mock-chip">浸水</span><span class="mock-chip">土砂</span><span class="mock-chip">地震</span></span></div>
 								<div class="mock-panel"><span class="mock-panel-tag">学区</span><span class="mock-skel w80"></span><span class="mock-skel w50"></span></div>
-								<div class="mock-panel"><span class="mock-panel-tag">地価</span><span class="mock-skel w70"></span><span class="mock-link-skel">国税庁で確認 ↗</span></div>
+								<div class="mock-panel"><span class="mock-panel-tag">地価（一次情報源リンク）</span><span class="mock-skel w70"></span><span class="mock-link-skel">国税庁で確認 ↗</span></div>
 								<div class="mock-panel"><span class="mock-panel-tag">取引事例</span><span class="mock-bars"><i style="height:40%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:85%"></i></span></div>
 								<div class="mock-panel"><span class="mock-panel-tag">生活利便施設</span><span class="mock-skel w90"></span><span class="mock-skel w60"></span></div>
 							</div>

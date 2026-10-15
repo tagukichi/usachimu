@@ -157,8 +157,11 @@ html.has-motion .hero__statement-line {
   border-radius: 22px;
   border: 1px solid rgba(37, 99, 235, 0.14);
   color: var(--cq-text);
+  font-family: "Noto Sans JP", system-ui, sans-serif; /* LP と同じ書体 */
   isolation: isolate;
 }
+
+.chq .jp { font-family: inherit; }
 
 .chq__bg {
   position: absolute;
@@ -185,20 +188,33 @@ html.has-motion .hero__statement-line {
 .chq__inner {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(28px, 4vw, 44px);
+  grid-template-areas: "logo" "copy" "visual";
+  gap: clamp(20px, 3vw, 28px) clamp(32px, 5vw, 64px);
   align-items: center;
-  padding: clamp(28px, 4.5vw, 56px) clamp(22px, 4vw, 56px) clamp(24px, 4vw, 52px);
+  padding: clamp(28px, 4.5vw, 56px) clamp(22px, 4vw, 56px) clamp(32px, 4.5vw, 60px);
 }
 
+/* PC：左にロゴ＋コピー、右にモック（LP と同じ 1.4 : 1 の配分に近づける） */
 @media (min-width: 900px) {
-  .chq__inner { grid-template-columns: 1.25fr 1fr; gap: clamp(32px, 5vw, 64px); }
+  .chq__inner {
+    grid-template-columns: 1.3fr 1fr;
+    grid-template-areas: "logo visual" "copy visual";
+    grid-template-rows: auto 1fr;
+    row-gap: 0;
+  }
+  .chq__logo { align-self: end; margin-bottom: clamp(18px, 2.4vw, 28px); }
+  .chq__copy { align-self: start; }
 }
+
+.chq__logo   { grid-area: logo; }
+.chq__copy   { grid-area: copy; }
+.chq__visual { grid-area: visual; }
 
 .chq__copy { min-width: 0; }
 
 .chq__logo {
   display: inline-block;
-  margin-bottom: clamp(18px, 2.4vw, 28px);
+  justify-self: start;
 }
 
 .chq__logo img {
@@ -208,7 +224,6 @@ html.has-motion .hero__statement-line {
 }
 
 .chq__title {
-  font-family: var(--font-jp);
   font-size: clamp(22px, 2.9vw, 38px);
   font-weight: 900;
   line-height: 1.4;
@@ -226,15 +241,15 @@ html.has-motion .hero__statement-line {
 }
 
 .chq__lead {
-  margin: 20px 0 0;
-  font-size: clamp(14.5px, 1.4vw, 16.5px);
+  margin: 24px 0 0;
+  font-size: clamp(16px, 1.4vw, 18.4px);
   line-height: 1.85;
   color: var(--cq-text-sub);
 }
 
 .chq__points {
   list-style: none;
-  margin: 24px 0 0;
+  margin: 32px 0 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -245,7 +260,7 @@ html.has-motion .hero__statement-line {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: 14.7px;
   font-weight: 600;
   color: var(--cq-text-sub);
 }
@@ -253,23 +268,40 @@ html.has-motion .hero__statement-line {
 .chq__points svg { width: 18px; height: 18px; color: var(--cq-accent); flex: none; }
 
 .chq__cta {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 30px;
-  padding: 15px 28px;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 36px;
+  padding: 16px 34px;
   border-radius: 999px;
   background: var(--cq-grad);
   color: #ffffff;
-  font-size: 15px;
+  font-size: 16.8px;
   font-weight: 700;
   text-decoration: none;
   box-shadow: 0 18px 40px rgba(37, 99, 235, .28);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  transition: transform .25s cubic-bezier(.22, 1, .36, 1), box-shadow .25s cubic-bezier(.22, 1, .36, 1);
 }
 
-.chq__cta:hover { transform: translateY(-2px); box-shadow: 0 22px 46px rgba(37, 99, 235, .36); }
+/* LP と同じ、ホバーで光が走る演出 */
+.chq__cta::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .4), transparent);
+  transform: skewX(-20deg);
+  transition: left .65s cubic-bezier(.22, 1, .36, 1);
+  pointer-events: none;
+}
 
+.chq__cta:hover { transform: translateY(-2px); box-shadow: 0 22px 46px rgba(37, 99, 235, .38); color: #ffffff; }
+.chq__cta:hover::after { left: 150%; }
 
 /* ---- 製品モック（LP と同じ組み。.chq 配下にスコープ） ------------------ */
 .chq__visual { position: relative; }
@@ -291,7 +323,7 @@ html.has-motion .hero__statement-line {
 .chq .mock-dot:nth-child(1) { background: #F87171; }
 .chq .mock-dot:nth-child(2) { background: #FBBF24; }
 .chq .mock-dot:nth-child(3) { background: #34D399; }
-.chq .mock-url { margin-left: 12px; font-family: var(--font-mono); font-size: 11px; color: var(--cq-muted); background: var(--cq-surface); padding: 4px 14px; border-radius: 999px; border: 1px solid var(--cq-border); }
+.chq .mock-url { margin-left: 12px; font-family: "Inter Tight", "Inter", system-ui, sans-serif; font-size: 11px; color: var(--cq-muted); background: var(--cq-surface); padding: 4px 14px; border-radius: 999px; border: 1px solid var(--cq-border); }
 .chq .mock-body { padding: 18px; }
 .chq .mock-search { display: flex; align-items: center; gap: 10px; background: var(--cq-surface-2); border: 1px solid var(--cq-border); border-radius: 999px; padding: 9px 10px 9px 16px; margin-bottom: 16px; }
 .chq .mock-search .ico { width: 18px; height: 18px; color: var(--cq-muted); flex: none; }
@@ -341,19 +373,35 @@ html.has-motion .hero__statement-line {
 .chq .mock-phone-panel .mock-chip { font-size: 8px; padding: 1px 5px; margin-right: 2px; }
 .chq .mock-phone-panel .mock-bars { height: 20px; }
 
-/* SP：モックを上、コピーを下。はみ出すスマホ枠は内側へ寄せる */
-@media (max-width: 899px) {
-  .chq__visual { order: -1; max-width: 520px; margin: 0 auto 12px; padding-right: 20px; padding-bottom: 24px; }
-  .chq .mock-window { transform: none; }
-  .chq .mock-phone { right: -6px; bottom: -14px; width: 104px; height: 208px; }
-  .chq__points { gap: 8px 16px; }
+/* ---- レスポンシブ：LP（chosoku-lp）と同じ段階・同じ値 ------------------ */
+@media (max-width: 1201px) {
+  .chq .mock-phone { width: 110px; height: 220px; right: -6px; }
 }
 
-@media (max-width: 480px) {
-  .chq .mock-grid { grid-template-columns: repeat(3, 1fr); }
-  .chq .mock-panel--map { grid-column: span 1; }
-  .chq .mock-phone { display: none; }
-  .chq__visual { padding: 0; }
+/* タブレット以下：中央揃え、ロゴ → モック → コピー の順（LP のヘッダーロゴ → ヒーロー） */
+@media (max-width: 899px) {
+  .chq__inner {
+    grid-template-areas: "logo" "visual" "copy";
+    gap: 16px;
+    text-align: center;
+  }
+  .chq__logo { justify-self: center; }
+  .chq__visual { max-width: 540px; width: 100%; margin: 0 auto 16px; }
+  .chq .mock-window,
+  .chq__visual:hover .mock-window { transform: none; }
+  .chq__points { justify-content: center; gap: 18px; }
+  .chq__title { font-size: clamp(29.6px, 5vw, 41.6px); }
+}
+
+/* スマホ：モック全体を縦横比そのままに 0.8 倍、ポイントは縦並び */
+@media (max-width: 750px) {
+  .chq__inner { padding: 24px 12px 36px; }
+  .chq__visual { margin: 0 auto 4px; zoom: 0.8; }
+  .chq__logo img { height: 52px; }
+  /* パネル内は LP より少し狭いので、行の途中で折れない大きさに抑える */
+  .chq__title { font-size: clamp(21px, 6.1vw, 28px); line-height: 1.5; }
+  .chq__points { flex-direction: column; align-items: center; gap: 10px; }
+  .chq__pc { display: none; }
 }
 
 /* ---- 事業内容 ------------------------------------------------------ */
