@@ -118,12 +118,7 @@ add_action(
 
 		// ---------- 事業内容 ----------
 		$top_fields[] = fde_acf_tab( 'services', __( '事業内容', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_textarea( 'svc_intro', 'svc_intro', __( '導入文（見出し下・1 行に収まる長さで）', 'fde-usachim' ), 2 );
-		$top_fields[] = fde_acf_textarea( 'svc_web_desc', 'svc_web_desc', __( 'WEB制作・システム開発 — 説明', 'fde-usachim' ), 3 );
-		$top_fields[] = fde_acf_text( 'svc_web_tags', 'svc_web_tags', __( 'WEB制作・システム開発 — キーワード（/ 区切り）', 'fde-usachim' ), 'WEBサイト / WEBシステム / WEBアプリ / UI・UXデザイン' );
 		$top_fields[] = [ 'key' => 'field_fde_svc_web_url', 'label' => __( 'WEB制作・システム開発 — 特設ページの URL（設定すると行がリンクになる）', 'fde-usachim' ), 'name' => 'svc_web_url', 'type' => 'url' ];
-		$top_fields[] = fde_acf_textarea( 'svc_dx_desc', 'svc_dx_desc', __( '業務効率化・DX支援 — 説明', 'fde-usachim' ), 3 );
-		$top_fields[] = fde_acf_text( 'svc_dx_tags', 'svc_dx_tags', __( '業務効率化・DX支援 — キーワード（/ 区切り）', 'fde-usachim' ), '生成AI研修 / AIアプリ作成 / 業務フロー改善 / PoC作成' );
 		$top_fields[] = [ 'key' => 'field_fde_svc_dx_url', 'label' => __( '業務効率化・DX支援 — 特設ページの URL（設定すると行がリンクになる）', 'fde-usachim' ), 'name' => 'svc_dx_url', 'type' => 'url' ];
 
 		// ---------- 調速（LP の先頭を引用） ----------
