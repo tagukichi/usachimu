@@ -183,7 +183,7 @@ function sectionHeads(gsap) {
 /* ---- 2b. 行・カードの控えめなリビール ---------------------------------- */
 function batchReveals(gsap, ScrollTrigger) {
   const els = document.querySelectorAll(
-    ['.product__lead', '.product__main', '.product__media', '.product__point', '.svc-row', '.company-list__row', '.site-footer__top',
+    ['.product__lead', '.product__main', '.product__media', '.product__point', '.svc-row', '.company-list__row', '.contact-mail', '.site-footer__top',
      '.blog2-card', '.blog-card', '.single-blog__main', '.single-blog__side'].join(',')
   );
   if (!els.length) return;
