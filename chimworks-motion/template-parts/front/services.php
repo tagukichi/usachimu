@@ -1,7 +1,8 @@
 <?php
 /**
  * 事業内容。
- * 説明文やキーワードは置かず、「番号 + 事業名」だけを並べる。
+ * 「番号 + 事業名」に、任意で補足テキストを添えて並べる。内容は TOP 固定ページの
+ * ACF「事業内容」タブで編集（4 枠。タイトルが空の枠は出さない）。
  * 行ごとに特設ページの URL が設定されていれば、行全体がリンクになり、
  * ホバーで緑の帯が走って文字が白抜きになる。
  *
@@ -12,18 +13,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_services = [
+$fde_services = [];
+foreach (
 	[
-		'no'    => '01',
-		'title' => 'WEB制作・システム開発',
-		'url'   => (string) fde_field( 'svc_web_url', '' ),
-	],
-	[
-		'no'    => '02',
-		'title' => '業務効率化・DX支援',
-		'url'   => (string) fde_field( 'svc_dx_url', '' ),
-	],
-];
+		1 => [ 'WEB制作・システム開発', 'svc_web_url' ],
+		2 => [ '業務効率化・DX支援', 'svc_dx_url' ],
+		3 => [ '', 'svc_3_url' ],
+		4 => [ '', 'svc_4_url' ],
+	] as $fde_n => $fde_def
+) {
+	$fde_title = trim( (string) fde_field( "svc_{$fde_n}_title", $fde_def[0] ) );
+	if ( '' === $fde_title ) {
+		continue;
+	}
+	$fde_services[] = [
+		'no'    => sprintf( '%02d', count( $fde_services ) + 1 ),
+		'title' => $fde_title,
+		'note'  => trim( (string) fde_field( "svc_{$fde_n}_note", '' ) ),
+		'url'   => trim( (string) fde_field( $fde_def[1], '' ) ),
+	];
+}
+if ( ! $fde_services ) {
+	return;
+}
 ?>
 <section class="section section--dark svc" id="services" data-section="services">
 	<div class="section__inner">
@@ -46,7 +58,12 @@ $fde_services = [
 					<?php if ( $fde_is_link ) : ?>href="<?php echo esc_url( $fde_svc['url'] ); ?>"<?php endif; ?>>
 					<div class="svc-row__head">
 						<span class="svc-row__no mono"><?php echo esc_html( $fde_svc['no'] ); ?></span>
-						<h3 class="svc-row__title"><?php echo esc_html( $fde_svc['title'] ); ?></h3>
+						<div class="svc-row__text">
+							<h3 class="svc-row__title"><?php echo esc_html( $fde_svc['title'] ); ?></h3>
+							<?php if ( '' !== $fde_svc['note'] ) : ?>
+								<p class="svc-row__note jp"><?php echo nl2br( esc_html( $fde_svc['note'] ) ); ?></p>
+							<?php endif; ?>
+						</div>
 					</div>
 					<?php if ( $fde_is_link ) : ?>
 						<span class="svc-row__go" aria-hidden="true">

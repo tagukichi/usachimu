@@ -148,7 +148,6 @@ function fde_main_nav_items(): array {
 	}
 	$items[] = [ 'label' => 'Blog',       'url' => $home . '#blog' ];
 	$items[] = [ 'label' => '会社概要',   'url' => $home . '#company' ];
-	$items[] = [ 'label' => 'お問い合わせ', 'url' => $home . '#contact' ];
 	return $items;
 }
 

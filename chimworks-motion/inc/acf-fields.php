@@ -118,8 +118,31 @@ add_action(
 
 		// ---------- 事業内容 ----------
 		$top_fields[] = fde_acf_tab( 'services', __( '事業内容', 'fde-usachim' ) );
-		$top_fields[] = [ 'key' => 'field_fde_svc_web_url', 'label' => __( 'WEB制作・システム開発 — 特設ページの URL（設定すると行がリンクになる）', 'fde-usachim' ), 'name' => 'svc_web_url', 'type' => 'url' ];
-		$top_fields[] = [ 'key' => 'field_fde_svc_dx_url', 'label' => __( '業務効率化・DX支援 — 特設ページの URL（設定すると行がリンクになる）', 'fde-usachim' ), 'name' => 'svc_dx_url', 'type' => 'url' ];
+		// 無料版 ACF のため繰り返しフィールドは使わず、4 枠を用意。タイトルが空の枠は表示しない
+		// （1・2 枠目は空欄なら既定の事業名が入る）。URL のフィールド名は既存データを引き継ぐ
+		$fde_svc_slots = [
+			1 => [ 'url' => 'svc_web_url', 'ph' => 'WEB制作・システム開発' ],
+			2 => [ 'url' => 'svc_dx_url', 'ph' => '業務効率化・DX支援' ],
+			3 => [ 'url' => 'svc_3_url', 'ph' => '' ],
+			4 => [ 'url' => 'svc_4_url', 'ph' => '' ],
+		];
+		foreach ( $fde_svc_slots as $n => $slot ) {
+			$top_fields[] = [
+				'key'          => "field_fde_svc_{$n}_title",
+				'label'        => sprintf( __( '事業 %d — タイトル', 'fde-usachim' ), $n ),
+				'name'         => "svc_{$n}_title",
+				'type'         => 'text',
+				'placeholder'  => $slot['ph'],
+				'instructions' => $slot['ph'] ? sprintf( __( '空欄なら「%s」', 'fde-usachim' ), $slot['ph'] ) : __( '空欄ならこの枠は表示しません', 'fde-usachim' ),
+			];
+			$top_fields[] = fde_acf_textarea( "svc_{$n}_note", "svc_{$n}_note", sprintf( __( '事業 %d — 補足テキスト（任意・改行はそのまま反映）', 'fde-usachim' ), $n ), 2 );
+			$top_fields[] = [
+				'key'   => 'field_fde_' . $slot['url'],
+				'label' => sprintf( __( '事業 %d — 特設ページの URL（任意・設定すると行がリンクになる）', 'fde-usachim' ), $n ),
+				'name'  => $slot['url'],
+				'type'  => 'url',
+			];
+		}
 
 		// ---------- 調速（LP の先頭を引用） ----------
 		// FV の直下に独立セクションとして出る。トグル OFF のあいだは
@@ -166,17 +189,12 @@ add_action(
 		$top_fields[] = fde_acf_text( 'company_capital', 'company_capital', __( '資本金', 'fde-usachim' ), '1,000,000円' );
 		$top_fields[] = fde_acf_textarea( 'company_address', 'company_address', __( '所在地', 'fde-usachim' ), 2 );
 		$top_fields[] = fde_acf_textarea( 'company_business', 'company_business', __( '事業内容（1行1項目。空欄なら WEB制作・システム開発 / 業務効率化・DX支援）', 'fde-usachim' ), 3 );
+		$top_fields[] = [ 'key' => 'field_fde_contact_email_top', 'label' => __( '連絡先メール（空欄なら info@usachim.com）', 'fde-usachim' ), 'name' => 'contact_email', 'type' => 'email' ];
 		foreach ( [ 1, 2 ] as $n ) {
 			$top_fields[] = fde_acf_text( "company_extra_{$n}_k", "company_extra_{$n}_k", sprintf( __( '自由項目 %d — 見出し', 'fde-usachim' ), $n ), '取引銀行' );
 			$top_fields[] = fde_acf_text( "company_extra_{$n}_v", "company_extra_{$n}_v", sprintf( __( '自由項目 %d — 内容', 'fde-usachim' ), $n ) );
 		}
 
-
-		// ---------- Contact（フォームなし・メールのみ） ----------
-		$top_fields[] = fde_acf_tab( 'contact', __( 'Contact', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'contact_lead', 'contact_lead', __( '案内文（{email} の位置にメールアドレスが入る）', 'fde-usachim' ), '{email} まで' );
-		$top_fields[] = [ 'key' => 'field_fde_contact_email_top', 'label' => __( 'メールアドレス（空欄なら info@usachim.com）', 'fde-usachim' ), 'name' => 'contact_email', 'type' => 'email' ];
-		$top_fields[] = fde_acf_text( 'contact_notice', 'contact_notice', __( '注意書き（案内文の後ろに続けて表示。スマホでも 1 行に収まるよう短めに）', 'fde-usachim' ), '（営業お断り）' );
 
 		acf_add_local_field_group(
 			[
