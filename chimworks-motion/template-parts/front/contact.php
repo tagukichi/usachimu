@@ -1,6 +1,6 @@
 <?php
 /**
- * Contact — フォームは置かず、メールアドレスと「営業お断り」の一文だけ。
+ * Contact — フォームは置かず、メールアドレスと「営業お断り」を本文サイズの 1 行で。
  *
  * @package fde-usachim
  */
@@ -14,8 +14,22 @@ if ( '' === $fde_email ) {
 	return;
 }
 
-$fde_lead   = (string) fde_field( 'contact_lead', 'お問い合わせは、下記のメールアドレスまでご連絡ください。' );
-$fde_notice = (string) fde_field( 'contact_notice', '※ 営業・勧誘を目的としたご連絡はお断りしております。' );
+// 1 行の案内文。{email} の位置にメールアドレスのリンクが入る
+$fde_lead   = (string) fde_field( 'contact_lead', 'お問い合わせは {email} まで。' );
+$fde_notice = (string) fde_field( 'contact_notice', '営業・勧誘のご連絡はお断りしております。' );
+
+$fde_link = sprintf( '<a class="contact-mail__addr" href="mailto:%1$s">%2$s</a>', esc_attr( $fde_email ), esc_html( $fde_email ) );
+// アドレスと直後の「まで。」は折り返さずに一塊で扱う
+if ( false !== strpos( $fde_lead, '{email}' ) ) {
+	list( $fde_before, $fde_after ) = array_pad( explode( '{email}', $fde_lead, 2 ), 2, '' );
+	$fde_line = esc_html( $fde_before ) . '<span class="contact-mail__nowrap">' . $fde_link . esc_html( $fde_after ) . '</span>';
+} else {
+	$fde_line = esc_html( $fde_lead ) . ' <span class="contact-mail__nowrap">' . $fde_link . '</span>';
+}
+if ( '' !== trim( $fde_notice ) ) {
+	// PC では同じ行に続け、スマホでは 2 行目に送る（語の途中で折れないように）
+	$fde_line .= '<span class="contact-mail__notice">' . esc_html( $fde_notice ) . '</span>';
+}
 ?>
 <section class="section section--dark contact" id="contact" data-section="contact">
 	<div class="section__inner">
@@ -27,19 +41,6 @@ $fde_notice = (string) fde_field( 'contact_notice', '※ 営業・勧誘を目�
 			<span class="sec-head__meta">お問い合わせ</span>
 		</header>
 
-		<div class="contact-mail">
-			<?php if ( '' !== trim( $fde_lead ) ) : ?>
-				<p class="contact-mail__lead jp"><?php echo esc_html( $fde_lead ); ?></p>
-			<?php endif; ?>
-
-			<a class="contact-mail__addr" href="mailto:<?php echo esc_attr( $fde_email ); ?>">
-				<span class="contact-mail__text"><?php echo esc_html( $fde_email ); ?></span>
-				<span class="contact-mail__arrow" aria-hidden="true">→</span>
-			</a>
-
-			<?php if ( '' !== trim( $fde_notice ) ) : ?>
-				<p class="contact-mail__notice jp"><?php echo esc_html( $fde_notice ); ?></p>
-			<?php endif; ?>
-		</div>
+		<p class="contact-mail jp"><?php echo $fde_line; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- 各部品を esc_html / esc_attr 済み ?></p>
 	</div>
 </section>
