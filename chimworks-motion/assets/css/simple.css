@@ -488,91 +488,52 @@ html.has-motion .hero__statement-line {
 
 .svc-row--product { background: linear-gradient(90deg, rgba(10, 228, 72, 0.06), transparent 60%); }
 
-/* ---- 事業内容：事業名だけのタイル --------------------------------------
-   説明文を置かないぶん横に余白が出るので、2 枚のタイルを横に並べて
-   幅を埋める。番号は左上、事業名は左下、薄い大きな番号を右下に敷く。 */
+/* ---- 事業内容：事業名だけのリスト ---------------------------------------
+   囲みも飾りの大きな番号も置かず、「番号 + 事業名」を 1 行で並べる。
+   PC は 2 列で横幅を使い、SP は縦に積む。 */
 .svc-rows--titles {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: clamp(14px, 2vw, 20px) clamp(32px, 5vw, 72px);
   border-top: 0;
 }
 
 @media (min-width: 720px) {
-  .svc-rows--titles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .svc-rows--titles { grid-template-columns: repeat(2, max-content); }
 }
 
 .svc-rows--titles .svc-row {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: baseline;
+  gap: clamp(12px, 1.6vw, 18px);
+  padding: 0;
+  border: 0;
+  background: none;
   text-align: left;
-  min-height: clamp(150px, 17vw, 230px);
-  padding: clamp(22px, 2.6vw, 34px) clamp(22px, 2.8vw, 36px);
-  background: #ffffff;
-  border: 1px solid var(--dark-line);
-  border-radius: 18px;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.25s ease, color 0.25s ease;
 }
 
-.svc-rows--titles .svc-row__head {
-  display: contents; /* 番号と事業名を、タイルの上端と下端に振り分ける */
-}
+.svc-rows--titles .svc-row__head { display: contents; }
 
 .svc-rows--titles .svc-row__no {
+  flex: none;
   font-size: 12px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
 }
 
 .svc-rows--titles .svc-row__title {
-  position: relative;
-  max-width: calc(100% - 3.5em); /* 右下の大きな番号と重ならない幅に */
   margin: 0;
-  font-size: clamp(22px, 2.5vw, 34px);
+  font-size: clamp(20px, 2.4vw, 30px);
   font-weight: 800;
   letter-spacing: -0.01em;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
-/* 右下に敷く大きなアウトライン番号（テクスチャ） */
-.svc-rows--titles .svc-row::after {
-  content: attr(data-no);
-  position: absolute;
-  right: clamp(14px, 2vw, 26px);
-  bottom: clamp(-18px, -1.4vw, -10px);
-  z-index: -1;
-  font-family: var(--font-serif);
-  font-size: clamp(96px, 11vw, 160px);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  color: transparent;
-  -webkit-text-stroke: 1.4px rgba(10, 155, 75, 0.16);
-  pointer-events: none;
-  transition: -webkit-text-stroke-color 0.3s ease;
-}
-
-.svc-rows--titles .svc-row:hover {
-  transform: translateY(-4px);
-  border-color: rgba(10, 155, 75, 0.35);
-  box-shadow: 0 26px 52px -30px rgba(14, 16, 15, 0.28);
-}
-
-/* リンクのタイル：帯はタイルの内側いっぱいに走らせ、矢印は右上 */
-.svc-rows--titles .svc-row--link::before { inset: 0; border-radius: inherit; }
-.svc-rows--titles .svc-row--link { padding-right: clamp(22px, 2.8vw, 36px); }
-.svc-rows--titles .svc-row--link:hover::after { -webkit-text-stroke-color: rgba(255, 255, 255, 0.35); }
-.svc-rows--titles .svc-row__go {
-  top: clamp(18px, 2.2vw, 28px);
-  right: clamp(18px, 2.2vw, 28px);
-  margin-top: 0;
-}
+/* 特設ページの URL を設定したときだけ：行に下線と矢印、ホバーで緑の帯 */
+.svc-rows--titles .svc-row--link { padding: 6px 52px 6px 0; }
+.svc-rows--titles .svc-row--link::before { inset: 0 -12px; border-radius: 8px; }
+.svc-rows--titles .svc-row__go { right: 0; width: 36px; height: 36px; margin-top: -18px; }
 
 /* ---- 事業内容：行リンクのホバー帯 -------------------------------------
    URL が設定された行は <a> になり、ホバーで緑の帯が左から走って

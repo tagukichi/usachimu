@@ -1,7 +1,7 @@
 <?php
 /**
  * 事業内容。
- * 説明文やキーワードは置かず、事業名だけのタイルを 2 枚並べる。
+ * 説明文やキーワードは置かず、「番号 + 事業名」だけを並べる。
  * 行ごとに特設ページの URL が設定されていれば、行全体がリンクになり、
  * ホバーで緑の帯が走って文字が白抜きになる。
  *
@@ -43,7 +43,6 @@ $fde_services = [
 				?>
 				<<?php echo $fde_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- 'a' か 'article' の固定値 ?>
 					class="svc-row<?php echo $fde_is_link ? ' svc-row--link' : ''; ?>"
-					data-no="<?php echo esc_attr( $fde_svc['no'] ); ?>"
 					<?php if ( $fde_is_link ) : ?>href="<?php echo esc_url( $fde_svc['url'] ); ?>"<?php endif; ?>>
 					<div class="svc-row__head">
 						<span class="svc-row__no mono"><?php echo esc_html( $fde_svc['no'] ); ?></span>
