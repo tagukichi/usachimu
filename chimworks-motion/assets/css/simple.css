@@ -566,7 +566,7 @@ html.has-motion .hero__statement-line {
 .site-footer__logo .site-footer__logo-img {
   display: block;
   width: auto;
-  height: 20px;
+  height: 15px;
   max-width: 100%;
   max-height: none;
   object-fit: contain;
@@ -576,7 +576,7 @@ html.has-motion .hero__statement-line {
   opacity: 1;
 }
 
-@media (min-width: 720px) { .site-footer__logo .site-footer__logo-img { height: 26px; } }
+@media (min-width: 720px) { .site-footer__logo .site-footer__logo-img { height: 18px; } }
 
 /* ---- フッター --------------------------------------------------------- */
 .site-footer { background: var(--paper-2); }
