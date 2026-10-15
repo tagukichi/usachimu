@@ -148,7 +148,6 @@ function fde_main_nav_items(): array {
 		$items[] = [ 'label' => '調速', 'url' => $home . '#product' ];
 	}
 	$items[] = [ 'label' => '会社概要',   'url' => $home . '#company' ];
-	$items[] = [ 'label' => 'お問い合わせ', 'url' => $home . '#contact' ];
 	$items[] = [ 'label' => 'Blog',      'url' => $blog ];
 	return $items;
 }
@@ -205,4 +204,16 @@ function fde_split_lines( string $text ): array {
 		$out[] = $line;
 	}
 	return $out;
+}
+
+/**
+ * 連絡先メール（フッター・スマホメニューで共通）。
+ * TOP 固定ページの ACF を優先し、未入力なら既定のアドレス。
+ */
+function fde_contact_email(): string {
+	$email = (string) fde_field( 'contact_email', '' );
+	if ( '' === trim( $email ) ) {
+		$email = (string) fde_option( 'contact_email', 'info@usachim.com' );
+	}
+	return sanitize_email( $email );
 }

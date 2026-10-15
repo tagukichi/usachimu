@@ -11,9 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $fde_items   = fde_main_nav_items();
 
-$fde_panel_email = (string) fde_option( 'contact_email', '' );
-$fde_panel_x_url = (string) fde_option( 'sns_x_url', '' );
-$fde_panel_x_h   = (string) fde_option( 'sns_x_handle', '' );
+$fde_panel_email = fde_contact_email();
+$fde_panel_x_url = '';
+$fde_panel_x_h   = '';
 ?>
 <div
 	id="nav-panel"

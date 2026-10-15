@@ -2,7 +2,7 @@
 /**
  * ACF field groups (CHIM WORKS).
  *
- * - 「TOPページ用」フィールド（FV / 事業内容 / 会社概要 / お問い合わせ）は、
+ * - 「TOPページ用」フィールド（FV / 事業内容 / 調速 / フッター会社概要）は、
  *   設定 → 表示設定 → ホームページに指定した固定ページの編集画面で編集します。
  * - 「テーマ設定」（options ページ）は ACF Pro 環境でのみ表示されます。
  *
@@ -171,20 +171,12 @@ add_action(
 		$top_fields[] = fde_acf_text( 'company_capital', 'company_capital', __( '資本金', 'fde-usachim' ), '1,000,000円' );
 		$top_fields[] = fde_acf_textarea( 'company_address', 'company_address', __( '所在地', 'fde-usachim' ), 2 );
 		$top_fields[] = fde_acf_textarea( 'company_business', 'company_business', __( '事業内容（1行1項目。空欄なら WEB制作・システム開発 / 業務効率化・DX支援）', 'fde-usachim' ), 3 );
+		$top_fields[] = [ 'key' => 'field_fde_contact_email_top', 'label' => __( '連絡先メール（フッターに表示。空欄なら info@usachim.com）', 'fde-usachim' ), 'name' => 'contact_email', 'type' => 'email' ];
 		foreach ( [ 1, 2 ] as $n ) {
 			$top_fields[] = fde_acf_text( "company_extra_{$n}_k", "company_extra_{$n}_k", sprintf( __( '自由項目 %d — 見出し', 'fde-usachim' ), $n ), '取引銀行' );
 			$top_fields[] = fde_acf_text( "company_extra_{$n}_v", "company_extra_{$n}_v", sprintf( __( '自由項目 %d — 内容', 'fde-usachim' ), $n ) );
 		}
 
-		// ---------- お問い合わせ ----------
-		$top_fields[] = fde_acf_tab( 'contact', __( 'お問い合わせ', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'contact_meta', 'contact_meta', __( '見出し横のメタ', 'fde-usachim' ), 'RESPONSE WITHIN 1 BIZ DAY' );
-		$top_fields[] = fde_acf_text( 'contact_lead', 'contact_lead', __( 'リード', 'fde-usachim' ), 'まずはお気軽にご相談ください。' );
-		$top_fields[] = fde_acf_textarea( 'contact_note', 'contact_note', __( '補足', 'fde-usachim' ), 3 );
-		$top_fields[] = [ 'key' => 'field_fde_contact_email_top', 'label' => __( '表示するメールアドレス', 'fde-usachim' ), 'name' => 'contact_email', 'type' => 'email' ];
-		$top_fields[] = [ 'key' => 'field_fde_sns_x_url_top', 'label' => __( 'X (Twitter) URL（任意）', 'fde-usachim' ), 'name' => 'sns_x_url', 'type' => 'url' ];
-		$top_fields[] = fde_acf_text( 'sns_x_handle_top', 'sns_x_handle', __( 'X ハンドル表示（任意）', 'fde-usachim' ), '@chim_works' );
-		$top_fields[] = fde_acf_text( 'cf7_shortcode_top', 'cf7_shortcode', __( 'CF7 ショートコード', 'fde-usachim' ), '[contact-form-7 id="123" title="お問い合わせ"]' );
 
 		acf_add_local_field_group(
 			[

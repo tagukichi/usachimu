@@ -48,7 +48,9 @@ get_header();
 
 		<div class="sp-body__back">
 			<a class="btn btn--ghost" href="<?php echo esc_url( home_url( '/#services' ) ); ?>">← 事業内容へ戻る</a>
-			<a class="btn btn--solid" href="<?php echo esc_url( home_url( '/#contact' ) ); ?>">お問い合わせ</a>
+			<?php if ( fde_contact_email() ) : ?>
+				<a class="btn btn--solid" href="mailto:<?php echo esc_attr( fde_contact_email() ); ?>">メールで相談する</a>
+			<?php endif; ?>
 		</div>
 	</div>
 </article>

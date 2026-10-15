@@ -1,8 +1,8 @@
 <?php
 /**
  * Site footer.
- * ロゴの下に会社概要を控えめに記載する（TOP 固定ページの ACF から取得。
- * 入力済みの行だけ並ぶ）。
+ * ロゴの下に会社概要と連絡先メールを控えめに記載する（TOP 固定ページの
+ * ACF から取得。入力済みの行だけ並ぶ）。
  *
  * @package fde-usachim
  */
@@ -28,6 +28,8 @@ foreach (
 		$fde_company_rows[] = [ 'k' => $fde_cl[0], 'v' => $fde_cv ];
 	}
 }
+$fde_contact = fde_contact_email();
+
 foreach ( [ 1, 2 ] as $fde_cn ) {
 	$fde_ck = (string) fde_field( "company_extra_{$fde_cn}_k", '' );
 	$fde_cv = (string) fde_field( "company_extra_{$fde_cn}_v", '' );
@@ -57,7 +59,7 @@ foreach ( [ 1, 2 ] as $fde_cn ) {
 					<?php endif; ?>
 				</a>
 
-				<?php if ( $fde_company_rows ) : ?>
+				<?php if ( $fde_company_rows || $fde_contact ) : ?>
 					<dl class="footer-company" aria-label="<?php esc_attr_e( '会社概要', 'fde-usachim' ); ?>">
 						<?php foreach ( $fde_company_rows as $fde_row ) : ?>
 							<div class="footer-company__row">
@@ -65,6 +67,12 @@ foreach ( [ 1, 2 ] as $fde_cn ) {
 								<dd class="footer-company__v"><?php echo nl2br( esc_html( $fde_row['v'] ) ); ?></dd>
 							</div>
 						<?php endforeach; ?>
+						<?php if ( $fde_contact ) : ?>
+							<div class="footer-company__row">
+								<dt class="footer-company__k">連絡先</dt>
+								<dd class="footer-company__v"><a href="mailto:<?php echo esc_attr( $fde_contact ); ?>"><?php echo esc_html( $fde_contact ); ?></a></dd>
+							</div>
+						<?php endif; ?>
 					</dl>
 				<?php endif; ?>
 			</div>
