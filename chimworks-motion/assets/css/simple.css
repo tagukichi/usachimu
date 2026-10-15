@@ -551,6 +551,33 @@ html.has-motion .hero__statement-line {
   .footer-company { font-size: 13px; }
 }
 
+/* ---- ロゴ（CHIM WORKS ワードマーク。横長なので高さで指定） ----------- */
+.brand__logo {
+  display: block;
+  width: auto;
+  height: 15px;
+  max-width: 62vw;
+  object-fit: contain;
+}
+
+@media (min-width: 720px)  { .brand__logo { height: 17px; } }
+@media (min-width: 1101px) { .brand__logo { height: 19px; } }
+
+.site-footer__logo .site-footer__logo-img {
+  display: block;
+  width: auto;
+  height: 20px;
+  max-width: 100%;
+  max-height: none;
+  object-fit: contain;
+  /* components.css の「フッター画像をシルエット化する」フィルタを解除し、
+     ロゴ本来のネイビーで表示する */
+  filter: none;
+  opacity: 1;
+}
+
+@media (min-width: 720px) { .site-footer__logo .site-footer__logo-img { height: 26px; } }
+
 /* ---- フッター --------------------------------------------------------- */
 .site-footer { background: var(--paper-2); }
 

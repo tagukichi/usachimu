@@ -217,3 +217,11 @@ function fde_contact_email(): string {
 	}
 	return sanitize_email( $email );
 }
+
+/**
+ * ヘッダー・フッター共通のロゴ画像（テーマ同梱の CHIM WORKS ワードマーク）。
+ * カスタマイザーのロゴ設定より優先し、どの環境でも同じロゴを出す。
+ */
+function fde_brand_logo_url(): string {
+	return fde_asset_url( 'assets/img/chimworks-logo.png' );
+}

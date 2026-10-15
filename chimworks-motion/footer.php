@@ -9,8 +9,6 @@
 
 $fde_brand    = (string) fde_option( 'brand_name', get_bloginfo( 'name' ) );
 $fde_nav      = fde_main_nav_items();
-$fde_logo_id  = (int) get_theme_mod( 'custom_logo' );
-$fde_logo_src = $fde_logo_id ? wp_get_attachment_image_src( $fde_logo_id, 'full' ) : false;
 
 $fde_company_rows = [];
 foreach (
@@ -46,17 +44,7 @@ foreach ( [ 1, 2 ] as $fde_cn ) {
 		<div class="site-footer__top">
 			<div class="site-footer__id" id="company">
 				<a class="site-footer__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" aria-label="<?php echo esc_attr( $fde_brand ); ?>">
-					<?php if ( $fde_logo_src ) : ?>
-						<img
-							src="<?php echo esc_url( $fde_logo_src[0] ); ?>"
-							alt="<?php echo esc_attr( $fde_brand ); ?>"
-							width="<?php echo (int) $fde_logo_src[1]; ?>"
-							height="<?php echo (int) $fde_logo_src[2]; ?>"
-							loading="lazy"
-						>
-					<?php else : ?>
-						<span class="site-footer__logo-text"><?php echo esc_html( $fde_brand ); ?></span>
-					<?php endif; ?>
+					<img class="site-footer__logo-img" src="<?php echo esc_url( fde_brand_logo_url() ); ?>" alt="<?php echo esc_attr( $fde_brand ); ?>" width="1200" height="93" loading="lazy">
 				</a>
 
 				<?php if ( $fde_company_rows || $fde_contact ) : ?>
