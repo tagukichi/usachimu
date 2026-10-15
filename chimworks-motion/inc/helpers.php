@@ -141,12 +141,12 @@ function fde_tri_field( string $variant = 'br', int $count = 10, int $seed = 0 )
 function fde_main_nav_items(): array {
 	$home = home_url( '/' );
 	$blog = get_option( 'page_for_posts' ) ? get_permalink( (int) get_option( 'page_for_posts' ) ) : home_url( '/?post_type=post' );
-	$items = [];
-	// 調速は ACF のトグルで公開したときだけナビに現れる
+	$items   = [];
+	$items[] = [ 'label' => '事業内容', 'url' => $home . '#services' ];
+	// 調速は ACF のトグルで公開したときだけナビに現れる（セクション順と同じく事業内容の次）
 	if ( (bool) fde_field( 'chousoku_show', false ) ) {
 		$items[] = [ 'label' => '調速', 'url' => $home . '#product' ];
 	}
-	$items[] = [ 'label' => '事業内容',   'url' => $home . '#services' ];
 	$items[] = [ 'label' => '会社概要',   'url' => $home . '#company' ];
 	$items[] = [ 'label' => 'お問い合わせ', 'url' => $home . '#contact' ];
 	$items[] = [ 'label' => 'Blog',      'url' => $blog ];

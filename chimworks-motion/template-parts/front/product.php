@@ -29,7 +29,7 @@ $fde_lead = (string) fde_field(
 $fde_logo  = fde_field( 'chousoku_logo' );
 $fde_url   = (string) fde_field( 'chousoku_url', 'https://usachim.com/cho-haya/' );
 $fde_cta   = (string) fde_field( 'chousoku_cta_label', '調速のサービスサイトを見る' );
-$fde_note  = (string) fde_field( 'chousoku_note', '弊社が開発・提供する、不動産調査アプリです。' );
+$fde_note  = (string) fde_field( 'chousoku_note', '事業の中から生まれた、自社の不動産調査アプリです。' );
 
 $fde_points = [];
 foreach (

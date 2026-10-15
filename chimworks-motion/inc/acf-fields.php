@@ -141,7 +141,7 @@ add_action(
 			'default_value' => 0,
 			'instructions'  => __( 'オンにすると FV の直下に調速のセクションが出て、ナビにも「調速」が加わります。', 'fde-usachim' ),
 		];
-		$top_fields[] = fde_acf_text( 'chousoku_note', 'chousoku_note', __( '見出し横の一言', 'fde-usachim' ), '弊社が開発・提供する、不動産調査アプリです。' );
+		$top_fields[] = fde_acf_text( 'chousoku_note', 'chousoku_note', __( '見出し横の一言', 'fde-usachim' ), '事業の中から生まれた、自社の不動産調査アプリです。' );
 		$top_fields[] = fde_acf_textarea( 'chousoku_title', 'chousoku_title', __( 'キャッチコピー（LP と同じ。{{ }} で囲むと青のグラデ強調）', 'fde-usachim' ), 3, '空欄なら LP のコピーを表示：住所を入力して、{{約5分}}。／不動産調査業務を効率化する／クラウド型ソフトウェア。' );
 		$top_fields[] = fde_acf_textarea( 'chousoku_lead', 'chousoku_lead', __( 'リード文（{{ }} で強調可）', 'fde-usachim' ), 3, '空欄なら LP のリード文を表示。' );
 		foreach ( [ 1, 2, 3, 4 ] as $n ) {
