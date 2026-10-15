@@ -560,29 +560,56 @@ html.has-motion .hero__statement-line {
   .footer-company { font-size: 13px; }
 }
 
-/* ---- お問い合わせ：読みやすいフォーム ------------------------------ */
+/* ---- お問い合わせ：コンパクトなフォーム --------------------------------
+   縦に長くならないよう、短い入力欄（名前・会社名・メール・電話など）は
+   PC で 2 列に並べ、本文・送信・チェック類だけを全幅にする。
+   入力欄の高さ・行間・余白も詰めて、フォーム全体を約半分の高さに。 */
 .contact__form--card {
-  padding: clamp(20px, 3vw, 32px);
+  padding: clamp(18px, 2.4vw, 26px);
   background: #ffffff;
   border: 1px solid var(--dark-line);
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
-.contact__form .wpcf7 form { gap: 20px; }
+.contact__form .wpcf7 form { gap: 14px; }
 
-/* ラベルは日本語のまま、はっきり読める太さとサイズに */
+/* 2 列化（:has 非対応ブラウザでは従来どおり 1 列） */
+@supports selector(:has(*)) {
+  @media (min-width: 560px) {
+    .contact__form .wpcf7 form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 16px;
+    }
+
+    .contact__form .wpcf7 form > :not(p),
+    .contact__form .wpcf7 form > p:has(textarea),
+    .contact__form .wpcf7 form > p:has(.wpcf7-submit),
+    .contact__form .wpcf7 form > p:has(.wpcf7-checkbox),
+    .contact__form .wpcf7 form > p:has(.wpcf7-radio),
+    .contact__form .wpcf7 form > p:has(.wpcf7-acceptance),
+    .contact__form .wpcf7 form > p:has(select[multiple]) {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+/* ラベル：小さめ・太字で、入力欄との間隔を詰める */
 .contact__form .wpcf7 label {
   font-family: var(--font-jp);
-  font-size: 14px;
+  font-size: 12.5px;
   font-weight: 600;
+  line-height: 1.5;
   letter-spacing: 0.02em;
   text-transform: none;
   color: var(--dark-fg);
 }
 
-.contact__form .wpcf7 .wpcf7-form-control-wrap { margin-top: 8px; }
+.contact__form .wpcf7 label > br:first-of-type { display: none; }
 
-/* 入力欄は下線だけでなく、輪郭のある箱に */
+.contact__form .wpcf7 .wpcf7-form-control-wrap { margin-top: 5px; }
+
+/* 入力欄：輪郭のある箱。高さを抑える */
 .contact__form .wpcf7 input[type="text"],
 .contact__form .wpcf7 input[type="email"],
 .contact__form .wpcf7 input[type="tel"],
@@ -590,16 +617,20 @@ html.has-motion .hero__statement-line {
 .contact__form .wpcf7 input[type="number"],
 .contact__form .wpcf7 textarea,
 .contact__form .wpcf7 select {
-  padding: 14px 16px;
+  padding: 9px 13px;
   background: #ffffff;
   border: 1px solid rgba(14, 16, 15, 0.2);
   border-radius: 8px;
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 16px; /* iOS のフォーカス時ズームを防ぐため 16px は維持 */
+  line-height: 1.45;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.contact__form .wpcf7 textarea { min-height: 180px; }
+.contact__form .wpcf7 textarea {
+  min-height: 0;
+  height: 112px;
+  resize: vertical;
+}
 
 .contact__form .wpcf7 input:focus,
 .contact__form .wpcf7 textarea:focus,
@@ -611,13 +642,13 @@ html.has-motion .hero__statement-line {
 .contact__form .wpcf7 input::placeholder,
 .contact__form .wpcf7 textarea::placeholder { color: rgba(14, 16, 15, 0.4); }
 
-.contact__form .wpcf7 p:has(.wpcf7-submit) { text-align: left; margin-top: 4px; }
+.contact__form .wpcf7 p:has(.wpcf7-submit) { text-align: left; margin-top: 2px; }
 
 .contact__form .wpcf7 .wpcf7-submit {
   width: 100%;
-  padding: 16px 28px;
+  padding: 12px 24px;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 700;
   background: var(--dark-accent);
   color: #0e100f;
@@ -627,24 +658,31 @@ html.has-motion .hero__statement-line {
 .contact__form .wpcf7 .wpcf7-submit:hover { filter: brightness(0.95); transform: translateY(-1px); }
 
 @media (min-width: 720px) {
-  .contact__form .wpcf7 .wpcf7-submit { width: auto; min-width: 220px; }
+  .contact__form .wpcf7 .wpcf7-submit { width: auto; min-width: 200px; }
 }
 
-/* CF7 の送信結果メッセージを枠つきで見やすく */
+/* CF7 の送信結果メッセージ。CF7 の CSS を外しているので、送信前
+   （form.init / 中身が空）の空枠が出ないように隠す */
 .contact__form .wpcf7-response-output {
-  margin: 16px 0 0;
-  padding: 12px 16px;
+  margin: 4px 0 0;
+  padding: 10px 14px;
   border: 1px solid var(--dark-line) !important;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13.5px;
 }
+
+.contact__form .wpcf7 form.init .wpcf7-response-output,
+.contact__form .wpcf7-response-output:empty { display: none; }
 
 .contact__form .wpcf7-not-valid-tip {
   display: block;
-  margin-top: 6px;
-  font-size: 12.5px;
+  margin-top: 4px;
+  font-size: 12px;
   color: var(--color-error);
 }
+
+/* 左の案内も少し詰める */
+.contact__aside { gap: 18px; }
 
 /* ---- フッター --------------------------------------------------------- */
 .site-footer { background: var(--paper-2); }
