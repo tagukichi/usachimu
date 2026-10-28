@@ -114,6 +114,26 @@ html.has-motion .hero__statement-line {
 
 .hero__globe { filter: drop-shadow(0 0 32px rgba(10, 228, 72, 0.22)); }
 
+/* PC：ヘッダー（72px）は FV に重なって固定されるため、FV の中身と球体は
+   「ヘッダーの下の領域」の中で上下中央に置き、上に十分な余白を取る。
+   球体は画面の高さに収まる大きさに抑え、ヘッダーに触れないようにする */
+@media (min-width: 1101px) {
+  .hero {
+    --hero-header: 72px;
+    --hero-space: clamp(48px, 8vh, 112px);
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-top: calc(var(--hero-header) + var(--hero-space));
+    padding-bottom: var(--hero-space);
+  }
+
+  .hero__visual--lg {
+    top: calc(50% + var(--hero-header) / 2);
+    /* 球体の描画は SVG 幅の約 7 割。上下に最低 40px ずつ空ける */
+    width: min(calc((100vh - var(--hero-header) - 80px) / 0.74), 100vw, 1240px);
+  }
+}
+
 /* ---- セクション見出し ------------------------------------------------- */
 .sec-head__title {
   font-weight: 800;
