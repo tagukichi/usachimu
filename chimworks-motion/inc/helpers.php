@@ -147,7 +147,7 @@ function fde_main_nav_items(): array {
 		$items[] = [ 'label' => '調速', 'url' => $home . '#product' ];
 	}
 	$items[] = [ 'label' => 'Blog',       'url' => $home . '#blog' ];
-	$items[] = [ 'label' => '会社概要',   'url' => $home . '#company' ];
+	$items[] = [ 'label' => '会社概要',   'url' => fde_company_url() ];
 	return $items;
 }
 
@@ -206,11 +206,88 @@ function fde_split_lines( string $text ): array {
 }
 
 /**
- * 連絡先メール（Contact セクション・スマホメニューで共通）。
- * TOP 固定ページの ACF を優先し、未入力なら既定のアドレス。
+ * 固定ページ「会社概要」（スラッグ company）の ID。無ければ 0。
+ */
+function fde_company_page_id(): int {
+	static $id = null;
+	if ( null === $id ) {
+		$page = get_page_by_path( 'company' );
+		$id   = ( $page instanceof WP_Post && 'publish' === $page->post_status ) ? (int) $page->ID : 0;
+	}
+	return $id;
+}
+
+/**
+ * 会社概要ページの URL（ページが無ければ /company/）。
+ */
+function fde_company_url(): string {
+	$id = fde_company_page_id();
+	return $id ? (string) get_permalink( $id ) : home_url( '/company/' );
+}
+
+/**
+ * 会社概要ページの ACF 値。未入力・ACF 無効なら既定値。
+ *
+ * @param mixed $default
+ * @return mixed
+ */
+function fde_company_field( string $key, $default = '' ) {
+	$id = fde_company_page_id();
+	if ( ! $id || ! function_exists( 'get_field' ) ) {
+		return $default;
+	}
+	$value = get_field( $key, $id );
+	if ( null !== $value && '' !== $value && [] !== $value ) {
+		return $value;
+	}
+	return $default;
+}
+
+/**
+ * 会社概要の表（見出し・内容）。入力済みの行だけ返す。
+ * 連絡先は 'mail' => true を付け、表示側で mailto リンクにする。
+ *
+ * @return array<int,array{k:string,v:string,mail?:bool}>
+ */
+function fde_company_rows(): array {
+	$rows = [];
+	foreach (
+		[
+			'cp_name'     => [ '商号', '合同会社CHIM WORKS' ],
+			'cp_founded'  => [ '設立', '2026年7月' ],
+			'cp_ceo'      => [ '代表者', '田口幸樹' ],
+			'cp_address'  => [ '所在地', '埼玉県所沢市元町18-13' ],
+			'cp_business' => [ '事業内容', 'Webシステム開発' ],
+		] as $key => $def
+	) {
+		$value = trim( (string) fde_company_field( $key, $def[1] ) );
+		if ( '' !== $value ) {
+			$rows[] = [ 'k' => $def[0], 'v' => $value ];
+		}
+	}
+	$email = fde_contact_email();
+	if ( '' !== $email ) {
+		$rows[] = [ 'k' => '連絡先', 'v' => $email, 'mail' => true ];
+	}
+	foreach ( [ 1, 2 ] as $n ) {
+		$k = trim( (string) fde_company_field( "cp_extra_{$n}_k", '' ) );
+		$v = trim( (string) fde_company_field( "cp_extra_{$n}_v", '' ) );
+		if ( '' !== $k && '' !== $v ) {
+			$rows[] = [ 'k' => $k, 'v' => $v ];
+		}
+	}
+	return $rows;
+}
+
+/**
+ * 連絡先メール（会社概要・スマホメニューで共通）。
+ * 会社概要ページの ACF → 旧 TOP ページの設定 → 既定のアドレス の順。
  */
 function fde_contact_email(): string {
-	$email = (string) fde_field( 'contact_email', '' );
+	$email = (string) fde_company_field( 'cp_email', '' );
+	if ( '' === trim( $email ) ) {
+		$email = (string) fde_field( 'contact_email', '' );
+	}
 	if ( '' === trim( $email ) ) {
 		$email = (string) fde_option( 'contact_email', 'info@usachim.com' );
 	}

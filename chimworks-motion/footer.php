@@ -1,42 +1,13 @@
 <?php
 /**
  * Site footer.
- * ロゴの下に会社概要を控えめに記載する（TOP 固定ページの ACF から取得。
- * 入力済みの行だけ並ぶ）。事業内容の下に連絡先メールを置く。
+ * ロゴ・ナビ・© だけの控えめなフッター。会社の情報は固定ページ「会社概要」に置く。
  *
  * @package fde-usachim
  */
 
-$fde_brand    = (string) fde_option( 'brand_name', get_bloginfo( 'name' ) );
-$fde_nav      = fde_main_nav_items();
-
-$fde_company_rows = [];
-foreach (
-	[
-		'company_name'     => [ '商号', '合同会社CHIM WORKS' ],
-		'company_founded'  => [ '設立', '' ],
-		'company_ceo'      => [ '代表者', '田口幸樹' ],
-		'company_capital'  => [ '資本金', '' ],
-		'company_address'  => [ '所在地', '' ],
-		'company_business' => [ '事業内容', "WEB制作・システム開発\n業務効率化・DX支援" ],
-	] as $fde_ck => $fde_cl
-) {
-	$fde_cv = (string) fde_field( $fde_ck, $fde_cl[1] );
-	if ( '' !== trim( $fde_cv ) ) {
-		$fde_company_rows[] = [ 'k' => $fde_cl[0], 'v' => $fde_cv ];
-	}
-}
-$fde_email = fde_contact_email();
-if ( '' !== $fde_email ) {
-	$fde_company_rows[] = [ 'k' => '連絡先', 'v' => $fde_email, 'mail' => true ];
-}
-foreach ( [ 1, 2 ] as $fde_cn ) {
-	$fde_ck = (string) fde_field( "company_extra_{$fde_cn}_k", '' );
-	$fde_cv = (string) fde_field( "company_extra_{$fde_cn}_v", '' );
-	if ( '' !== trim( $fde_ck ) && '' !== trim( $fde_cv ) ) {
-		$fde_company_rows[] = [ 'k' => $fde_ck, 'v' => $fde_cv ];
-	}
-}
+$fde_brand = (string) fde_option( 'brand_name', get_bloginfo( 'name' ) );
+$fde_nav   = fde_main_nav_items();
 ?>
 </main><!-- /.site-main -->
 
@@ -44,27 +15,10 @@ foreach ( [ 1, 2 ] as $fde_cn ) {
 	<div class="site-footer__inner">
 
 		<div class="site-footer__top">
-			<div class="site-footer__id" id="company">
+			<div class="site-footer__id">
 				<a class="site-footer__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" aria-label="<?php echo esc_attr( $fde_brand ); ?>">
 					<img class="site-footer__logo-img" src="<?php echo esc_url( fde_brand_logo_url() ); ?>" alt="<?php echo esc_attr( $fde_brand ); ?>" width="1200" height="93" loading="lazy">
 				</a>
-
-				<?php if ( $fde_company_rows ) : ?>
-					<dl class="footer-company" aria-label="<?php esc_attr_e( '会社概要', 'fde-usachim' ); ?>">
-						<?php foreach ( $fde_company_rows as $fde_row ) : ?>
-							<div class="footer-company__row">
-								<dt class="footer-company__k"><?php echo esc_html( $fde_row['k'] ); ?></dt>
-								<dd class="footer-company__v">
-									<?php if ( ! empty( $fde_row['mail'] ) ) : ?>
-										<a href="mailto:<?php echo esc_attr( $fde_row['v'] ); ?>"><?php echo esc_html( $fde_row['v'] ); ?></a>
-									<?php else : ?>
-										<?php echo nl2br( esc_html( $fde_row['v'] ) ); ?>
-									<?php endif; ?>
-								</dd>
-							</div>
-						<?php endforeach; ?>
-					</dl>
-				<?php endif; ?>
 			</div>
 
 			<nav class="site-footer__nav" aria-label="<?php esc_attr_e( 'フッター', 'fde-usachim' ); ?>">

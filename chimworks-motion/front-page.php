@@ -1,7 +1,7 @@
 <?php
 /**
- * Front page — FV（ビジョン）→ 事業内容 → 調速 → Blog → Contact。
- * Contact はフォームを置かずメールアドレスのみ。会社概要はフッターのロゴ下。
+ * Front page — FV（ビジョン）→ 事業内容 → 調速 → Blog。
+ * 会社の情報は固定ページ「会社概要」（page-company.php）に置く。
  *
  * @package fde-usachim
  */

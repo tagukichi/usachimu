@@ -2,7 +2,7 @@
 /**
  * ACF field groups (CHIM WORKS).
  *
- * - 「TOPページ用」フィールド（FV / 事業内容 / 調速 / フッター会社概要 / Contact）は、
+ * - 「TOPページ用」フィールド（FV / 事業内容 / 調速）は、
  *   設定 → 表示設定 → ホームページに指定した固定ページの編集画面で編集します。
  * - 「テーマ設定」（options ページ）は ACF Pro 環境でのみ表示されます。
  *
@@ -181,21 +181,6 @@ add_action(
 		];
 		$top_fields[] = fde_acf_text( 'chousoku_cta_label', 'chousoku_cta_label', __( 'ボタンの文言', 'fde-usachim' ), '調速のサービスサイトを見る' );
 
-		// ---------- フッター会社概要 ----------
-		$top_fields[] = fde_acf_tab( 'company', __( 'フッター会社概要', 'fde-usachim' ) );
-		$top_fields[] = fde_acf_text( 'company_name',    'company_name',    __( '商号', 'fde-usachim' ), '合同会社CHIM WORKS' );
-		$top_fields[] = fde_acf_text( 'company_founded', 'company_founded', __( '設立', 'fde-usachim' ), '2026年8月' );
-		$top_fields[] = fde_acf_text( 'company_ceo',     'company_ceo',     __( '代表者（空欄なら 田口幸樹）', 'fde-usachim' ), '田口幸樹' );
-		$top_fields[] = fde_acf_text( 'company_capital', 'company_capital', __( '資本金', 'fde-usachim' ), '1,000,000円' );
-		$top_fields[] = fde_acf_textarea( 'company_address', 'company_address', __( '所在地', 'fde-usachim' ), 2 );
-		$top_fields[] = fde_acf_textarea( 'company_business', 'company_business', __( '事業内容（1行1項目。空欄なら WEB制作・システム開発 / 業務効率化・DX支援）', 'fde-usachim' ), 3 );
-		$top_fields[] = [ 'key' => 'field_fde_contact_email_top', 'label' => __( '連絡先メール（空欄なら info@usachim.com）', 'fde-usachim' ), 'name' => 'contact_email', 'type' => 'email' ];
-		foreach ( [ 1, 2 ] as $n ) {
-			$top_fields[] = fde_acf_text( "company_extra_{$n}_k", "company_extra_{$n}_k", sprintf( __( '自由項目 %d — 見出し', 'fde-usachim' ), $n ), '取引銀行' );
-			$top_fields[] = fde_acf_text( "company_extra_{$n}_v", "company_extra_{$n}_v", sprintf( __( '自由項目 %d — 内容', 'fde-usachim' ), $n ) );
-		}
-
-
 		acf_add_local_field_group(
 			[
 				'key'      => 'group_fde_front_page',
@@ -211,6 +196,38 @@ add_action(
 				'style'           => 'default',
 				'label_placement' => 'top',
 				'active'          => true,
+			]
+		);
+
+		// ============================================================
+		// (3a) 会社概要 — 固定ページ「会社概要」（page-company.php）に表示
+		//      空欄の項目は既定値（括弧内）を表示する
+		// ============================================================
+		$fde_cp_location = [ [ [ 'param' => 'page_template', 'operator' => '==', 'value' => 'page-company.php' ] ] ];
+		$fde_cp_page_id  = fde_company_page_id();
+		if ( $fde_cp_page_id ) {
+			// テンプレート未選択でもスラッグ company のページなら表示する
+			$fde_cp_location[] = [ [ 'param' => 'page', 'operator' => '==', 'value' => (string) $fde_cp_page_id ] ];
+		}
+		$fde_cp_fields = [
+			fde_acf_text( 'cp_name', 'cp_name', __( '商号（空欄なら 合同会社CHIM WORKS）', 'fde-usachim' ), '合同会社CHIM WORKS' ),
+			fde_acf_text( 'cp_founded', 'cp_founded', __( '設立（空欄なら 2026年7月）', 'fde-usachim' ), '2026年7月' ),
+			fde_acf_text( 'cp_ceo', 'cp_ceo', __( '代表者（空欄なら 田口幸樹）', 'fde-usachim' ), '田口幸樹' ),
+			fde_acf_textarea( 'cp_address', 'cp_address', __( '所在地（空欄なら 埼玉県所沢市元町18-13）', 'fde-usachim' ), 2 ),
+			fde_acf_textarea( 'cp_business', 'cp_business', __( '事業内容（改行はそのまま反映。空欄なら Webシステム開発）', 'fde-usachim' ), 3 ),
+			[ 'key' => 'field_fde_cp_email', 'label' => __( '連絡先メール（空欄なら info@usachim.com）', 'fde-usachim' ), 'name' => 'cp_email', 'type' => 'email' ],
+		];
+		foreach ( [ 1, 2 ] as $n ) {
+			$fde_cp_fields[] = fde_acf_text( "cp_extra_{$n}_k", "cp_extra_{$n}_k", sprintf( __( '追加項目 %d — 見出し（任意）', 'fde-usachim' ), $n ), '資本金' );
+			$fde_cp_fields[] = fde_acf_text( "cp_extra_{$n}_v", "cp_extra_{$n}_v", sprintf( __( '追加項目 %d — 内容', 'fde-usachim' ), $n ) );
+		}
+		acf_add_local_field_group(
+			[
+				'key'      => 'group_fde_company_page',
+				'title'    => __( '会社概要', 'fde-usachim' ),
+				'fields'   => $fde_cp_fields,
+				'location' => $fde_cp_location,
+				'position' => 'acf_after_title',
 			]
 		);
 
