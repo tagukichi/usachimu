@@ -15,6 +15,7 @@ define( 'FDE_USACHIM_URI', get_template_directory_uri() );
 
 $fde_usachim_includes = [
 	'inc/helpers.php',
+	'inc/service-pages.php',
 	'inc/setup.php',
 	'inc/cleanup.php',
 	'inc/enqueue.php',

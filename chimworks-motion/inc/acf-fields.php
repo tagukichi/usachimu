@@ -2,7 +2,7 @@
 /**
  * ACF field groups (CHIM WORKS).
  *
- * - 「TOPページ用」フィールド（FV / 事業内容 / 調速）は、
+ * - 「TOPページ用」フィールド（FV / 事業内容 / 調速 / お問い合わせ）は、
  *   設定 → 表示設定 → ホームページに指定した固定ページの編集画面で編集します。
  * - 「テーマ設定」（options ページ）は ACF Pro 環境でのみ表示されます。
  *
@@ -118,47 +118,34 @@ add_action(
 
 		// ---------- 事業内容 ----------
 		$top_fields[] = fde_acf_tab( 'services', __( '事業内容', 'fde-usachim' ) );
-		// 無料版 ACF のため繰り返しフィールドは使わず、4 枠を用意。タイトルが空の枠は表示しない
-		// （1・2 枠目は空欄なら既定の事業名が入る）。URL のフィールド名は既存データを引き継ぐ
-		$fde_svc_slots = [
-			1 => [ 'url' => 'svc_web_url', 'ph' => 'WEB制作・システム開発' ],
-			2 => [ 'url' => 'svc_dx_url', 'ph' => '業務効率化・DX支援' ],
-			3 => [ 'url' => 'svc_3_url', 'ph' => '' ],
-			4 => [ 'url' => 'svc_4_url', 'ph' => '' ],
-		];
-		foreach ( $fde_svc_slots as $n => $slot ) {
+		// 無料版 ACF のため繰り返しフィールドは使わず、4 枠（= 4 サービス）を用意。
+		// 空欄の項目はサービスの既定（inc/service-pages.php）を表示する。
+		// URL のフィールド名は以前のデータを引き継ぐ（1・2 枠目）
+		$fde_svc_url_names = [ 1 => 'svc_web_url', 2 => 'svc_dx_url', 3 => 'svc_3_url', 4 => 'svc_4_url' ];
+		$fde_n             = 0;
+		foreach ( fde_services() as $fde_service ) {
+			$n = ++$fde_n;
 			$top_fields[] = [
 				'key'          => "field_fde_svc_{$n}_title",
 				'label'        => sprintf( __( '事業 %d — タイトル', 'fde-usachim' ), $n ),
 				'name'         => "svc_{$n}_title",
 				'type'         => 'text',
-				'placeholder'  => $slot['ph'],
-				'instructions' => $slot['ph'] ? sprintf( __( '空欄なら「%s」', 'fde-usachim' ), $slot['ph'] ) : __( '空欄ならこの枠は表示しません', 'fde-usachim' ),
+				'placeholder'  => $fde_service['title'],
+				'instructions' => sprintf( __( '空欄なら「%s」', 'fde-usachim' ), $fde_service['title'] ),
 			];
-			$top_fields[] = fde_acf_textarea( "svc_{$n}_note", "svc_{$n}_note", sprintf( __( '事業 %d — 補足テキスト（任意・改行はそのまま反映）', 'fde-usachim' ), $n ), 2 );
+			$top_fields[] = fde_acf_textarea( "svc_{$n}_note", "svc_{$n}_note", sprintf( __( '事業 %d — 補足テキスト（改行はそのまま反映）', 'fde-usachim' ), $n ), 2, sprintf( __( '空欄なら：%s', 'fde-usachim' ), $fde_service['note'] ) );
 			$top_fields[] = [
-				'key'   => 'field_fde_' . $slot['url'],
-				'label' => sprintf( __( '事業 %d — 特設ページの URL（任意・設定すると行がリンクになる）', 'fde-usachim' ), $n ),
-				'name'  => $slot['url'],
-				'type'  => 'url',
+				'key'          => 'field_fde_' . $fde_svc_url_names[ $n ],
+				'label'        => sprintf( __( '事業 %d — リンク先 URL（通常は空欄）', 'fde-usachim' ), $n ),
+				'name'         => $fde_svc_url_names[ $n ],
+				'type'         => 'url',
+				'instructions' => sprintf( __( '空欄なら「%s」のサービスページ（/%s/）にリンクします。', 'fde-usachim' ), $fde_service['title'], $fde_service['slug'] ),
 			];
 		}
 
 		// ---------- 調速（LP の先頭を引用） ----------
-		// FV の直下に独立セクションとして出る。トグル OFF のあいだは
-		// セクションもナビ項目も出ない（既定 OFF。然るべきタイミングで ON に）。
+		// TOP の Product セクションと、システム開発ページの自社サービス欄で共通。
 		$top_fields[] = fde_acf_tab( 'product', __( '調速', 'fde-usachim' ) );
-		$top_fields[] = [
-			'key'           => 'field_fde_chousoku_show',
-			'label'         => __( '調速セクションを表示', 'fde-usachim' ),
-			'name'          => 'chousoku_show',
-			'type'          => 'true_false',
-			'ui'            => 1,
-			'ui_on_text'    => __( '表示', 'fde-usachim' ),
-			'ui_off_text'   => __( '非表示', 'fde-usachim' ),
-			'default_value' => 0,
-			'instructions'  => __( 'オンにすると FV の直下に調速のセクションが出て、ナビにも「調速」が加わります。', 'fde-usachim' ),
-		];
 		$top_fields[] = fde_acf_textarea( 'chousoku_title', 'chousoku_title', __( 'キャッチコピー（LP と同じ。{{ }} で囲むと青のグラデ強調）', 'fde-usachim' ), 3, '空欄なら LP のコピーを表示：住所を入力して、{{約5分}}。／不動産調査業務を効率化する／クラウド型ソフトウェア。' );
 		$top_fields[] = fde_acf_textarea( 'chousoku_lead', 'chousoku_lead', __( 'リード文（{{ }} で強調可）', 'fde-usachim' ), 3, '空欄なら LP のリード文を表示。' );
 		foreach ( [ 1, 2, 3, 4 ] as $n ) {
@@ -171,7 +158,7 @@ add_action(
 			'type'          => 'image',
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
-			'instructions'  => __( '未設定ならテーマ同梱の横ロゴ（調速 チョーソク 不動産調査アプリ）を表示。', 'fde-usachim' ),
+			'instructions'  => __( '未設定ならテーマ同梱の横ロゴ（調速 チョーハヤ 不動産調査アプリ）を表示。', 'fde-usachim' ),
 		];
 		$top_fields[] = [
 			'key'   => 'field_fde_chousoku_url',
@@ -180,6 +167,19 @@ add_action(
 			'type'  => 'url',
 		];
 		$top_fields[] = fde_acf_text( 'chousoku_cta_label', 'chousoku_cta_label', __( 'ボタンの文言', 'fde-usachim' ), '調速のサービスサイトを見る' );
+
+		// ---------- お問い合わせ（Google フォーム） ----------
+		// 4 つのサービスページの下部に出るボタンの共通設定。URL が空のあいだはボタンを出さない。
+		$top_fields[] = fde_acf_tab( 'contact', __( 'お問い合わせ', 'fde-usachim' ) );
+		$top_fields[] = [
+			'key'          => 'field_fde_contact_form_url',
+			'label'        => __( 'Google フォームの URL', 'fde-usachim' ),
+			'name'         => 'contact_form_url',
+			'type'         => 'url',
+			'instructions' => __( 'Google フォームの「送信」→ リンク（🔗）で表示される URL を貼り付けます。4 つのサービスページのお問い合わせボタンが、すべてこのフォームを開きます。空欄のあいだはボタンを表示しません。', 'fde-usachim' ),
+		];
+		$top_fields[] = fde_acf_text( 'contact_btn_label', 'contact_btn_label', __( 'ボタンの文言（空欄なら「お問い合わせフォームへ」）', 'fde-usachim' ), 'お問い合わせフォームへ' );
+		$top_fields[] = fde_acf_textarea( 'contact_text', 'contact_text', __( 'ボタンの上の一文（空欄なら既定文）', 'fde-usachim' ), 2, '空欄なら：ご相談・お見積もりのご依頼は、こちらのフォームからお送りください。内容を確認のうえ、ご連絡します。' );
 
 		acf_add_local_field_group(
 			[
@@ -214,7 +214,7 @@ add_action(
 			fde_acf_text( 'cp_founded', 'cp_founded', __( '設立（空欄なら 2026年7月）', 'fde-usachim' ), '2026年7月' ),
 			fde_acf_text( 'cp_ceo', 'cp_ceo', __( '代表者（空欄なら 田口幸樹）', 'fde-usachim' ), '田口幸樹' ),
 			fde_acf_textarea( 'cp_address', 'cp_address', __( '所在地（空欄なら 埼玉県所沢市元町18-13）', 'fde-usachim' ), 2 ),
-			fde_acf_textarea( 'cp_business', 'cp_business', __( '事業内容（改行はそのまま反映。空欄なら Webシステム開発）', 'fde-usachim' ), 3 ),
+			fde_acf_textarea( 'cp_business', 'cp_business', __( '事業内容（改行はそのまま反映。空欄なら WEB制作／業務効率化・DX支援／システム開発／AI研修・勉強会 の4行）', 'fde-usachim' ), 3 ),
 			[ 'key' => 'field_fde_cp_email', 'label' => __( '連絡先メール（空欄なら info@usachim.com）', 'fde-usachim' ), 'name' => 'cp_email', 'type' => 'email' ],
 		];
 		foreach ( [ 1, 2 ] as $n ) {
@@ -228,34 +228,6 @@ add_action(
 				'fields'   => $fde_cp_fields,
 				'location' => $fde_cp_location,
 				'position' => 'acf_after_title',
-			]
-		);
-
-		// ============================================================
-		// (3b) 特設ページ（3D）— page template で選んだ固定ページに表示
-		// ============================================================
-		acf_add_local_field_group(
-			[
-				'key'      => 'group_fde_special_3d',
-				'title'    => __( '特設ページ（3D）の設定', 'fde-usachim' ),
-				'fields'   => [
-					[
-						'key'           => 'field_fde_sp_scene',
-						'label'         => __( '3D シーン', 'fde-usachim' ),
-						'name'          => 'sp_scene',
-						'type'          => 'select',
-						'choices'       => [
-							'web' => __( 'WEB制作・システム開発（浮遊するワイヤーフレームの街）', 'fde-usachim' ),
-							'dx'  => __( '業務効率化・DX支援（脈打つネットワーク）', 'fde-usachim' ),
-						],
-						'default_value' => 'web',
-						'return_format' => 'value',
-					],
-					fde_acf_text( 'sp_eyebrow', 'sp_eyebrow', __( '見出し上の小さなラベル', 'fde-usachim' ), 'SERVICE 01' ),
-					fde_acf_textarea( 'sp_lead', 'sp_lead', __( 'リード文（FV に重ねる 1〜2 文）', 'fde-usachim' ), 2 ),
-				],
-				'location' => [ [ [ 'param' => 'page_template', 'operator' => '==', 'value' => 'template-3d.php' ] ] ],
-				'position' => 'normal',
 			]
 		);
 

@@ -1,10 +1,10 @@
 <?php
 /**
  * 事業内容。
- * 「番号 + 事業名」に、任意で補足テキストを添えて並べる。内容は TOP 固定ページの
- * ACF「事業内容」タブで編集（4 枠。タイトルが空の枠は出さない）。
- * 行ごとに特設ページの URL が設定されていれば、行全体がリンクになり、
- * ホバーで緑の帯が走って文字が白抜きになる。
+ * 「番号 + 事業名 + 補足テキスト」を 4 つ並べ、各行はそのサービスの詳細ページへリンクする
+ * （ホバーで緑の帯が走って文字が白抜きになる）。
+ * 既定の事業名・補足・リンク先は inc/service-pages.php の定義。TOP 固定ページの
+ * ACF「事業内容」タブで上書きできる。
  *
  * @package fde-usachim
  */
@@ -13,24 +13,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$fde_services = [];
-foreach (
-	[
-		1 => [ 'WEB制作・システム開発', 'svc_web_url' ],
-		2 => [ '業務効率化・DX支援', 'svc_dx_url' ],
-		3 => [ '', 'svc_3_url' ],
-		4 => [ '', 'svc_4_url' ],
-	] as $fde_n => $fde_def
-) {
-	$fde_title = trim( (string) fde_field( "svc_{$fde_n}_title", $fde_def[0] ) );
+$fde_url_fields = [ 1 => 'svc_web_url', 2 => 'svc_dx_url', 3 => 'svc_3_url', 4 => 'svc_4_url' ];
+$fde_services   = [];
+$fde_n          = 0;
+foreach ( fde_services() as $fde_key => $fde_def ) {
+	++$fde_n;
+	$fde_title = trim( (string) fde_field( "svc_{$fde_n}_title", $fde_def['title'] ) );
 	if ( '' === $fde_title ) {
 		continue;
 	}
 	$fde_services[] = [
 		'no'    => sprintf( '%02d', count( $fde_services ) + 1 ),
 		'title' => $fde_title,
-		'note'  => trim( (string) fde_field( "svc_{$fde_n}_note", '' ) ),
-		'url'   => trim( (string) fde_field( $fde_def[1], '' ) ),
+		'note'  => trim( (string) fde_field( "svc_{$fde_n}_note", $fde_def['note'] ) ),
+		'url'   => trim( (string) fde_field( $fde_url_fields[ $fde_n ], fde_service_url( $fde_key ) ) ),
 	];
 }
 if ( ! $fde_services ) {

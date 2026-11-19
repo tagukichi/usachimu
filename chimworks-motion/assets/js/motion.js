@@ -184,7 +184,9 @@ function sectionHeads(gsap) {
 function batchReveals(gsap, ScrollTrigger) {
   const els = document.querySelectorAll(
     ['.product__lead', '.product__main', '.product__media', '.product__point', '.svc-row', '.company-list__row', '.site-footer__top',
-     '.blog2-card', '.blog-card', '.single-blog__main', '.single-blog__side'].join(',')
+     '.blog2-card', '.blog-card', '.single-blog__main', '.single-blog__side',
+     '.svp-card', '.svp-pillar', '.svp-step', '.svp-work', '.svp-price', '.svp-record', '.svp-estimate',
+     '.svp-stack__row', '.svp-checks--grid li', '.svp-contact__box', '.company-table__row'].join(',')
   );
   if (!els.length) return;
 

@@ -142,10 +142,7 @@ function fde_main_nav_items(): array {
 	$home    = home_url( '/' );
 	$items   = [];
 	$items[] = [ 'label' => '事業内容', 'url' => $home . '#services' ];
-	// 調速は ACF のトグルで公開したときだけナビに現れる（セクション順と同じく事業内容の次）
-	if ( (bool) fde_field( 'chousoku_show', false ) ) {
-		$items[] = [ 'label' => '調速', 'url' => $home . '#product' ];
-	}
+	$items[] = [ 'label' => '調速', 'url' => $home . '#product' ];
 	$items[] = [ 'label' => 'Blog',       'url' => $home . '#blog' ];
 	$items[] = [ 'label' => '会社概要',   'url' => fde_company_url() ];
 	return $items;
@@ -257,7 +254,7 @@ function fde_company_rows(): array {
 			'cp_founded'  => [ '設立', '2026年7月' ],
 			'cp_ceo'      => [ '代表者', '田口幸樹' ],
 			'cp_address'  => [ '所在地', '埼玉県所沢市元町18-13' ],
-			'cp_business' => [ '事業内容', 'Webシステム開発' ],
+			'cp_business' => [ '事業内容', "WEB制作\n業務効率化・DX支援\nシステム開発\nAI研修・勉強会" ],
 		] as $key => $def
 	) {
 		$value = trim( (string) fde_company_field( $key, $def[1] ) );
@@ -300,4 +297,12 @@ function fde_contact_email(): string {
  */
 function fde_brand_logo_url(): string {
 	return fde_asset_url( 'assets/img/chimworks-logo.png' );
+}
+
+/**
+ * 調速のブロック（template-parts/common/chosoku.php）を出力する。
+ * 関数の中で読み込み、テンプレート側の変数と名前がぶつからないようにする。
+ */
+function fde_render_chosoku(): void {
+	require FDE_USACHIM_DIR . '/template-parts/common/chosoku.php';
 }
