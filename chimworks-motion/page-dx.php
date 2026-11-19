@@ -64,14 +64,14 @@ while ( have_posts() ) :
 			<section class="section section--dark svp-sec">
 				<div class="section__inner">
 					<?php fde_svp_head( 'Tools', '対応ツール' ); ?>
-					<?php fde_svp_cards( $fde_tools, 'tools' ); ?>
+					<?php fde_svp_cards( $fde_tools, 'tools', 'brand' ); ?>
 				</div>
 			</section>
 		<?php endif; ?>
 
 		<?php $fde_steps = fde_pipe_rows( fde_service_text( 'dx_steps' ) ); ?>
 		<?php if ( $fde_steps ) : ?>
-			<section class="section section--dark svp-sec">
+			<section class="section svp-sec svp-sec--ink">
 				<div class="section__inner">
 					<?php fde_svp_head( 'Process', '進め方' ); ?>
 					<?php fde_svp_steps( $fde_steps ); ?>

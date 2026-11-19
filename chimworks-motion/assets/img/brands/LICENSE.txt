@@ -1,0 +1,13 @@
+ブランドアイコン（対応ツール・技術スタックの表示用）
+
+- microsoft.svg / dify.svg / claude.svg / openai.svg / copilot.svg
+  LobeHub Icons (@lobehub/icons-static-svg) — MIT License
+  https://github.com/lobehub/lobe-icons
+
+- nextjs.svg / react.svg / typescript.svg / vite.svg / python.svg /
+  supabase.svg / vercel.svg / azure.svg / docker.svg / wordpress.svg
+  Devicon — MIT License
+  https://github.com/devicons/devicon
+
+各ロゴ・名称は、それぞれの権利者の商標または登録商標です。
+本サイトでは「対応しているツール・技術」を示す目的でのみ使用しています。

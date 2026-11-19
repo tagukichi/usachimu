@@ -17,9 +17,18 @@ while ( have_posts() ) :
 	$fde_record     = fde_service_text( 'ai_record' );
 	$fde_record_url = esc_url_raw( trim( (string) fde_page_field( 'ai_record_url', '' ) ) );
 	$fde_price_note = fde_service_text( 'ai_price_note' );
+
+	// 研修の様子（ACF の写真 1〜6。設定したものだけ）
+	$fde_photos = [];
+	foreach ( range( 1, 6 ) as $fde_n ) {
+		$fde_img = fde_image_data( fde_page_field( "ai_photo_{$fde_n}", null ) );
+		if ( '' !== $fde_img['url'] ) {
+			$fde_photos[] = $fde_img + [ 'cap' => trim( (string) fde_page_field( "ai_photo_{$fde_n}_cap", '' ) ) ];
+		}
+	}
 	?>
 	<article class="svp svp--ai">
-		<?php fde_svp_hero( 'ai', fde_service_text( 'ai_lead' ) ); ?>
+		<?php fde_svp_hero( 'ai', fde_service_text( 'ai_lead' ), [], '都内の自治体で研修の実績があります' ); ?>
 
 		<?php if ( '' !== $fde_record ) : ?>
 			<section class="section section--dark svp-sec">
@@ -30,6 +39,24 @@ while ( have_posts() ) :
 						<?php if ( '' !== $fde_record_url ) : ?>
 							<a class="svp-more__link" href="<?php echo esc_url( $fde_record_url ); ?>">研修の様子をブログで読む →</a>
 						<?php endif; ?>
+					</div>
+				</div>
+			</section>
+		<?php endif; ?>
+
+		<?php if ( $fde_photos ) : ?>
+			<section class="section section--dark svp-sec">
+				<div class="section__inner">
+					<?php fde_svp_head( 'Gallery', '研修の様子' ); ?>
+					<div class="svp-gallery svp-gallery--<?php echo esc_attr( (string) min( count( $fde_photos ), 6 ) ); ?>">
+						<?php foreach ( $fde_photos as $fde_photo ) : ?>
+							<figure class="svp-gallery__item">
+								<img src="<?php echo esc_url( $fde_photo['url'] ); ?>" alt="<?php echo esc_attr( '' !== $fde_photo['alt'] ? $fde_photo['alt'] : $fde_photo['cap'] ); ?>" loading="lazy">
+								<?php if ( '' !== $fde_photo['cap'] ) : ?>
+									<figcaption class="svp-gallery__cap"><?php echo esc_html( $fde_photo['cap'] ); ?></figcaption>
+								<?php endif; ?>
+							</figure>
+						<?php endforeach; ?>
 					</div>
 				</div>
 			</section>

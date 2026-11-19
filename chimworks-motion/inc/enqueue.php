@@ -18,6 +18,13 @@ add_action(
 			[],
 			null
 		);
+		// サービス詳細ページ・会社概要などのスタイル（更新時にキャッシュが残らないよう個別に読み込む）
+		wp_enqueue_style(
+			'fde-usachim-service',
+			fde_asset_url( 'assets/css/service.css' ),
+			[ 'fde-usachim' ],
+			null
+		);
 
 		// GSAP（テーマ同梱・自己ホスト）。main.js より先に読み込む。
 		wp_enqueue_script(

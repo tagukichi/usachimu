@@ -37,9 +37,19 @@ while ( have_posts() ) :
 								<dd class="svp-stack__v">
 									<ul class="svp-chips">
 										<?php foreach ( preg_split( '/[、,]/u', $fde_row[1] ?? '' ) ?: [] as $fde_tech ) : ?>
-											<?php if ( '' !== trim( $fde_tech ) ) : ?>
-												<li><?php echo esc_html( trim( $fde_tech ) ); ?></li>
-											<?php endif; ?>
+											<?php
+											$fde_tech = trim( $fde_tech );
+											if ( '' === $fde_tech ) {
+												continue;
+											}
+											$fde_logo = fde_brand_icon( $fde_tech );
+											?>
+											<li>
+												<?php if ( $fde_logo ) : ?>
+													<img class="svp-chips__icon" src="<?php echo esc_url( $fde_logo ); ?>" alt="" width="22" height="22" loading="lazy">
+												<?php endif; ?>
+												<?php echo esc_html( $fde_tech ); ?>
+											</li>
 										<?php endforeach; ?>
 									</ul>
 								</dd>
@@ -52,7 +62,7 @@ while ( have_posts() ) :
 
 		<?php $fde_steps = fde_pipe_rows( fde_service_text( 'sys_steps' ) ); ?>
 		<?php if ( $fde_steps ) : ?>
-			<section class="section section--dark svp-sec">
+			<section class="section svp-sec svp-sec--ink">
 				<div class="section__inner">
 					<?php fde_svp_head( 'Process', '開発の進め方' ); ?>
 					<?php fde_svp_steps( $fde_steps ); ?>

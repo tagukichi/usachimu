@@ -32,7 +32,7 @@ while ( have_posts() ) :
 	$fde_prices = fde_pipe_rows( fde_service_text( 'web_prices' ) );
 	?>
 	<article class="svp svp--web">
-		<?php fde_svp_hero( 'web', fde_service_text( 'web_lead' ) ); ?>
+		<?php fde_svp_hero( 'web', fde_service_text( 'web_lead' ), [ [ '200+', 'これまでに制作したWebサイト' ] ] ); ?>
 
 		<section class="section section--dark svp-sec">
 			<div class="section__inner">
@@ -45,36 +45,48 @@ while ( have_posts() ) :
 			<section class="section section--dark svp-sec">
 				<div class="section__inner">
 					<?php fde_svp_head( 'Works', '制作事例' ); ?>
-					<div class="svp-works">
-						<?php
-						while ( $fde_works->have_posts() ) :
-							$fde_works->the_post();
-							$fde_thumb = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'large' ) : '';
-							$fde_cat   = '';
-							foreach ( get_object_taxonomies( $fde_works_type ) as $fde_tax ) {
-								$fde_terms = get_the_terms( get_the_ID(), $fde_tax );
-								if ( is_array( $fde_terms ) && $fde_terms ) {
-									$fde_cat = $fde_terms[0]->name;
-									break;
+					<div class="svp-slider" data-slider>
+						<div class="svp-slider__track" data-slider-track tabindex="0" aria-label="制作事例（横にスクロールできます）">
+							<?php
+							while ( $fde_works->have_posts() ) :
+								$fde_works->the_post();
+								$fde_thumb = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'large' ) : '';
+								$fde_cat   = '';
+								foreach ( get_object_taxonomies( $fde_works_type ) as $fde_tax ) {
+									$fde_terms = get_the_terms( get_the_ID(), $fde_tax );
+									if ( is_array( $fde_terms ) && $fde_terms ) {
+										$fde_cat = $fde_terms[0]->name;
+										break;
+									}
 								}
-							}
-							?>
-							<a class="svp-work" href="<?php the_permalink(); ?>">
-								<div class="svp-work__thumb">
-									<?php if ( $fde_thumb ) : ?>
-										<img src="<?php echo esc_url( $fde_thumb ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" loading="lazy">
-									<?php else : ?>
-										<span class="svp-work__ph" aria-hidden="true"><?php echo esc_html( mb_substr( get_the_title(), 0, 1 ) ); ?></span>
-									<?php endif; ?>
-								</div>
-								<div class="svp-work__body">
-									<?php if ( $fde_cat ) : ?>
-										<span class="svp-work__cat mono"><?php echo esc_html( $fde_cat ); ?></span>
-									<?php endif; ?>
-									<h3 class="svp-work__title"><?php echo esc_html( get_the_title() ); ?></h3>
-								</div>
-							</a>
-						<?php endwhile; ?>
+								?>
+								<a class="svp-work" href="<?php the_permalink(); ?>" draggable="false">
+									<div class="svp-work__thumb">
+										<?php if ( $fde_thumb ) : ?>
+											<img src="<?php echo esc_url( $fde_thumb ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" loading="lazy" draggable="false">
+										<?php else : ?>
+											<span class="svp-work__ph" aria-hidden="true"><?php echo esc_html( mb_substr( get_the_title(), 0, 1 ) ); ?></span>
+										<?php endif; ?>
+									</div>
+									<div class="svp-work__body">
+										<?php if ( $fde_cat ) : ?>
+											<span class="svp-work__cat mono"><?php echo esc_html( $fde_cat ); ?></span>
+										<?php endif; ?>
+										<h3 class="svp-work__title"><?php echo esc_html( get_the_title() ); ?></h3>
+										<span class="svp-work__more mono" aria-hidden="true">View →</span>
+									</div>
+								</a>
+							<?php endwhile; ?>
+						</div>
+						<div class="svp-slider__ui">
+							<div class="svp-slider__bar" aria-hidden="true"><span data-slider-bar></span></div>
+							<button type="button" class="svp-slider__btn" data-slider-prev aria-label="前の制作事例へ">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg>
+							</button>
+							<button type="button" class="svp-slider__btn" data-slider-next aria-label="次の制作事例へ">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+							</button>
+						</div>
 					</div>
 					<?php
 					wp_reset_postdata();
