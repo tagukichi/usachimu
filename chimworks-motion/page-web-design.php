@@ -32,7 +32,7 @@ while ( have_posts() ) :
 	$fde_prices = fde_pipe_rows( fde_service_text( 'web_prices' ) );
 	?>
 	<article class="svp svp--web">
-		<?php fde_svp_hero( 'web', fde_service_text( 'web_lead' ), [ [ '200+', 'これまでに制作したWebサイト' ] ] ); ?>
+		<?php fde_svp_hero( 'web', fde_service_text( 'web_lead' ) ); ?>
 
 		<section class="section section--dark svp-sec">
 			<div class="section__inner">
@@ -124,7 +124,7 @@ while ( have_posts() ) :
 			</section>
 		<?php endif; ?>
 
-		<?php fde_svp_contact(); ?>
+		<?php fde_svp_contact( 'web' ); ?>
 		<?php fde_svp_others( 'web' ); ?>
 	</article>
 	<?php

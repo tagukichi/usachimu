@@ -81,7 +81,7 @@ while ( have_posts() ) :
 			</div>
 		</section>
 
-		<?php fde_svp_contact(); ?>
+		<?php fde_svp_contact( 'system' ); ?>
 		<?php fde_svp_others( 'system' ); ?>
 	</article>
 	<?php

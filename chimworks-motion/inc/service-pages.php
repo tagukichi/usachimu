@@ -28,7 +28,7 @@ function fde_services(): array {
 			'slug'  => 'web-design',
 			'title' => 'WEB制作',
 			'en'    => 'Web Design',
-			'words' => [ 'LANDING PAGE', 'CORPORATE SITE', 'E-COMMERCE', 'MEMBERSHIP', 'REVIEW SITE', 'PORTAL' ],
+			'words' => [ 'LP', 'ホームページ', 'ECサイト', '会員サイト', '口コミサイト', 'ポータルサイト', 'WordPress' ],
 			'note'  => 'これまでに200件以上のWebサイトを制作。コーポレートサイトやLPを、企画・デザインから公開後の運用まで手がけます。',
 		],
 		'dx'     => [
@@ -36,7 +36,7 @@ function fde_services(): array {
 			'slug'  => 'dx',
 			'title' => '業務効率化・DX支援',
 			'en'    => 'DX Support',
-			'words' => [ 'WORKFLOW REVIEW', 'AUTOMATION', 'EXCEL', 'GENERATIVE AI', 'MICROSOFT 365', 'DIFY' ],
+			'words' => [ '業務の見直し', 'Excelの自動化', 'Microsoft 365', 'Dify', 'Claude', 'ChatGPT', 'ツール導入' ],
 			'note'  => '業務の流れを整理し、ツールの導入や自動化で、日々の手間を減らします。',
 		],
 		'system' => [
@@ -44,7 +44,7 @@ function fde_services(): array {
 			'slug'  => 'system',
 			'title' => 'システム開発',
 			'en'    => 'System Development',
-			'words' => [ 'BUSINESS SYSTEM', 'WEB APP', 'SAAS', 'AI INTEGRATION', 'API', 'CLOUD' ],
+			'words' => [ 'Next.js', 'React', 'TypeScript', 'Vite', 'Python', 'Supabase', 'Vercel', 'Azure', 'Docker' ],
 			'note'  => '業務システムやWebアプリを、要件の整理から設計・開発・運用まで一貫して手がけます。生成AIを組み込んだ開発にも対応します。',
 		],
 		'ai'     => [
@@ -52,7 +52,7 @@ function fde_services(): array {
 			'slug'  => 'ai-training',
 			'title' => 'AI研修・勉強会',
 			'en'    => 'AI Training',
-			'words' => [ 'GENERATIVE AI', 'PROMPT', 'WORKSHOP', 'CHATGPT', 'CLAUDE', 'COPILOT' ],
+			'words' => [ '生成AIの基礎', 'プロンプト', 'ワークショップ', 'ChatGPT', 'Claude', 'Copilot', '管理職向け' ],
 			'note'  => '自治体・企業向けに、生成AIの基礎から業務での使い方までを学ぶ研修・勉強会を行っています。',
 		],
 	];
@@ -116,9 +116,30 @@ function fde_pipe_rows( string $text ): array {
 
 /**
  * お問い合わせ（Google フォーム）の URL。全サービスページ共通。
+ * TOP ページの ACF が空なら、テーマに設定したフォームを使う。
+ * 「事前入力の番号（entry.○○）」が設定されていれば、開いたページのサービス名を
+ * 「お問い合わせの種類」にあらかじめ選んだ状態で開く。
  */
-function fde_contact_form_url(): string {
-	return esc_url_raw( trim( (string) fde_field( 'contact_form_url', '' ) ) );
+function fde_contact_form_url( string $service_key = '' ): string {
+	$url = trim( (string) fde_field( 'contact_form_url', '' ) );
+	if ( '' === $url ) {
+		$url = 'https://docs.google.com/forms/d/1Z7TgEWtB7j-METOTrDfhCz1PswBeecEz5Yyl9PZ8XoY/viewform';
+	}
+	// 編集画面から写したときに付く余計なパラメータは外す
+	$url = remove_query_arg( [ 'edit_requested', 'usp' ], $url );
+
+	$entry    = preg_replace( '/[^0-9]/', '', (string) fde_field( 'contact_prefill_entry', '' ) );
+	$services = fde_services();
+	if ( '' !== $entry && isset( $services[ $service_key ] ) ) {
+		$url = add_query_arg(
+			[
+				'usp'              => 'pp_url',
+				'entry.' . $entry  => rawurlencode( $services[ $service_key ]['title'] ),
+			],
+			$url
+		);
+	}
+	return esc_url_raw( $url );
 }
 
 /**
@@ -269,6 +290,8 @@ add_action(
 function fde_service_defaults(): array {
 	return [
 		// ---- WEB制作 ----
+		'web_catch'      => "目的に合わせて、\n{{伝わるWebサイト}}を\nつくります。",
+		'web_points'     => "制作実績200件以上\n企画から運用まで一貫対応\nスマホ対応\n公開後の更新もサポート",
 		'web_lead'       => "これまでに200件以上のWebサイトを制作してきました。\n目的やご予算に合わせて、企画・デザインから開発、公開後の運用まで一貫して手がけます。",
 		'web_types'      => implode(
 			"\n",
@@ -292,6 +315,8 @@ function fde_service_defaults(): array {
 		'web_price_note' => 'ページ数や機能、素材の有無によって変わります。ECサイトや口コミサイトなども、内容をうかがってお見積もりします。',
 
 		// ---- 業務効率化・DX支援 ----
+		'dx_catch'       => "毎日の手作業を、\n{{自動化}}で\nもっと身軽に。",
+		'dx_points'      => "Excel・紙の作業を自動化\n生成AIの業務活用\nMicrosoft 365に対応\n小さく始めて定着まで",
 		'dx_lead'        => "業務の流れを整理し、ツールの導入や自動化で、日々の手間を減らします。\n「何から始めればいいか分からない」という段階からご相談いただけます。",
 		'dx_pillar_1'    => "業務の見直し｜いまの業務の流れを一緒に洗い出し、ムダや手戻り、特定の人に頼っている作業を見える化します。\n業務フローの整理・見える化\n紙や手作業の洗い出し\n改善の優先順位づけと計画づくり",
 		'dx_pillar_2'    => "自動化｜繰り返しの作業は、Excelや生成AIで自動化します。小さく始めて、効果を見ながら広げます。\nExcelの集計・転記の自動化（マクロ・VBA）\nPower Automateによる定型作業の自動化\n生成AIによる文章作成・要約・データ整理",
@@ -326,6 +351,8 @@ function fde_service_defaults(): array {
 		),
 
 		// ---- システム開発 ----
+		'sys_catch'      => "業務にフィットする\n{{システム}}を、\n企画から運用まで。",
+		'sys_points'     => "要件の整理から一貫対応\n生成AIの組み込み\nモダンな技術スタック\n公開後の保守・改善",
 		'sys_lead'       => "業務システムやWebアプリを、要件の整理から設計・開発・運用まで一貫して手がけます。\n生成AIを組み込んだ開発にも対応します。",
 		'sys_products'   => implode(
 			"\n",
@@ -357,6 +384,8 @@ function fde_service_defaults(): array {
 		'sys_product_lead' => '自社でも、不動産調査アプリ「調速（チョーハヤ）」を開発・提供しています。',
 
 		// ---- AI研修・勉強会 ----
+		'ai_catch'       => "生成AIを、\n{{現場で使える力}}に\n変える研修。",
+		'ai_points'      => "自治体での研修実績\nツール・環境に合わせて調整\n手を動かすハンズオン\n対面・オンライン対応",
 		'ai_lead'        => "自治体・企業向けに、生成AIの基礎から業務での使い方までを学ぶ研修・勉強会を行っています。\n組織で使っているツールや環境に合わせて、内容を組み立てます。",
 		'ai_record'      => '都内の自治体で、職員の方向けの生成AI研修を複数回実施しています。実際の業務に近い題材を使い、手を動かしながら学べる内容にしています。',
 		'ai_menu'        => implode(
@@ -439,6 +468,8 @@ add_action(
 		$groups = [
 			'web'    => [
 				$image( 'web_hero_image', 'メイン画像', $hero_help ),
+				$field( 'web_catch', 'キャッチコピー（ページ上部の大きな見出し。{{ }} で囲むとグラデーションで強調。改行はそのまま反映）' ),
+				$field( 'web_points', 'キャッチコピー下のチェック項目（1行に1つ。4つくらいがおすすめ）' ),
 				$field( 'web_lead', 'リード文（ページ上部の説明。改行はそのまま反映）' ),
 				$field( 'web_types', '対応できるWebサイトの種類', 'textarea', $pipe ),
 				$field( 'web_prices', '料金表', 'textarea', '1行に1プラン。「プラン名｜料金｜説明」の順に全角「｜」で区切ります。' ),
@@ -448,6 +479,8 @@ add_action(
 			],
 			'dx'     => [
 				$image( 'dx_hero_image', 'メイン画像', $hero_help ),
+				$field( 'dx_catch', 'キャッチコピー（ページ上部の大きな見出し。{{ }} で囲むとグラデーションで強調。改行はそのまま反映）' ),
+				$field( 'dx_points', 'キャッチコピー下のチェック項目（1行に1つ。4つくらいがおすすめ）' ),
 				$field( 'dx_lead', 'リード文（ページ上部の説明。改行はそのまま反映）' ),
 				$field( 'dx_pillar_1', '支援内容 1', 'textarea', '1行目に「見出し｜説明」、2行目以降にチェック項目を1行ずつ。' ),
 				$field( 'dx_pillar_2', '支援内容 2', 'textarea', '1行目に「見出し｜説明」、2行目以降にチェック項目を1行ずつ。' ),
@@ -458,6 +491,8 @@ add_action(
 			],
 			'system' => [
 				$image( 'sys_hero_image', 'メイン画像', $hero_help ),
+				$field( 'sys_catch', 'キャッチコピー（ページ上部の大きな見出し。{{ }} で囲むとグラデーションで強調。改行はそのまま反映）' ),
+				$field( 'sys_points', 'キャッチコピー下のチェック項目（1行に1つ。4つくらいがおすすめ）' ),
 				$field( 'sys_lead', 'リード文（ページ上部の説明。改行はそのまま反映）' ),
 				$field( 'sys_products', '開発できるもの', 'textarea', $pipe ),
 				$field( 'sys_stack', '技術スタック', 'textarea', '1行に1分類。「分類｜技術、技術、…」のように書きます。' ),
@@ -466,6 +501,8 @@ add_action(
 			],
 			'ai'     => array_merge( [
 				$image( 'ai_hero_image', 'メイン画像', $hero_help ),
+				$field( 'ai_catch', 'キャッチコピー（ページ上部の大きな見出し。{{ }} で囲むとグラデーションで強調。改行はそのまま反映）' ),
+				$field( 'ai_points', 'キャッチコピー下のチェック項目（1行に1つ。4つくらいがおすすめ）' ),
 				$field( 'ai_lead', 'リード文（ページ上部の説明。改行はそのまま反映）' ),
 				$field( 'ai_record', 'これまでの実績' ),
 				$field( 'ai_record_url', '実績を紹介したブログ記事の URL（任意。入れるとリンクを表示）', 'url' ),
@@ -611,53 +648,84 @@ function fde_svp_lines( string $text ): array {
 }
 
 /**
- * ページ上部：左にページ名とリード文、右にメイン画像（ACF）かテーマのイラスト。
- * その下に、サービスのキーワードが流れる帯。
- *
- * @param array<int,array{0:string,1:string}> $stats 大きな数字と説明（任意）
+ * {{強調}} をグラデーション文字の span に、改行を <br> に変換する。
  */
-function fde_svp_hero( string $key, string $lead, array $stats = [], string $badge = '' ): void {
+function fde_svp_rich( string $text ): string {
+	$out = esc_html( $text );
+	$out = preg_replace( '/\{\{(.+?)\}\}/u', '<span class="svp-accent">$1</span>', $out );
+	return nl2br( (string) $out );
+}
+
+/**
+ * ページ上部（調速の LP の FV と同じ構成・動き）。
+ * 左：サービス名・キャッチコピー・リード文・お問い合わせへのボタン・チェック項目
+ * 右：メイン画像（ACF）か、サービスごとの画面イメージのアニメーション
+ * 下：サービスに関係する言葉（ロゴ付き）が流れる帯
+ */
+function fde_svp_hero( string $key, string $lead ): void {
 	$service = fde_services()[ $key ];
-	$image   = fde_image_data( fde_page_field( ( 'system' === $key ? 'sys' : $key ) . '_hero_image', null ) );
+	$prefix  = 'system' === $key ? 'sys' : $key;
+	$image   = fde_image_data( fde_page_field( $prefix . '_hero_image', null ) );
+	$catch   = fde_service_text( $prefix . '_catch' );
+	$points  = fde_svp_lines( fde_service_text( $prefix . '_points' ) );
+	$check   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
 	?>
+	<div class="svp-progress" aria-hidden="true" data-progress><span></span></div>
 	<header class="svp-hero svp-hero--<?php echo esc_attr( $key ); ?>">
+		<div class="svp-hero__bg" aria-hidden="true">
+			<span class="svp-orb svp-orb--1"></span>
+			<span class="svp-orb svp-orb--2"></span>
+			<span class="svp-orb svp-orb--3"></span>
+		</div>
 		<div class="svp-hero__inner">
-			<div class="svp-hero__copy">
-				<p class="svp-hero__eyebrow mono"><span class="svp-hero__no">SERVICE <?php echo esc_html( $service['no'] ); ?></span><?php echo esc_html( $service['en'] ); ?></p>
-				<?php // 「・」の後ろでだけ折り返す（「業務効率化・／DX支援」） ?>
-				<h1 class="svp-hero__title"><?php echo str_replace( '・', '・<wbr>', esc_html( get_the_title() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html 済み ?></h1>
+			<div class="svp-hero__copy svp-anim">
+				<p class="svp-hero__eyebrow"><span class="svp-hero__no mono">SERVICE <?php echo esc_html( $service['no'] ); ?></span><span class="svp-hero__en mono"><?php echo esc_html( $service['en'] ); ?></span></p>
+				<h1 class="svp-hero__title">
+					<?php // 「・」の後ろでだけ折り返す（「業務効率化・／DX支援」） ?>
+					<span class="svp-hero__name"><?php echo str_replace( '・', '・<wbr>', esc_html( get_the_title() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html 済み ?></span>
+					<?php if ( '' !== $catch ) : ?>
+						<span class="svp-hero__catch"><?php echo fde_svp_rich( $catch ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_html 済み ?></span>
+					<?php endif; ?>
+				</h1>
 				<?php if ( '' !== $lead ) : ?>
 					<p class="svp-hero__lead"><?php echo nl2br( esc_html( $lead ) ); ?></p>
 				<?php endif; ?>
-				<?php if ( $stats ) : ?>
-					<dl class="svp-hero__stats">
-						<?php foreach ( $stats as $stat ) : ?>
-							<div class="svp-hero__stat">
-								<dt class="svp-hero__stat-v"><?php echo esc_html( $stat[0] ); ?></dt>
-								<dd class="svp-hero__stat-k"><?php echo esc_html( $stat[1] ); ?></dd>
-							</div>
-						<?php endforeach; ?>
-					</dl>
+				<?php if ( '' !== fde_contact_form_url() ) : ?>
+					<div class="svp-hero__cta">
+						<a class="svp-btn" href="#contact">お問い合わせはこちら</a>
+					</div>
 				<?php endif; ?>
-				<?php if ( '' !== $badge ) : ?>
-					<p class="svp-hero__badge"><span class="svp-hero__badge-dot" aria-hidden="true"></span><?php echo esc_html( $badge ); ?></p>
+				<?php if ( $points ) : ?>
+					<ul class="svp-hero__points">
+						<?php foreach ( $points as $point ) : ?>
+							<li><?php echo $check; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- 固定の SVG ?><?php echo esc_html( $point ); ?></li>
+						<?php endforeach; ?>
+					</ul>
 				<?php endif; ?>
 			</div>
-			<div class="svp-hero__visual">
+			<div class="svp-hero__visual svp-anim-visual">
 				<?php if ( '' !== $image['url'] ) : ?>
 					<img class="svp-hero__img" src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ); ?>" loading="eager">
 				<?php else : ?>
-					<?php fde_svp_illustration( $key ); ?>
+					<?php fde_svp_mock( $key ); ?>
+					<p class="svp-hero__cap">※ 画面はイメージです。</p>
 				<?php endif; ?>
 			</div>
 		</div>
-		<span class="svp-hero__num" aria-hidden="true"><?php echo esc_html( $service['no'] ); ?></span>
 	</header>
 	<div class="svp-band" aria-hidden="true">
 		<div class="svp-band__track">
 			<?php for ( $loop = 0; $loop < 2; $loop++ ) : ?>
 				<?php foreach ( $service['words'] as $word ) : ?>
-					<span class="svp-band__word"><?php echo esc_html( $word ); ?></span><span class="svp-band__sep">✳</span>
+					<?php $logo = fde_brand_icon( $word ); ?>
+					<span class="svp-band__item">
+						<?php if ( $logo ) : ?>
+							<img src="<?php echo esc_url( $logo ); ?>" alt="" width="20" height="20">
+						<?php else : ?>
+							<i></i>
+						<?php endif; ?>
+						<?php echo esc_html( $word ); ?>
+					</span>
 				<?php endforeach; ?>
 			<?php endfor; ?>
 		</div>
@@ -666,82 +734,97 @@ function fde_svp_hero( string $key, string $lead, array $stats = [], string $bad
 }
 
 /**
- * ページ上部のイラスト（HTML と CSS だけで描く。画像を設定していないときに表示）。
+ * ページ上部の画面イメージ（HTML と CSS だけで動く。16 秒で一巡）。
+ * 調速の LP の製品モックと同じ「PC の画面 + 手前にスマホ」の組み方。
  */
-function fde_svp_illustration( string $key ): void {
+function fde_svp_mock( string $key ): void {
 	$icon = static function ( string $name ): string {
 		return esc_url( fde_brand_icon( $name ) );
 	};
-	echo '<div class="ill ill--' . esc_attr( $key ) . '" aria-hidden="true">';
-	switch ( $key ) {
-		case 'web':
-			?>
-			<div class="ill-win ill-win--back"><div class="ill-win__bar"><i></i><i></i><i></i></div><div class="ill-win__body"><span class="ill-block ill-block--hero"></span><span class="ill-line w70"></span><span class="ill-line w50"></span></div></div>
-			<div class="ill-win ill-win--front">
-				<div class="ill-win__bar"><i></i><i></i><i></i><span class="ill-win__url">chimworks.jp</span></div>
-				<div class="ill-win__body">
-					<span class="ill-block ill-block--hero"><b>Your Brand</b></span>
-					<span class="ill-grid"><i></i><i></i><i></i></span>
-					<span class="ill-line w80"></span><span class="ill-line w60"></span>
-				</div>
+	$urls = [ 'web' => 'your-company.jp', 'dx' => '月次集計.xlsx', 'system' => 'admin.your-app.jp', 'ai' => 'AI アシスタント' ];
+	?>
+	<div class="svm svm--<?php echo esc_attr( $key ); ?>" aria-hidden="true">
+		<div class="svm-win">
+			<div class="svm-bar"><i></i><i></i><i></i><span class="svm-url"><?php echo esc_html( $urls[ $key ] ?? '' ); ?></span></div>
+			<div class="svm-body">
+				<?php if ( 'web' === $key ) : ?>
+					<div class="svm-tool">
+						<span class="svm-tabs"><b>PC</b><span>SP</span></span>
+						<span class="svm-pub">公開する</span>
+					</div>
+					<div class="svm-canvas">
+						<div class="svm-site-head"><span class="svm-logo-dot"></span><span class="svm-sk w20"></span><span class="svm-nav"><i></i><i></i><i></i></span></div>
+						<div class="svm-site-hero"><b>Your Brand</b><span class="svm-sk w50 is-light"></span><span class="svm-site-btn"></span></div>
+						<div class="svm-site-cards"><i></i><i></i><i></i></div>
+					</div>
+					<div class="svm-toast">✓ サイトを公開しました</div>
+				<?php elseif ( 'dx' === $key ) : ?>
+					<div class="svm-tool">
+						<span class="svm-file"><img src="<?php echo $icon( 'excel' ); // phpcs:ignore ?>" alt="">売上集計</span>
+						<span class="svm-run">▶ 自動化を実行</span>
+					</div>
+					<div class="svm-sheet">
+						<div class="svm-row svm-row--th"><span>日付</span><span>担当</span><span>件数</span><span>売上</span></div>
+						<?php for ( $r = 1; $r <= 6; $r++ ) : ?>
+							<div class="svm-row svm-row--<?php echo (int) $r; ?>"><i></i><i></i><i></i><i class="is-num"></i></div>
+						<?php endfor; ?>
+					</div>
+					<div class="svm-status"><span class="svm-status__run">処理中…</span><span class="svm-status__done">✓ 完了</span></div>
+					<div class="svm-chart"><b>月次レポート</b><span class="svm-bars"><i></i><i></i><i></i><i></i><i></i></span></div>
+				<?php elseif ( 'system' === $key ) : ?>
+					<div class="svm-app">
+						<div class="svm-side"><span class="svm-logo-dot"></span><i class="svm-side__active"></i><i></i><i></i><i></i><i></i></div>
+						<div class="svm-main">
+							<div class="svm-kpis"><span><b>顧客</b><i></i></span><span><b>案件</b><i></i></span><span><b>売上</b><i></i></span></div>
+							<div class="svm-graph"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+							<div class="svm-table"><i></i><i></i><i></i></div>
+						</div>
+					</div>
+					<div class="svm-toast">✓ 保存しました</div>
+				<?php else : ?>
+					<div class="svm-chat">
+						<div class="svm-msg svm-msg--me svm-msg--1">この議事録を3行で要約して</div>
+						<div class="svm-typing"><i></i><i></i><i></i></div>
+						<div class="svm-msg svm-msg--ai svm-msg--2"><span class="svm-ai">✳ AI</span><span class="svm-sk w90"></span><span class="svm-sk w80"></span><span class="svm-sk w60"></span></div>
+						<div class="svm-msg svm-msg--me svm-msg--3">次は、お礼メールの下書きも</div>
+						<div class="svm-msg svm-msg--ai svm-msg--4"><span class="svm-ai">✳ AI</span><span class="svm-sk w80"></span><span class="svm-sk w70"></span></div>
+					</div>
+					<div class="svm-input"><span class="svm-input__text">この議事録を3行で要約して</span><span class="svm-send">送信</span></div>
+				<?php endif; ?>
+				<svg class="svm-cursor" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z"/></svg>
 			</div>
-			<div class="ill-phone"><span class="ill-block ill-block--hero"></span><span class="ill-line w80"></span><span class="ill-line w60"></span><span class="ill-btn"></span></div>
-			<span class="ill-chip ill-chip--a">LP</span><span class="ill-chip ill-chip--b">EC</span><span class="ill-chip ill-chip--c">CMS</span>
-			<?php
-			break;
-		case 'dx':
-			?>
-			<div class="ill-flow">
-				<div class="ill-node"><img src="<?php echo $icon( 'excel' ); // phpcs:ignore ?>" alt=""><b>Excel・紙の作業</b><span class="ill-line w70"></span></div>
-				<span class="ill-arrow"></span>
-				<div class="ill-node ill-node--ai"><span class="ill-node__logos"><img src="<?php echo $icon( 'dify' ); // phpcs:ignore ?>" alt=""><img src="<?php echo $icon( 'claude' ); // phpcs:ignore ?>" alt=""><img src="<?php echo $icon( 'chatgpt' ); // phpcs:ignore ?>" alt=""></span><b>自動化・生成AI</b><span class="ill-line w60"></span></div>
-				<span class="ill-arrow"></span>
-				<div class="ill-node ill-node--done"><span class="ill-check"></span><b>手間が減った</b><span class="ill-bars"><i></i><i></i><i></i></span></div>
+		</div>
+
+		<div class="svm-phone">
+			<div class="svm-phone__notch"></div>
+			<div class="svm-phone__screen">
+				<?php if ( 'web' === $key ) : ?>
+					<span class="svm-phone__hero"></span><span class="svm-sk w80"></span><span class="svm-sk w60"></span><span class="svm-phone__card"></span><span class="svm-phone__card"></span><span class="svm-phone__btn"></span>
+				<?php elseif ( 'dx' === $key ) : ?>
+					<span class="svm-phone__app">Teams</span>
+					<span class="svm-notice"><img src="<?php echo $icon( 'microsoft' ); // phpcs:ignore ?>" alt=""><b>集計が完了しました</b><span class="svm-sk w80"></span></span>
+					<span class="svm-phone__card"></span><span class="svm-phone__card"></span>
+				<?php elseif ( 'system' === $key ) : ?>
+					<span class="svm-phone__app">案件一覧</span>
+					<span class="svm-list"><i></i><i></i><i></i><i></i></span>
+					<span class="svm-phone__btn"></span>
+				<?php else : ?>
+					<span class="svm-phone__app">研修資料</span>
+					<span class="svm-slide"><b>生成AIの基礎</b><span class="svm-sk w80"></span><span class="svm-sk w60"></span><span class="svm-sk w70"></span></span>
+					<span class="svm-phone__card"></span>
+				<?php endif; ?>
 			</div>
-			<?php
-			break;
-		case 'system':
-			?>
-			<div class="ill-code">
-				<div class="ill-win__bar"><i></i><i></i><i></i><span class="ill-win__url">app.tsx</span></div>
-				<div class="ill-code__body">
-					<p><em>const</em> <b>app</b> = createApp({</p>
-					<p class="in">auth: <s>true</s>,</p>
-					<p class="in">db: <u>supabase</u>,</p>
-					<p class="in">ai: <u>generate</u>(prompt),</p>
-					<p>});</p>
-					<p class="caret"><em>export default</em> app;</p>
-				</div>
-			</div>
-			<div class="ill-term"><span>$ deploy</span><span class="ok">✓ ready</span></div>
-			<span class="ill-logo ill-logo--a"><img src="<?php echo $icon( 'next' ); // phpcs:ignore ?>" alt=""></span>
-			<span class="ill-logo ill-logo--b"><img src="<?php echo $icon( 'supabase' ); // phpcs:ignore ?>" alt=""></span>
-			<span class="ill-logo ill-logo--c"><img src="<?php echo $icon( 'docker' ); // phpcs:ignore ?>" alt=""></span>
-			<?php
-			break;
-		case 'ai':
-			?>
-			<div class="ill-chat">
-				<div class="ill-msg ill-msg--me">この議事録を3行で要約して</div>
-				<div class="ill-msg ill-msg--ai"><span class="ill-msg__head">✳ AI</span><span class="ill-line w90"></span><span class="ill-line w80"></span><span class="ill-line w60"></span></div>
-				<div class="ill-msg ill-msg--me">次は、メールの下書きも</div>
-				<div class="ill-typing"><i></i><i></i><i></i></div>
-			</div>
-			<span class="ill-logo ill-logo--a"><img src="<?php echo $icon( 'chatgpt' ); // phpcs:ignore ?>" alt=""></span>
-			<span class="ill-logo ill-logo--b"><img src="<?php echo $icon( 'claude' ); // phpcs:ignore ?>" alt=""></span>
-			<span class="ill-logo ill-logo--c"><img src="<?php echo $icon( 'copilot' ); // phpcs:ignore ?>" alt=""></span>
-			<?php
-			break;
-	}
-	echo '</div>';
+		</div>
+	</div>
+	<?php
 }
 
 /**
  * お問い合わせ（全サービスページ共通の Google フォームへのボタン）。
  * フォームの URL が未設定のあいだは何も出さない。
  */
-function fde_svp_contact(): void {
-	$url = fde_contact_form_url();
+function fde_svp_contact( string $service_key = '' ): void {
+	$url = fde_contact_form_url( $service_key );
 	if ( '' === $url ) {
 		return;
 	}

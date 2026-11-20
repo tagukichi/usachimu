@@ -79,7 +79,7 @@ while ( have_posts() ) :
 			</section>
 		<?php endif; ?>
 
-		<?php fde_svp_contact(); ?>
+		<?php fde_svp_contact( 'dx' ); ?>
 		<?php fde_svp_others( 'dx' ); ?>
 	</article>
 	<?php

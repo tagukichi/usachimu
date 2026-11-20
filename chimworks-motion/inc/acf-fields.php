@@ -176,7 +176,15 @@ add_action(
 			'label'        => __( 'Google フォームの URL', 'fde-usachim' ),
 			'name'         => 'contact_form_url',
 			'type'         => 'url',
-			'instructions' => __( 'Google フォームの「送信」→ リンク（🔗）で表示される URL を貼り付けます。4 つのサービスページのお問い合わせボタンが、すべてこのフォームを開きます。空欄のあいだはボタンを表示しません。', 'fde-usachim' ),
+			'instructions' => __( 'Google フォームの「送信」→ リンク（🔗）で表示される URL を貼り付けます。4 つのサービスページのお問い合わせボタンが、すべてこのフォームを開きます。空欄ならテーマに設定済みのフォームを使います。', 'fde-usachim' ),
+		];
+		$top_fields[] = [
+			'key'          => 'field_fde_contact_prefill_entry',
+			'label'        => __( '「お問い合わせの種類」の事前入力番号（任意）', 'fde-usachim' ),
+			'name'         => 'contact_prefill_entry',
+			'type'         => 'text',
+			'placeholder'  => 'entry.123456789',
+			'instructions' => __( '設定すると、各サービスページのボタンから開いたときに「お問い合わせの種類」がそのサービスで選ばれた状態になります。フォーム編集画面の「︙」→「事前入力した URL を取得」で種類を選んでリンクを作り、URL の中の「entry.数字」を貼り付けます。フォームの選択肢は「WEB制作」「業務効率化・DX支援」「システム開発」「AI研修・勉強会」と同じ表記にしてください。', 'fde-usachim' ),
 		];
 		$top_fields[] = fde_acf_text( 'contact_btn_label', 'contact_btn_label', __( 'ボタンの文言（空欄なら「お問い合わせフォームへ」）', 'fde-usachim' ), 'お問い合わせフォームへ' );
 		$top_fields[] = fde_acf_textarea( 'contact_text', 'contact_text', __( 'ボタンの上の一文（空欄なら既定文）', 'fde-usachim' ), 2, '空欄なら：ご相談・お見積もりのご依頼は、こちらのフォームからお送りください。内容を確認のうえ、ご連絡します。' );

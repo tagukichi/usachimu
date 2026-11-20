@@ -28,7 +28,7 @@ while ( have_posts() ) :
 	}
 	?>
 	<article class="svp svp--ai">
-		<?php fde_svp_hero( 'ai', fde_service_text( 'ai_lead' ), [], '都内の自治体で研修の実績があります' ); ?>
+		<?php fde_svp_hero( 'ai', fde_service_text( 'ai_lead' ) ); ?>
 
 		<?php if ( '' !== $fde_record ) : ?>
 			<section class="section section--dark svp-sec">
@@ -91,7 +91,7 @@ while ( have_posts() ) :
 			</section>
 		<?php endif; ?>
 
-		<?php fde_svp_contact(); ?>
+		<?php fde_svp_contact( 'ai' ); ?>
 		<?php fde_svp_others( 'ai' ); ?>
 	</article>
 	<?php
