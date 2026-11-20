@@ -741,7 +741,7 @@ function fde_svp_mock( string $key ): void {
 	$icon = static function ( string $name ): string {
 		return esc_url( fde_brand_icon( $name ) );
 	};
-	$urls = [ 'web' => 'your-company.jp', 'dx' => '月次集計.xlsx', 'system' => 'admin.your-app.jp', 'ai' => '生成AI研修 ― 第1回' ];
+	$urls = [ 'web' => 'your-company.jp', 'dx' => '月次集計.xlsx', 'system' => 'admin.your-app.jp', 'ai' => 'AI アシスタント' ];
 	?>
 	<div class="svm svm--<?php echo esc_attr( $key ); ?>" aria-hidden="true">
 		<div class="svm-win">
@@ -782,37 +782,16 @@ function fde_svp_mock( string $key ): void {
 					</div>
 					<div class="svm-toast">✓ 保存しました</div>
 				<?php else : ?>
-					<div class="svm-room">
-						<div class="svm-screen">
-							<div class="svm-sl svm-sl--1"><b>生成AIの基礎</b><span class="svm-sk w80"></span><span class="svm-sk w60"></span><span class="svm-sk w70"></span></div>
-							<div class="svm-sl svm-sl--2"><b>プロンプトのコツ</b><span class="svm-formula"><em>役割</em>＋<em>目的</em>＋<em>条件</em></span><span class="svm-sk w70"></span></div>
-							<div class="svm-sl svm-sl--3"><b>業務で使ってみよう</b><span class="svm-mini"><i class="me"></i><i class="ai"></i><i class="me short"></i></span></div>
-							<div class="svm-sl svm-sl--4"><b>今日のまとめ</b><span class="svm-done-list"><i>✓</i><span class="svm-sk w70"></span><i>✓</i><span class="svm-sk w60"></span><i>✓</i><span class="svm-sk w80"></span></span></div>
-						</div>
-						<div class="svm-speaker">
-							<div class="svm-say">
-								<span class="svm-say__t svm-say__t--1">まずは、生成AIで何ができるか見てみましょう</span>
-								<span class="svm-say__t svm-say__t--2">指示は「役割・目的・条件」を具体的に</span>
-								<span class="svm-say__t svm-say__t--3">では、実際の議事録で試してみましょう</span>
-								<span class="svm-say__t svm-say__t--4">明日から使えるポイントをおさらいします</span>
-							</div>
-							<div class="svm-person">
-								<span class="svm-person__arm"></span>
-								<span class="svm-person__body"></span>
-								<span class="svm-person__head"><i class="svm-person__mouth"></i></span>
-								<span class="svm-wave"><i></i><i></i></span>
-							</div>
-						</div>
-						<div class="svm-audience">
-							<span class="svm-head"></span><span class="svm-head"></span>
-							<span class="svm-head svm-head--ask"><i class="svm-hand"></i><b class="svm-q">質問です！</b></span>
-							<span class="svm-head"></span><span class="svm-head"></span>
-						</div>
+					<div class="svm-chat">
+						<div class="svm-msg svm-msg--me svm-msg--1">この議事録を3行で要約して</div>
+						<div class="svm-typing"><i></i><i></i><i></i></div>
+						<div class="svm-msg svm-msg--ai svm-msg--2"><span class="svm-ai">✳ AI</span><span class="svm-sk w90"></span><span class="svm-sk w80"></span><span class="svm-sk w60"></span></div>
+						<div class="svm-msg svm-msg--me svm-msg--3">次は、お礼メールの下書きも</div>
+						<div class="svm-msg svm-msg--ai svm-msg--4"><span class="svm-ai">✳ AI</span><span class="svm-sk w80"></span><span class="svm-sk w70"></span></div>
 					</div>
+					<div class="svm-input"><span class="svm-input__text">この議事録を3行で要約して</span><span class="svm-send">送信</span></div>
 				<?php endif; ?>
-				<?php if ( 'ai' !== $key ) : ?>
-					<svg class="svm-cursor" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z"/></svg>
-				<?php endif; ?>
+				<svg class="svm-cursor" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z"/></svg>
 			</div>
 		</div>
 
@@ -844,17 +823,15 @@ function fde_svp_mock( string $key ): void {
 					</span>
 					<span class="svm-ph-toast">✓ 更新しました</span>
 				<?php else : ?>
-					<span class="svm-phone__app"><span class="svm-live">● LIVE</span>オンライン参加</span>
-					<span class="svm-meet">
-						<i class="svm-tile svm-tile--host"><b></b></i><i class="svm-tile"><b></b></i>
-						<i class="svm-tile svm-tile--ask"><b></b></i><i class="svm-tile"><b></b></i>
+					<span class="svm-phone__app">研修資料</span>
+					<span class="svm-deck">
+						<span class="svm-deck__s svm-deck__s--1"><b>生成AIの基礎</b><span class="svm-sk w80"></span><span class="svm-sk w60"></span><span class="svm-sk w70"></span></span>
+						<span class="svm-deck__s svm-deck__s--2"><b>プロンプトのコツ</b><span class="svm-deck__chips"><em>役割</em><em>目的</em><em>条件</em></span><span class="svm-sk w70"></span></span>
+						<span class="svm-deck__s svm-deck__s--3"><b>業務で使ってみよう</b><span class="svm-sk w90"></span><span class="svm-sk w60"></span><span class="svm-sk w80"></span></span>
+						<span class="svm-deck__s svm-deck__s--4"><b>今日のまとめ</b><span class="svm-deck__done">✓ ✓ ✓</span><span class="svm-sk w70"></span></span>
 					</span>
-					<span class="svm-cc">
-						<span class="svm-cc__t svm-cc__t--1">生成AIでできること</span>
-						<span class="svm-cc__t svm-cc__t--2">指示は具体的に</span>
-						<span class="svm-cc__t svm-cc__t--3">議事録を要約してみよう</span>
-						<span class="svm-cc__t svm-cc__t--4">今日のまとめ</span>
-					</span>
+					<span class="svm-dots"><i></i><i></i><i></i><i></i></span>
+					<span class="svm-phone__card"></span><span class="svm-phone__card"></span>
 				<?php endif; ?>
 			</div>
 		</div>

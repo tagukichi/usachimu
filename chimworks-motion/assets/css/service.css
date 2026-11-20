@@ -442,294 +442,36 @@
 .svm-table i:nth-child(1) { width: 90%; } .svm-table i:nth-child(2) { width: 75%; animation-delay: .3s; } .svm-table i:nth-child(3) { width: 82%; animation-delay: .6s; }
 .svm--system .svm-cursor { left: 34px; top: 120px; animation-name: svmCursorSide; }
 
-/* --- AI研修：講師がスライドを指しながら話す研修の場面 --- */
-.svm--ai .svm-body {
-  padding: 0;
-  background: linear-gradient(180deg, #f7f9f7 0%, #eef3f0 66%, #e3eae5 66%, #dfe7e1 100%);
-}
-
-.svm-room { position: relative; flex: 1; min-height: 0; }
-
-.svm-screen {
-  position: absolute;
-  left: 6%;
-  top: 7%;
-  width: 56%;
-  height: 54%;
+/* --- AI研修：質問を打ち込んで送ると、AI が答える --- */
+.svm-chat { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; gap: 7px; min-height: 0; padding: 2px 4px; overflow: hidden; }
+.svm-msg { flex: none; max-width: 80%; padding: 8px 13px; border-radius: 14px; font-size: 11.5px; font-weight: 600; line-height: 1.55; }
+.svm-msg--me { align-self: flex-end; border-bottom-right-radius: 4px; background: #0e100f; color: #ffffff; }
+.svm-msg--ai { display: flex; flex-direction: column; gap: 7px; width: 74%; border: 1px solid var(--line); border-bottom-left-radius: 4px; background: #ffffff; }
+.svm-ai { font-family: var(--font-mono); font-size: 10px; color: #0a9b4b; }
+.svm-msg--1 { animation: svmMsg1 16s ease infinite; }
+.svm-msg--2 { animation: svmMsg2 16s ease infinite; }
+.svm-msg--3 { animation: svmMsg3 16s ease infinite; }
+.svm-msg--4 { animation: svmMsg4 16s ease infinite; }
+.svm-typing { position: absolute; left: 108px; bottom: 6px; display: flex; gap: 4px; animation: svmTyping 16s ease infinite; }
+.svm-typing i { width: 6px; height: 6px; border-radius: 50%; background: #9aa59d; animation: svmDot 1s ease-in-out infinite; }
+.svm-typing i:nth-child(2) { animation-delay: .15s; } .svm-typing i:nth-child(3) { animation-delay: .3s; }
+.svm-input { flex: none; display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 5px 0 14px; border: 1px solid var(--line); border-radius: 999px; background: #ffffff; }
+.svm-input__text {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 0;
   overflow: hidden;
-  border: 1px solid var(--line);
-  border-top: 5px solid #0e100f;
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 12px 28px rgba(14, 16, 15, .1);
-}
-
-.svm-sl {
-  position: absolute;
-  inset: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  opacity: 0;
-  animation: svmSlide 16s ease infinite;
-}
-
-.svm-sl--2 { animation-delay: 4s; }
-.svm-sl--3 { animation-delay: 8s; }
-.svm-sl--4 { animation-delay: 12s; }
-
-.svm-sl b { align-self: flex-start; padding-bottom: 5px; border-bottom: 2px solid #0ae448; font-size: 13px; font-weight: 900; color: var(--ink); }
-
-.svm-formula { display: flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 800; color: var(--mute); }
-.svm-formula em { padding: 4px 8px; border-radius: 6px; background: #e8f8ee; color: #0a7f3f; font-style: normal; }
-
-.svm-mini { display: flex; flex-direction: column; gap: 6px; }
-.svm-mini i { display: block; height: 14px; border-radius: 7px; }
-.svm-mini .me { align-self: flex-end; width: 55%; background: #0e100f; }
-.svm-mini .me.short { width: 38%; }
-.svm-mini .ai { width: 75%; border: 1px solid var(--line); background: #f3f7f4; }
-
-.svm-done-list { display: grid; grid-template-columns: auto 1fr; gap: 7px 8px; align-items: center; }
-.svm-done-list i { font-size: 10px; font-style: normal; font-weight: 900; color: #0a9b4b; }
-
-/* 講師 */
-.svm-speaker { position: absolute; right: 5%; bottom: 25%; width: 36%; height: 64%; }
-
-.svm-say {
-  position: absolute;
-  z-index: 2;
-  right: 52%;
-  top: 0;
-  width: 168px;
-  height: 50px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 10px 24px rgba(14, 16, 15, .12);
-}
-
-.svm-say::after {
-  content: "";
-  position: absolute;
-  right: 14px;
-  bottom: -6px;
-  width: 10px;
-  height: 10px;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: #ffffff;
-  transform: rotate(45deg);
-}
-
-.svm-say__t {
-  position: absolute;
-  inset: 8px 11px;
-  display: flex;
-  align-items: center;
-  font-size: 10.5px;
-  font-weight: 700;
-  line-height: 1.5;
-  color: var(--ink);
-  opacity: 0;
-  animation: svmSlide 16s ease infinite;
-}
-
-.svm-say__t--2 { animation-delay: 4s; }
-.svm-say__t--3 { animation-delay: 8s; }
-.svm-say__t--4 { animation-delay: 12s; }
-
-.svm-person { position: absolute; right: 4%; bottom: 0; width: 92px; height: 116px; }
-
-.svm-person__head {
-  position: absolute;
-  left: 30px;
-  top: 0;
-  width: 34px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f2cba8;
-  animation: svmHeadTilt 4s ease-in-out infinite;
-}
-
-/* 髪 */
-.svm-person__head::before {
-  content: "";
-  position: absolute;
-  left: -2px;
-  right: -2px;
-  top: -3px;
-  height: 17px;
-  border-radius: 18px 18px 8px 8px;
-  background: #2b2f2c;
-}
-
-/* 目 */
-.svm-person__head::after {
-  content: "";
-  position: absolute;
-  left: 10px;
-  top: 18px;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: #2b2f2c;
-  box-shadow: 11px 0 0 #2b2f2c;
-}
-
-/* 口（話しているあいだ開いたり閉じたり） */
-.svm-person__mouth {
-  position: absolute;
-  left: 50%;
-  bottom: 7px;
-  width: 8px;
-  height: 3px;
-  border-radius: 4px;
-  background: #9a4f3c;
-  transform: translateX(-50%);
-  animation: svmTalk .32s ease-in-out infinite alternate;
-}
-
-.svm-person__body {
-  position: absolute;
-  left: 16px;
-  top: 34px;
-  width: 62px;
-  height: 82px;
-  border-radius: 28px 28px 10px 10px;
-  background: #1c211e;
-}
-
-/* シャツとネクタイ */
-.svm-person__body::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 14px;
-  height: 34px;
-  background: linear-gradient(#ffffff 0 30%, #0ae448 30% 100%);
-  clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%);
-  transform: translateX(-50%);
-}
-
-/* スライドを指す腕 */
-.svm-person__arm {
-  position: absolute;
-  z-index: 1;
-  left: -18px;
-  top: 46px;
-  width: 50px;
-  height: 10px;
-  border-radius: 6px;
-  background: #1c211e;
-  transform-origin: right center;
-  transform: rotate(18deg);
-  animation: svmPoint 4s ease-in-out infinite;
-}
-
-.svm-person__arm::before {
-  content: "";
-  position: absolute;
-  left: -6px;
-  top: -1px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #f2cba8;
-}
-
-/* 声の波 */
-.svm-wave { position: absolute; left: 66px; top: 8px; width: 20px; height: 22px; }
-.svm-wave i { position: absolute; top: 0; bottom: 0; border: 2px solid #0a9b4b; border-left: 0; border-top-color: transparent; border-bottom-color: transparent; border-radius: 50%; animation: svmWave 1.2s ease-out infinite; }
-.svm-wave i:nth-child(1) { left: 0; width: 8px; }
-.svm-wave i:nth-child(2) { left: 4px; width: 14px; animation-delay: .3s; }
-
-/* 受講者（後ろ姿） */
-.svm-audience {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 30%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  padding: 0 4%;
-}
-
-.svm-head { position: relative; width: 50px; height: 58px; animation: svmNod 3.2s ease-in-out infinite; }
-.svm-head:nth-child(2) { animation-delay: -1.1s; }
-.svm-head:nth-child(4) { animation-delay: -2.1s; }
-.svm-head:nth-child(5) { animation-delay: -.6s; }
-
-.svm-head::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 4px;
-  width: 26px;
-  height: 28px;
-  border-radius: 50%;
-  background: #3b2f2a;
-  transform: translateX(-50%);
-}
-
-.svm-head::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 28px;
-  border-radius: 26px 26px 0 0;
-  background: #7aa894;
-}
-
-.svm-head:nth-child(2)::before { background: #1f1f1f; }
-.svm-head:nth-child(2)::after  { background: #8b98b8; }
-.svm-head:nth-child(3)::before { background: #5a4031; }
-.svm-head:nth-child(3)::after  { background: #e3b26a; }
-.svm-head:nth-child(4)::before { background: #2a2a2a; }
-.svm-head:nth-child(4)::after  { background: #c98b8b; }
-.svm-head:nth-child(5)::before { background: #6b4b36; }
-.svm-head:nth-child(5)::after  { background: #6e8fa8; }
-
-/* 質問する人：手を挙げて吹き出し */
-.svm-head--ask { animation: none; }
-
-.svm-hand {
-  position: absolute;
-  z-index: 1;
-  right: 4px;
-  bottom: 22px;
-  width: 8px;
-  height: 30px;
-  border-radius: 4px;
-  background: #e3b26a;
-  transform-origin: bottom center;
-  transform: scaleY(0);
-  animation: svmHand 16s var(--svp-ease) infinite;
-}
-
-.svm-hand::before { content: ""; position: absolute; left: -1px; top: -6px; width: 10px; height: 10px; border-radius: 50%; background: #f2cba8; }
-
-.svm-q {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  bottom: calc(100% + 14px);
-  padding: 5px 10px;
-  border: 1.5px solid #0a9b4b;
-  border-radius: 999px;
-  background: #ffffff;
-  font-size: 10px;
-  font-weight: 800;
-  color: #0a7f3f;
   white-space: nowrap;
-  opacity: 0;
-  transform: translate(-50%, 6px);
-  animation: svmAsk 16s ease infinite;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  border-right: 1.5px solid #0a9b4b;
+  animation: svmType 16s steps(13, end) infinite;
 }
+.svm-send { flex: none; margin-left: auto; }
+/* 入力欄は手前のスマホに隠れないよう、右に寄せる */
+.svm--ai .svm-input { margin-left: 100px; }
+.svm--ai .svm-cursor { right: 26px; bottom: 26px; top: auto; }
 
 /* --- スマホ（手前に重ねて、ふわっと揺らす。中身もメインの画面と一緒に動く） --- */
 .svm-phone {
@@ -886,37 +628,34 @@
 
 .svm-ph-toast { color: #ffffff; opacity: 0; animation: svmPhToast 16s ease infinite; }
 
-/* AI研修：オンライン参加の画面（話している人の枠が光る・字幕が変わる） */
-.svm-live { color: #ef4444; font-size: 7px; }
+/* AI研修：研修資料のスライドが 4 秒ごとに切り替わる */
+.svm-deck { position: relative; flex: 0 0 96px; border-radius: 8px; background: #0e100f; }
 
-.svm-meet { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-
-.svm-tile { position: relative; display: grid; place-items: center; aspect-ratio: 1 / 1; border-radius: 8px; background: #1c211e; font-style: normal; }
-.svm-tile b { width: 22px; height: 22px; border-radius: 50%; background: #7aa894; box-shadow: inset 0 -7px 0 rgba(0, 0, 0, .15); }
-.svm-tile:nth-child(2) b { background: #8b98b8; }
-.svm-tile:nth-child(3) b { background: #e3b26a; }
-.svm-tile:nth-child(4) b { background: #c98b8b; }
-.svm-tile--host b { background: #f2cba8; box-shadow: inset 0 9px 0 #2b2f2c; }
-
-.svm-tile::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 2px #0ae448; opacity: 0; }
-.svm-tile--host::after { animation: svmHostTalk 16s ease infinite; }
-.svm-tile--ask::after { animation: svmAskTalk 16s ease infinite; }
-
-.svm-cc { position: relative; flex: 0 0 34px; border-radius: 7px; background: #0e100f; }
-.svm-cc__t {
+.svm-deck__s {
   position: absolute;
-  inset: 6px 8px;
+  inset: 9px 9px;
   display: flex;
-  align-items: center;
-  font-size: 7.5px;
-  font-weight: 700;
-  color: #ffffff;
+  flex-direction: column;
+  gap: 6px;
   opacity: 0;
   animation: svmSlide 16s ease infinite;
 }
-.svm-cc__t--2 { animation-delay: 4s; }
-.svm-cc__t--3 { animation-delay: 8s; }
-.svm-cc__t--4 { animation-delay: 12s; }
+
+.svm-deck__s--2 { animation-delay: 4s; }
+.svm-deck__s--3 { animation-delay: 8s; }
+.svm-deck__s--4 { animation-delay: 12s; }
+
+.svm-deck__s b { font-size: 8.5px; font-weight: 800; color: #0ae448; }
+.svm-deck .svm-sk { height: 5px; background: rgba(255, 255, 255, .25); }
+.svm-deck__chips { display: flex; gap: 3px; }
+.svm-deck__chips em { padding: 2px 5px; border-radius: 4px; background: rgba(10, 228, 72, .18); color: #ffffff; font-size: 6.5px; font-style: normal; font-weight: 800; }
+.svm-deck__done { font-size: 9px; font-weight: 900; letter-spacing: .2em; color: #0ae448; }
+
+.svm-dots { display: flex; justify-content: center; gap: 4px; }
+.svm-dots i { width: 5px; height: 5px; border-radius: 50%; background: #c9d2cb; animation: svmDot4 16s ease infinite; }
+.svm-dots i:nth-child(2) { animation-delay: 4s; }
+.svm-dots i:nth-child(3) { animation-delay: 8s; }
+.svm-dots i:nth-child(4) { animation-delay: 12s; }
 
 @media (max-width: 1201px) { .svm-phone { left: -10px; width: 110px; height: 220px; } }
 
@@ -954,15 +693,7 @@
 
 /* 研修の場面・スマホの中身のタイムライン */
 @keyframes svmSlide    { 0% { opacity: 0; transform: translateX(10px); } 2%, 24% { opacity: 1; transform: none; } 26%, 100% { opacity: 0; transform: translateX(-10px); } }
-@keyframes svmTalk     { from { transform: translateX(-50%) scaleY(1); } to { transform: translateX(-50%) scaleY(2.6); } }
-@keyframes svmHeadTilt { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-6deg); } }
-@keyframes svmPoint    { 0%, 100% { transform: rotate(18deg); } 50% { transform: rotate(8deg); } }
-@keyframes svmWave     { 0% { opacity: 0; transform: scale(.6); } 40% { opacity: 1; } 100% { opacity: 0; transform: scale(1.2); } }
-@keyframes svmNod      { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
-@keyframes svmHand     { 0%, 57% { transform: scaleY(0); } 60%, 74% { transform: scaleY(1); } 77%, 100% { transform: scaleY(0); } }
-@keyframes svmAsk      { 0%, 59% { opacity: 0; transform: translate(-50%, 6px); } 62%, 74% { opacity: 1; transform: translate(-50%, 0); } 77%, 100% { opacity: 0; transform: translate(-50%, 0); } }
-@keyframes svmHostTalk { 0%, 57% { opacity: 1; } 59%, 74% { opacity: 0; } 76%, 100% { opacity: 1; } }
-@keyframes svmAskTalk  { 0%, 59% { opacity: 0; } 61%, 74% { opacity: 1; } 76%, 100% { opacity: 0; } }
+@keyframes svmDot4     { 0% { background: #c9d2cb; transform: none; } 2%, 24% { background: #0a9b4b; transform: scale(1.3); } 26%, 100% { background: #c9d2cb; transform: none; } }
 @keyframes svmPhScroll { 0%, 60% { transform: translateY(0); } 70%, 90% { transform: translateY(-48px); } 96%, 100% { transform: translateY(0); } }
 @keyframes svmPhBadge  { 0%, 55% { opacity: 0; transform: translate(-50%, 8px); } 58%, 92% { opacity: 1; transform: translate(-50%, 0); } 97%, 100% { opacity: 0; } }
 @keyframes svmPh1      { 0%, 2% { opacity: 0; transform: translateY(6px); } 6%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
@@ -973,6 +704,25 @@
 @keyframes svmWip      { 0%, 66% { opacity: 1; } 68%, 96% { opacity: 0; } 100% { opacity: 1; } }
 @keyframes svmDoneTag  { 0%, 66% { opacity: 0; transform: translateY(-50%) scale(.7); } 69%, 92% { opacity: 1; transform: translateY(-50%) scale(1); } 97%, 100% { opacity: 0; } }
 @keyframes svmPhToast  { 0%, 68% { opacity: 0; transform: translate(-50%, 8px); } 71%, 88% { opacity: 1; transform: translate(-50%, 0); } 93%, 100% { opacity: 0; } }
+
+/* AI チャット */
+@keyframes svmType   { 0%, 3% { max-width: 0; border-right-color: #0a9b4b; } 15%, 18% { max-width: 14em; border-right-color: #0a9b4b; } 19%, 100% { max-width: 0; border-right-color: transparent; } }
+@keyframes svmMsg1   { 0%, 19% { opacity: 0; transform: translateY(8px); } 22%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+@keyframes svmTyping { 0%, 23% { opacity: 0; } 25%, 33% { opacity: 1; } 35%, 58%, 100% { opacity: 0; } 60%, 66% { opacity: 1; } 68% { opacity: 0; } }
+@keyframes svmMsg2   { 0%, 34% { opacity: 0; transform: translateY(8px); } 38%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+@keyframes svmMsg3   { 0%, 50% { opacity: 0; transform: translateY(8px); } 54%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+@keyframes svmMsg4   { 0%, 67% { opacity: 0; transform: translateY(8px); } 71%, 92% { opacity: 1; transform: none; } 97%, 100% { opacity: 0; } }
+.svm--ai .svm-send { animation-name: svmPressAi; }
+.svm--ai .svm-cursor { animation-name: svmCursorAi; }
+@keyframes svmPressAi { 0%, 17%, 19.5%, 100% { transform: none; filter: none; } 18% { transform: scale(.9); filter: brightness(.85); } }
+@keyframes svmCursorAi {
+  0%, 9%    { opacity: 0; transform: translate(-120px, -90px); }
+  11%       { opacity: 1; transform: translate(-120px, -90px); }
+  16%       { opacity: 1; transform: translate(0, 0) scale(1); }
+  17.5%     { opacity: 1; transform: translate(0, 0) scale(.82); }
+  19%       { opacity: 1; transform: translate(0, 0) scale(1); }
+  23%, 100% { opacity: 0; transform: translate(0, 0); }
+}
 
 /* 押されるボタンのタイミングをそれぞれの流れに合わせる */
 .svm--dx .svm-run { animation-name: svmPressDx; }
@@ -1674,7 +1424,7 @@
 @media (prefers-reduced-motion: reduce) {
   .svp-orb, .svp-accent, .svp-band__track, .svp-anim > *, .svp-anim-visual,
   .svm-phone, .svm *, .svm-win { animation: none !important; }
-  .svm-sl--1, .svm-say__t--1, .svm-cc__t--1 { opacity: 1; }
-  .svm-tile--host::after { opacity: 1; }
-  .svm-cursor, .svm-status__run, .svm-bub--typing, .svm-tag--wip, .svm-hand, .svm-q { display: none; }
+  .svm-deck__s--1 { opacity: 1; }
+  .svm-input__text { max-width: 14em; border-right-color: transparent; }
+  .svm-cursor, .svm-typing, .svm-status__run, .svm-bub--typing, .svm-tag--wip { display: none; }
 }
