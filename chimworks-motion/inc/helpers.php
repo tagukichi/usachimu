@@ -278,17 +278,11 @@ function fde_company_rows(): array {
 
 /**
  * 連絡先メール（会社概要・スマホメニューで共通）。
- * 会社概要ページの ACF → 旧 TOP ページの設定 → 既定のアドレス の順。
+ * 会社概要ページの ACF に入力したアドレスだけを使う。空欄なら空文字を返し、
+ * 会社概要の「連絡先」の行も、スマホメニューのメール欄も出さない。
  */
 function fde_contact_email(): string {
-	$email = (string) fde_company_field( 'cp_email', '' );
-	if ( '' === trim( $email ) ) {
-		$email = (string) fde_field( 'contact_email', '' );
-	}
-	if ( '' === trim( $email ) ) {
-		$email = (string) fde_option( 'contact_email', 'info@usachim.com' );
-	}
-	return sanitize_email( $email );
+	return sanitize_email( trim( (string) fde_company_field( 'cp_email', '' ) ) );
 }
 
 /**

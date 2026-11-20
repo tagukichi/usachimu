@@ -223,7 +223,7 @@ add_action(
 			fde_acf_text( 'cp_ceo', 'cp_ceo', __( '代表者（空欄なら 田口幸樹）', 'fde-usachim' ), '田口幸樹' ),
 			fde_acf_textarea( 'cp_address', 'cp_address', __( '所在地（空欄なら 埼玉県所沢市元町18-13）', 'fde-usachim' ), 2 ),
 			fde_acf_textarea( 'cp_business', 'cp_business', __( '事業内容（改行はそのまま反映。空欄なら WEB制作／業務効率化・DX支援／システム開発／AI研修・勉強会 の4行）', 'fde-usachim' ), 3 ),
-			[ 'key' => 'field_fde_cp_email', 'label' => __( '連絡先メール（空欄なら info@usachim.com）', 'fde-usachim' ), 'name' => 'cp_email', 'type' => 'email' ],
+			[ 'key' => 'field_fde_cp_email', 'label' => __( '連絡先メール（空欄なら「連絡先」の行を表示しません）', 'fde-usachim' ), 'name' => 'cp_email', 'type' => 'email' ],
 		];
 		foreach ( [ 1, 2 ] as $n ) {
 			$fde_cp_fields[] = fde_acf_text( "cp_extra_{$n}_k", "cp_extra_{$n}_k", sprintf( __( '追加項目 %d — 見出し（任意）', 'fde-usachim' ), $n ), '資本金' );
