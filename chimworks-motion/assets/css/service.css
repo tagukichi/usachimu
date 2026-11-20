@@ -807,6 +807,14 @@
   .svp-cards--types, .svp-cards--menu, .svp-cards--flex { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* 4 件のカード（開発できるもの・対応ツール）は、PC で横幅いっぱいの 4 列、タブレットは 2 列 */
+@media (min-width: 720px) {
+  .svp-cards--products, .svp-cards--tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1101px) {
+  .svp-cards--products, .svp-cards--tools { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
 .svp-card {
   position: relative;
   min-width: 0;
@@ -937,7 +945,9 @@
 
 .svp-checks span { min-width: 0; overflow-wrap: anywhere; }
 
-.svp-checks--grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 12px 16px; }
+.svp-checks--grid { grid-template-columns: minmax(0, 1fr); gap: 12px 16px; }
+@media (min-width: 720px)  { .svp-checks--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1101px) { .svp-checks--grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 .svp-checks--grid li {
   align-items: center;
