@@ -464,7 +464,7 @@ add_action(
 
 		$ai_photos = [];
 		foreach ( range( 1, 6 ) as $n ) {
-			$ai_photos[] = $image( "ai_photo_{$n}", sprintf( '研修の様子 — 写真 %d', $n ), 1 === $n ? '任意。設定した写真だけを「研修の様子」として並べます（1枚目は大きく表示）。顔が写る場合は掲載の許可をとってください。' : '' );
+			$ai_photos[] = $image( "ai_photo_{$n}", sprintf( '研修の様子 — 写真 %d', $n ), 1 === $n ? '任意。設定した写真だけを「研修の様子」として、同じ大きさ（横長 4:3）で並べます。顔が写る場合は掲載の許可をとってください。' : '' );
 			$ai_photos[] = $field( "ai_photo_{$n}_cap", sprintf( '写真 %d のキャプション（任意）', $n ), 'text' );
 		}
 

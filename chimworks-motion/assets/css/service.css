@@ -1265,10 +1265,8 @@
 
 .svp-gallery__item:hover img { transform: scale(1.04); }
 
-/* 1 枚目は大きく */
-.svp-gallery__item:first-child { grid-column: span 2; }
-@media (min-width: 900px) { .svp-gallery__item:first-child { grid-row: span 2; } .svp-gallery--1 .svp-gallery__item:first-child { grid-column: span 3; grid-row: auto; } }
-.svp-gallery--1 .svp-gallery__item:first-child img { aspect-ratio: 16 / 9; }
+/* すべての写真を同じ大きさ（4:3）で並べる */
+.svp-gallery__item img { height: auto; }
 
 .svp-gallery__cap {
   position: absolute;
