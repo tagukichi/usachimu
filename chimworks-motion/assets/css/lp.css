@@ -411,7 +411,6 @@
 /* セクション見出しの下の説明文 */
 .lp-lead {
   margin: -6px 0 clamp(28px, 4vw, 44px);
-  max-width: 44em;
   font-size: clamp(16px, 1.5vw, 18px);
   line-height: 1.95;
   color: var(--ink-3);
@@ -487,33 +486,6 @@
   line-height: 1.5;
   color: var(--ink);
 }
-
-/* ----------------------------------------------------------------------
-   伴走支援：強み（代表は元行政職員）
-   ---------------------------------------------------------------------- */
-.lp-strength {
-  position: relative;
-  overflow: hidden;
-  margin-top: clamp(28px, 4vw, 44px);
-  padding: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 56px);
-  border: 1px solid var(--line);
-  border-left: 4px solid #0a9b4b;
-  border-radius: 20px;
-  background:
-    radial-gradient(520px 240px at 100% 0%, rgba(0, 186, 226, .10), transparent 60%),
-    radial-gradient(520px 240px at 0% 100%, rgba(10, 228, 72, .10), transparent 60%),
-    #ffffff;
-}
-
-.lp-strength__eyebrow { margin: 0; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-text); }
-
-.lp-strength__title { margin: 10px 0 0; font-size: clamp(21px, 2.4vw, 30px); font-weight: 900; line-height: 1.45; color: var(--ink); word-break: auto-phrase; text-wrap: pretty; }
-
-.lp-strength__text { margin: 14px 0 0; max-width: 46em; font-size: clamp(15.5px, 1.4vw, 17px); line-height: 1.95; color: var(--ink-3); word-break: auto-phrase; text-wrap: pretty; }
-
-.lp-strength__tags { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 10px; }
-
-.lp-strength__tags li { padding: 7px 14px; border-radius: 999px; background: var(--ink); color: #ffffff; font-size: 13.5px; font-weight: 700; }
 
 /* ----------------------------------------------------------------------
    伴走の流れ：期間の目安
