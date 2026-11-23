@@ -138,6 +138,9 @@ add_action(
 		$top_fields[] = fde_acf_tab( 'support', __( '伴走支援', 'fde-usachim' ) );
 		$top_fields[] = $fde_area( 'support_lead', __( '説明文（改行はそのまま反映）', 'fde-usachim' ) );
 		$top_fields[] = $fde_area( 'support_items', __( '伴走支援の特長（3つ）', 'fde-usachim' ), $fde_pipe );
+		$top_fields[] = $fde_area( 'strength_title', __( '強み（代表の経歴）— 見出し', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'strength_text', __( '強み — 説明文（改行はそのまま反映）', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'strength_tags', __( '強み — キーワード（1行に1つ）', 'fde-usachim' ) );
 		$top_fields[] = $fde_area( 'flow_items', __( '伴走の流れ', 'fde-usachim' ), $fde_pipe );
 		$top_fields[] = $fde_area( 'flow_period', __( '期間の目安（流れの下に表示）', 'fde-usachim' ) );
 
