@@ -24,13 +24,9 @@ if ( ! $fde_cases ) {
 				<div class="svp-slider__track" data-slider-track tabindex="0" aria-label="事例（横にスクロールできます）">
 					<?php foreach ( $fde_cases as $fde_case ) : ?>
 						<article class="lp-case">
-							<div class="lp-case__img">
-								<?php if ( '' !== $fde_case['image']['url'] ) : ?>
-									<img src="<?php echo esc_url( $fde_case['image']['url'] ); ?>" alt="<?php echo esc_attr( $fde_case['image']['alt'] ); ?>" loading="lazy" draggable="false">
-								<?php else : ?>
-									<?php echo fde_case_visual( $fde_case['visual'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- テーマ内の固定 SVG ?>
-								<?php endif; ?>
-							</div>
+							<?php if ( '' !== $fde_case['image']['url'] ) : ?>
+								<div class="lp-case__img"><img src="<?php echo esc_url( $fde_case['image']['url'] ); ?>" alt="<?php echo esc_attr( $fde_case['image']['alt'] ); ?>" loading="lazy" draggable="false"></div>
+							<?php endif; ?>
 							<div class="lp-case__body">
 								<p class="lp-case__meta">
 									<?php if ( '' !== $fde_case['tag'] ) : ?>

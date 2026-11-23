@@ -157,7 +157,7 @@ add_action(
 				'label'        => sprintf( __( '事例 %d — 何をやったか（タイトル）', 'fde-usachim' ), $n ),
 				'name'         => "case_{$n}_title",
 				'type'         => 'text',
-				'instructions' => 1 === $n ? __( '1〜3 は空欄なら既定の事例（A市・B社・C社）を表示します。4〜6 は、タイトルを入れた枠だけ表示します。画像を設定しない場合は、事例に合わせたアニメーションのイラストを表示します。', 'fde-usachim' ) : '',
+				'instructions' => 1 === $n ? __( '1〜3 は空欄なら既定の事例（A市・B社・C社）を表示します。4〜6 は、タイトルを入れた枠だけ表示します。画像は設定した事例だけに表示します。', 'fde-usachim' ) : '',
 			];
 			$top_fields[] = fde_acf_textarea( "case_{$n}_text", "case_{$n}_text", sprintf( __( '事例 %d — 内容（取り組んだこと・変わったこと）', 'fde-usachim' ), $n ), 3 );
 			$top_fields[] = fde_acf_textarea( "case_{$n}_points", "case_{$n}_points", sprintf( __( '事例 %d — 取り組んだこと（チェック付きの箇条書き。1行に1つ）', 'fde-usachim' ), $n ), 3 );

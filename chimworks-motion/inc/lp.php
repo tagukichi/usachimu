@@ -247,9 +247,9 @@ function fde_lp_text( string $key ): string {
 
 /**
  * 実績（ACF の 6 枠。タイトルが入っている枠だけ）。1〜3 枠目には既定の事例を入れておく。
- * 画像が未設定のときは、事例に合わせた SVG アニメーションを表示する（1〜3 枠目は専用、4〜6 は共通）。
+ * 画像は設定した事例だけに表示する。
  *
- * @return array<int,array{client:string,tag:string,title:string,text:string,points:array<int,string>,visual:string,image:array{url:string,alt:string,w:int,h:int}}>
+ * @return array<int,array{client:string,tag:string,title:string,text:string,points:array<int,string>,image:array{url:string,alt:string,w:int,h:int}}>
  */
 function fde_lp_cases(): array {
 	$defaults = [
@@ -289,78 +289,10 @@ function fde_lp_cases(): array {
 			'title'  => $title,
 			'text'   => trim( (string) fde_field( "case_{$n}_text", $d['text'] ) ),
 			'points' => fde_svp_lines( (string) fde_field( "case_{$n}_points", $d['points'] ) ),
-			'visual' => [ 1 => 'gov', 2 => 'workspace', 3 => 'cowork' ][ $n ] ?? 'generic',
 			'image'  => fde_image_data( fde_field( "case_{$n}_image", null ) ),
 		];
 	}
 	return $cases;
-}
-
-/**
- * 事例カードの画像の代わりに出す SVG アニメーション（16:10）。
- * 白い画面・緑〜青のグラデーション・点線の流れで、サービスの画面イメージと同じ見た目にそろえる。
- * 動きは lp.css の .cv-* で付ける（16 秒前後で一巡、動きを減らす設定では止まる）。
- */
-function fde_case_visual( string $kind ): string {
-	$defs = '<defs><linearGradient id="cvg-' . $kind . '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ae448"/><stop offset="1" stop-color="#00bae2"/></linearGradient></defs>';
-	$bg   = '<rect width="400" height="250" fill="#eef4f1"/><g class="cv-grid" stroke="#dbe6df" stroke-width="1">'
-		. implode( '', array_map( static fn( $x ) => '<path d="M' . $x . ' 0V250"/>', range( 40, 360, 40 ) ) )
-		. implode( '', array_map( static fn( $y ) => '<path d="M0 ' . $y . 'H400"/>', range( 40, 240, 40 ) ) ) . '</g>';
-	$g    = 'url(#cvg-' . $kind . ')';
-	switch ( $kind ) {
-		// 自治体：紙の書類がデジタルへ → 生成 AI のチャットで定着
-		case 'gov':
-			$body = '<g class="cv-papers">'
-				. '<g class="cv-paper cv-paper--3"><rect x="34" y="78" width="96" height="120" rx="8" fill="#fff" stroke="#d3ddd6"/></g>'
-				. '<g class="cv-paper cv-paper--2"><rect x="42" y="70" width="96" height="120" rx="8" fill="#fff" stroke="#d3ddd6"/></g>'
-				. '<g class="cv-paper cv-paper--1"><rect x="50" y="62" width="96" height="120" rx="8" fill="#fff" stroke="#c9d4cc"/><rect x="64" y="80" width="50" height="8" rx="4" fill="#0e100f"/><rect x="64" y="98" width="68" height="6" rx="3" fill="#dfe6e1"/><rect x="64" y="112" width="58" height="6" rx="3" fill="#dfe6e1"/><rect x="64" y="126" width="64" height="6" rx="3" fill="#dfe6e1"/><rect x="64" y="148" width="36" height="16" rx="4" fill="none" stroke="#e36b6b" stroke-width="2"/></g>'
-				. '</g>'
-				. '<path class="cv-flow" d="M156 124H196" stroke="#0a9b4b" stroke-width="2.5" stroke-dasharray="6 6" fill="none"/>'
-				. '<g class="cv-win"><rect x="200" y="40" width="168" height="172" rx="14" fill="#fff" stroke="#d3ddd6"/><rect x="200" y="40" width="168" height="26" rx="14" fill="#f3f6f2"/><rect x="200" y="56" width="168" height="10" fill="#f3f6f2"/><circle cx="216" cy="53" r="4" fill="#f87171"/><circle cx="230" cy="53" r="4" fill="#fbbf24"/><circle cx="244" cy="53" r="4" fill="#34d399"/>'
-				. '<g class="cv-msg cv-msg--1"><rect x="262" y="78" width="94" height="22" rx="11" fill="#0e100f"/><rect x="274" y="87" width="70" height="4" rx="2" fill="#fff" opacity=".85"/></g>'
-				. '<g class="cv-msg cv-msg--2"><rect x="212" y="110" width="124" height="46" rx="12" fill="#f3f7f4" stroke="#dbe4dd"/><text x="222" y="126" font-size="9" font-weight="700" fill="#0a9b4b" font-family="monospace">✳ AI</text><rect x="222" y="134" width="96" height="5" rx="2.5" fill="#d6dfd9"/><rect x="222" y="144" width="74" height="5" rx="2.5" fill="#d6dfd9"/></g>'
-				. '<g class="cv-msg cv-msg--3"><rect x="276" y="166" width="80" height="22" rx="11" fill="#0e100f"/><rect x="288" y="175" width="56" height="4" rx="2" fill="#fff" opacity=".85"/></g>'
-				. '</g>'
-				. '<g class="cv-spark"><path d="M352 30l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="' . $g . '"/></g>';
-			break;
-
-		// 企業：Google Workspace のシートと Apps Script で社内ツールを内製
-		case 'workspace':
-			$cells = '';
-			foreach ( range( 0, 4 ) as $r ) {
-				foreach ( range( 0, 3 ) as $c ) {
-					$cells .= '<rect class="cv-cell cv-cell--r' . $r . '" x="' . ( 44 + $c * 38 ) . '" y="' . ( 92 + $r * 22 ) . '" width="32" height="14" rx="3" fill="' . ( 3 === $c ? '#86d9a8' : '#dfe6e1' ) . '"/>';
-				}
-			}
-			$body = '<g class="cv-win"><rect x="30" y="44" width="186" height="178" rx="14" fill="#fff" stroke="#d3ddd6"/><rect x="30" y="44" width="186" height="30" rx="14" fill="#f3f6f2"/><rect x="30" y="64" width="186" height="10" fill="#f3f6f2"/><rect x="44" y="54" width="12" height="12" rx="3" fill="#0a9b4b"/><rect x="62" y="56" width="60" height="8" rx="4" fill="#0e100f"/>' . $cells . '</g>'
-				. '<g class="cv-code"><rect x="182" y="70" width="190" height="140" rx="14" fill="#0e100f"/><text x="198" y="94" font-size="11" font-weight="700" fill="#0ae448" font-family="monospace">&lt;/&gt; Apps Script</text>'
-				. '<rect class="cv-line cv-line--1" x="198" y="108" width="120" height="6" rx="3" fill="#00bae2"/>'
-				. '<rect class="cv-line cv-line--2" x="212" y="122" width="132" height="6" rx="3" fill="#cfd8d3" opacity=".7"/>'
-				. '<rect class="cv-line cv-line--3" x="212" y="136" width="96" height="6" rx="3" fill="#ffb547"/>'
-				. '<rect class="cv-line cv-line--4" x="212" y="150" width="118" height="6" rx="3" fill="#cfd8d3" opacity=".7"/>'
-				. '<rect class="cv-line cv-line--5" x="198" y="164" width="64" height="6" rx="3" fill="#0ae448"/>'
-				. '<rect class="cv-run" x="290" y="182" width="66" height="18" rx="9" fill="' . $g . '"/><text x="304" y="194.5" font-size="9" font-weight="700" fill="#0e100f" font-family="sans-serif">▶ 実行</text></g>'
-				. '<g class="cv-gear"><circle cx="356" cy="58" r="16" fill="#fff" stroke="#d3ddd6"/><path d="M356 48v4M356 64v4M346 58h4M362 58h4M349 51l3 3M360 62l3 3M349 65l3-3M360 54l3-3" stroke="#0a9b4b" stroke-width="2.5" stroke-linecap="round"/><circle cx="356" cy="58" r="4" fill="#0a9b4b"/></g>';
-			break;
-
-		// 協業：業務フローの分析 × 専門家の知見 → 共同で新しいサービスに
-		case 'cowork':
-			$body = '<g class="cv-venn"><circle class="cv-c1" cx="98" cy="96" r="52" fill="#0ae448" fill-opacity=".16" stroke="#0a9b4b" stroke-width="2"/><circle class="cv-c2" cx="156" cy="96" r="52" fill="#00bae2" fill-opacity=".16" stroke="#0096b8" stroke-width="2"/>'
-				. '<text x="72" y="100" font-size="12" font-weight="800" fill="#0e100f" font-family="sans-serif">知見</text><text x="164" y="100" font-size="12" font-weight="800" fill="#0e100f" font-family="sans-serif">技術</text></g>'
-				. '<path class="cv-flow" d="M127 150V176H230" stroke="#0a9b4b" stroke-width="2.5" stroke-dasharray="6 6" fill="none"/>'
-				. '<g class="cv-win"><rect x="232" y="62" width="140" height="150" rx="14" fill="#fff" stroke="#d3ddd6"/><rect x="246" y="78" width="56" height="8" rx="4" fill="#0e100f"/><rect x="246" y="96" width="112" height="34" rx="8" fill="' . $g . '"/>'
-				. '<g class="cv-check cv-check--1"><circle cx="254" cy="148" r="7" fill="#0e100f"/><path d="M250.5 148l2.5 2.5 4.5-5" stroke="#0ae448" stroke-width="2" fill="none"/><rect x="268" y="145" width="80" height="6" rx="3" fill="#dfe6e1"/></g>'
-				. '<g class="cv-check cv-check--2"><circle cx="254" cy="168" r="7" fill="#0e100f"/><path d="M250.5 168l2.5 2.5 4.5-5" stroke="#0ae448" stroke-width="2" fill="none"/><rect x="268" y="165" width="66" height="6" rx="3" fill="#dfe6e1"/></g>'
-				. '<g class="cv-check cv-check--3"><circle cx="254" cy="188" r="7" fill="#0e100f"/><path d="M250.5 188l2.5 2.5 4.5-5" stroke="#0ae448" stroke-width="2" fill="none"/><rect x="268" y="185" width="74" height="6" rx="3" fill="#dfe6e1"/></g></g>'
-				. '<g class="cv-nodes"><rect x="30" y="196" width="34" height="22" rx="6" fill="#fff" stroke="#d3ddd6"/><rect x="84" y="196" width="34" height="22" rx="6" fill="#fff" stroke="#d3ddd6"/><rect x="138" y="196" width="34" height="22" rx="6" fill="#0e100f"/><path d="M64 207h20M118 207h20" stroke="#9aa59d" stroke-width="2"/><circle class="cv-dot" cx="64" cy="207" r="4" fill="#0ae448"/></g>';
-			break;
-
-		// 共通：点と線がつながるネットワーク
-		default:
-			$body = '<g class="cv-net" stroke="#0a9b4b" stroke-width="2" fill="none" stroke-dasharray="6 6"><path class="cv-flow" d="M80 170L160 90L240 150L320 80"/><path class="cv-flow" d="M160 90L200 190L240 150"/></g>'
-				. '<g><circle cx="80" cy="170" r="12" fill="#fff" stroke="#0a9b4b" stroke-width="2"/><circle class="cv-pulse" cx="160" cy="90" r="14" fill="' . $g . '"/><circle cx="240" cy="150" r="12" fill="#fff" stroke="#0a9b4b" stroke-width="2"/><circle cx="200" cy="190" r="10" fill="#fff" stroke="#0096b8" stroke-width="2"/><circle class="cv-pulse cv-pulse--2" cx="320" cy="80" r="14" fill="#0e100f"/></g>';
-	}
-	return '<svg class="cv cv--' . esc_attr( $kind ) . '" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true" focusable="false">' . $defs . $bg . $body . '</svg>';
 }
 
 /* ------------------------------------------------------------------
