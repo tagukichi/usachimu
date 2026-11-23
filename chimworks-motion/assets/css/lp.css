@@ -399,8 +399,6 @@
 
 .svp-contact__btn:hover .svp-contact__btn-arrow { transform: rotate(45deg); }
 
-.svp-contact__note { margin: 14px 0 0 8px; font-size: 13px; color: rgba(255, 255, 255, .5); }
-
 @media (max-width: 420px) {
   .svp-contact__btn { padding-left: 22px; font-size: 16px; }
   .svp-contact__btn-arrow { width: 46px; height: 46px; }
@@ -424,23 +422,6 @@
    FV：ビジョンの下の一文とボタン
    ---------------------------------------------------------------------- */
 .hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 28px; }
-
-.hero__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--ink);
-  text-decoration: none;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-size: 100% 1px;
-  background-position: 0 100%;
-  transition: background-size .2s var(--svp-ease), color .2s ease;
-}
-
-.hero__more:hover { color: var(--accent-text); background-size: 0 1px; background-position: 100% 100%; }
 
 @media (max-width: 420px) { .hero__cta .svp-btn { width: 100%; } }
 

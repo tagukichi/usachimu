@@ -1,7 +1,7 @@
 <?php
 /**
  * Hero — mission statement over the globe animation.
- * ビジョンの下に、お問い合わせ欄へのボタンと「伴走支援について」を置く。
+ * ビジョンの下に、お問い合わせ欄へのボタン（無料で相談してみる）を置く。
  *
  * @package fde-usachim
  */
@@ -47,7 +47,6 @@ $fde_lede    = (string) fde_field(
 
 		<div class="hero__cta">
 			<a class="svp-btn" href="#contact"><?php echo esc_html( fde_lp_text( 'hero_cta' ) ); ?></a>
-			<a class="hero__more" href="#support">伴走支援について<span aria-hidden="true">↓</span></a>
 		</div>
 
 		<div class="hero__scroll mono" aria-hidden="true">

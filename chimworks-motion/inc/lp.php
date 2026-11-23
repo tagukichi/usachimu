@@ -172,7 +172,7 @@ add_action(
  */
 function fde_lp_defaults(): array {
 	return [
-		'hero_cta'      => 'お問い合わせ',
+		'hero_cta'      => '無料で相談してみる',
 
 		'pain_title'    => 'こんなお悩み、ありませんか？',
 		'pain_items'    => implode(
@@ -434,7 +434,6 @@ function fde_svp_contact(): void {
 						<span><?php echo esc_html( '' !== $label ? $label : 'お問い合わせフォームへ' ); ?></span>
 						<span class="svp-contact__btn-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>
 					</a>
-					<p class="svp-contact__note">Google フォームが新しいタブで開きます。</p>
 				</div>
 			</div>
 		</div>
