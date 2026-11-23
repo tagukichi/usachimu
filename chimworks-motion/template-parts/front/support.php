@@ -42,7 +42,7 @@ $fde_term  = fde_lp_text( 'flow_period' );
 			<?php fde_svp_head( 'Process', '伴走の流れ' ); ?>
 			<?php fde_svp_steps( $fde_flow ); ?>
 			<?php if ( '' !== $fde_term ) : ?>
-				<p class="lp-flow__term"><span class="lp-flow__term-dot" aria-hidden="true"></span><?php echo esc_html( $fde_term ); ?></p>
+				<p class="lp-flow__term"><?php echo esc_html( $fde_term ); ?></p>
 			<?php endif; ?>
 		</div>
 	</section>

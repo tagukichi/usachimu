@@ -492,19 +492,12 @@
    伴走の流れ：期間の目安
    ---------------------------------------------------------------------- */
 .lp-flow__term {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
   margin: clamp(32px, 4vw, 48px) 0 0;
-  padding: 12px 20px;
-  border: 1px solid rgba(255, 255, 255, .2);
-  border-radius: 999px;
   font-size: 15px;
   font-weight: 700;
+  text-align: center;
   color: #ffffff;
 }
-
-.lp-flow__term-dot { width: 8px; height: 8px; border-radius: 50%; background: #0ae448; box-shadow: 0 0 12px rgba(10, 228, 72, .7); }
 
 /* 対応ツールの帯は、解決の手段のすぐ下に */
 .lp-tools { border-top: 0; }
