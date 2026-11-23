@@ -3,7 +3,7 @@
  * 調速 — 不動産調査アプリ（LP の FV をそのまま引用したブロック）。
  * TOP の Product セクションと、システム開発ページの「自社サービス」で共通。
  * キャッチコピー・リード・4 つのポイント・製品モック（調査画面のアニメーション）・
- * データの出どころが流れる帯。モックとアニメーションは CSS だけで動く。
+ * モックとアニメーションは CSS だけで動く。
  * 文言は TOP 固定ページの ACF「調速」タブで変更できる。
  *
  * @package fde-usachim
@@ -186,14 +186,6 @@ $fde_rich = static function ( string $text, bool $pc_only_breaks = false ): stri
 				</div>
 			</div>
 			<p class="chq__cap">※ 画面はイメージです。</p>
-		</div>
-	</div>
-
-	<!-- データの出どころ（LP の FV 下の帯と同じ） -->
-	<div class="chq__marquee" aria-hidden="true">
-		<div class="chq__marquee-track">
-			<span>国土交通省</span><span>国税庁</span><span>国土地理院</span><span>e-Stat</span><span>Google Maps Places</span>
-			<span>国土交通省</span><span>国税庁</span><span>国土地理院</span><span>e-Stat</span><span>Google Maps Places</span>
 		</div>
 	</div>
 </div>

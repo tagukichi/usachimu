@@ -216,15 +216,6 @@ html.has-motion .hero__statement-line {
 @keyframes cqDrift2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(34px, -24px) scale(1.1); } }
 @keyframes cqDrift3 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-24px, -30px) scale(1.15); } }
 
-/* パネル下端：データの出どころが流れる帯（LP の FV 下と同じ） */
-.chq__marquee { position: relative; overflow: hidden; padding: 16px 0; border-top: 1px solid var(--cq-border); background: rgba(255, 255, 255, .5); }
-.chq__marquee-track { display: flex; width: max-content; animation: cqMarquee 32s linear infinite; }
-.chq__marquee-track:hover { animation-play-state: paused; }
-.chq__marquee-track span { display: inline-flex; align-items: center; margin-right: 56px; font-size: 13.6px; font-weight: 600; letter-spacing: .04em; color: var(--cq-muted); white-space: nowrap; }
-.chq__marquee-track span::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 14px; border-radius: 50%; background: var(--cq-accent); }
-@keyframes cqMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@media (min-width: 751px) { .chq__marquee-track span { font-size: 15px; } }
-
 .chq__inner {
   display: grid;
   grid-template-columns: 1fr;
@@ -550,7 +541,7 @@ html.has-motion .hero__statement-line {
   .chq .fvm-results, .chq .fvm-search-btn, .chq .fvm-loading { animation: none; }
   .chq .fvm-search-text { animation: none; max-width: 14.5em; border-right-color: transparent; }
   .chq .fvm-cursor { display: none; }
-  .chq__orb, .chq__marquee-track { animation: none; }
+  .chq__orb { animation: none; }
 }
 
 /* ---- レスポンシブ：LP（chosoku-lp）と同じ段階・同じ値 ------------------ */
