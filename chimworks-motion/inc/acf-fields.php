@@ -116,7 +116,6 @@ add_action(
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_a',     'hero_statement_l2_a', __( '2行目（薄色部分・任意）', 'fde-usachim' ), '' );
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_b',     'hero_statement_l2_b', __( '2行目（グラデーション強調部分）', 'fde-usachim' ), '社会の実現へ。' );
 		$top_fields[] = fde_acf_textarea( 'hero_lede',      'hero_lede', __( 'サブコピー（ビジョン）', 'fde-usachim' ), 2, '**強調** で太字にできます。' );
-		$top_fields[] = fde_acf_textarea( 'hero_support', 'hero_support', __( 'サブコピーの下の一文（伴走支援の説明）', 'fde-usachim' ), 2, '空欄なら：' . $fde_d['hero_support'] );
 		$top_fields[] = fde_acf_text( 'hero_cta', 'hero_cta', __( 'ボタンの文言（お問い合わせ欄へ移動）', 'fde-usachim' ), $fde_d['hero_cta'] );
 
 		// ---------- こんなお悩み ----------
@@ -152,16 +151,17 @@ add_action(
 		$top_fields[] = fde_acf_tab( 'cases', __( '実績', 'fde-usachim' ) );
 		$top_fields[] = $fde_area( 'case_stats', __( '数字で見る実績（1行に1つ。「数字｜説明」）', 'fde-usachim' ) );
 		foreach ( range( 1, 6 ) as $n ) {
-			$top_fields[] = fde_acf_text( "case_{$n}_client", "case_{$n}_client", sprintf( __( '事例 %d — お客さまの表記（例：A社、B市）', 'fde-usachim' ), $n ), 1 === $n ? 'A区（都内の自治体）' : 'A社' );
+			$top_fields[] = fde_acf_text( "case_{$n}_client", "case_{$n}_client", sprintf( __( '事例 %d — お客さまの表記（例：A社、B市）', 'fde-usachim' ), $n ), 'A社、B市（都内の自治体）' );
 			$top_fields[] = fde_acf_text( "case_{$n}_tag", "case_{$n}_tag", sprintf( __( '事例 %d — 業種・種類のラベル（例：自治体、製造業）', 'fde-usachim' ), $n ) );
 			$top_fields[] = [
 				'key'          => "field_fde_case_{$n}_title",
 				'label'        => sprintf( __( '事例 %d — 何をやったか（タイトル）', 'fde-usachim' ), $n ),
 				'name'         => "case_{$n}_title",
 				'type'         => 'text',
-				'instructions' => 1 === $n ? __( '空欄なら既定の事例（職員向けの生成AI研修）を表示します。2〜6 は、タイトルを入れた枠だけ表示します。', 'fde-usachim' ) : '',
+				'instructions' => 1 === $n ? __( '1〜3 は空欄なら既定の事例（A市・B社・C社）を表示します。4〜6 は、タイトルを入れた枠だけ表示します。ラベルに「協業」を含む事例は黒いカードで目立たせます。', 'fde-usachim' ) : '',
 			];
 			$top_fields[] = fde_acf_textarea( "case_{$n}_text", "case_{$n}_text", sprintf( __( '事例 %d — 内容（取り組んだこと・変わったこと）', 'fde-usachim' ), $n ), 3 );
+			$top_fields[] = fde_acf_textarea( "case_{$n}_points", "case_{$n}_points", sprintf( __( '事例 %d — 取り組んだこと（チェック付きの箇条書き。1行に1つ）', 'fde-usachim' ), $n ), 3 );
 			$top_fields[] = [
 				'key'           => "field_fde_case_{$n}_image",
 				'label'         => sprintf( __( '事例 %d — 画像（任意）', 'fde-usachim' ), $n ),

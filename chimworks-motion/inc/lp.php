@@ -172,7 +172,6 @@ add_action(
  */
 function fde_lp_defaults(): array {
 	return [
-		'hero_support'  => '現場に入り込み、AIとITで業務を変える伴走支援。',
 		'hero_cta'      => 'お問い合わせ',
 
 		'pain_title'    => 'こんなお悩み、ありませんか？',
@@ -249,31 +248,50 @@ function fde_lp_text( string $key ): string {
 }
 
 /**
- * 実績（ACF の 6 枠。タイトルが入っている枠だけ）。1 枠目だけ既定の事例を入れておく。
+ * 実績（ACF の 6 枠。タイトルが入っている枠だけ）。1〜3 枠目には既定の事例を入れておく。
+ * ラベルに「協業」を含む事例は、黒いカードで目立たせる。
  *
- * @return array<int,array{client:string,tag:string,title:string,text:string,image:array{url:string,alt:string,w:int,h:int}}>
+ * @return array<int,array{client:string,tag:string,title:string,text:string,points:array<int,string>,accent:bool,image:array{url:string,alt:string,w:int,h:int}}>
  */
 function fde_lp_cases(): array {
 	$defaults = [
 		1 => [
-			'client' => 'A区（都内の自治体）',
+			'client' => 'A市（都内の自治体）',
 			'tag'    => '自治体',
-			'title'  => '職員向けの生成AI研修',
-			'text'   => '職員の方を対象に、生成AIの基礎から業務での使い方までを学ぶ研修を複数回実施しました。実際の業務に近い題材を使い、手を動かしながら学べる内容にしています。',
+			'title'  => '生成AIの定着と、アナログ業務のDXを支援',
+			'text'   => '新しく導入した生成AIが職員の方に使われるよう、勉強会を開きながら定着を支援。各課へのヒアリングで紙や手作業が残る業務を洗い出し、デジタル化を進めています。外部団体との調整の場にも同席し、将来のAI基盤の検討・提案まで伴走しています。',
+			'points' => "生成AIの勉強会と定着支援\n各課ヒアリングによるアナログ業務のDX\n外部団体との折衝への参加\n将来のAI基盤の検討・提案",
+		],
+		2 => [
+			'client' => 'B社',
+			'tag'    => '企業',
+			'title'  => 'Google Workspaceの活用と、社内ツールの内製化',
+			'text'   => 'Google Workspaceの使い方研修からスタート。Google Apps Scriptを使った社内ツールづくりに伴走し、その後も社内で開発・改善を続けられるよう、内製化のための研修会を行いました。',
+			'points' => "Google Workspaceの研修\nApps Scriptによる社内ツールづくりの伴走\n内製化に向けた研修会",
+		],
+		3 => [
+			'client' => 'C社',
+			'tag'    => '協業・共同開発',
+			'title'  => '業務のソフトウェア化と、専門家との共同サービス開発',
+			'text'   => '既存業務のワークフローを分析し、一部の業務をソフトウェアでDX化。さらに、深い業界知識を持つ専門家と組み、現場で培われた経験やノウハウ、業界全体が抱える悩みをヒアリングしながら、新しいサービスを共同で開発しています。伴走して終わりではなく、パートナーと協業して価値をつくる取り組みです。',
+			'points' => "ワークフローの分析と業務のソフトウェア化\n専門家・業界の課題のヒアリング\n専門家と組んだ共同サービスの開発",
 		],
 	];
 	$cases = [];
 	foreach ( range( 1, 6 ) as $n ) {
-		$d     = $defaults[ $n ] ?? [ 'client' => '', 'tag' => '', 'title' => '', 'text' => '' ];
+		$d     = $defaults[ $n ] ?? [ 'client' => '', 'tag' => '', 'title' => '', 'text' => '', 'points' => '' ];
 		$title = trim( (string) fde_field( "case_{$n}_title", $d['title'] ) );
 		if ( '' === $title ) {
 			continue;
 		}
+		$tag     = trim( (string) fde_field( "case_{$n}_tag", $d['tag'] ) );
 		$cases[] = [
 			'client' => trim( (string) fde_field( "case_{$n}_client", $d['client'] ) ),
-			'tag'    => trim( (string) fde_field( "case_{$n}_tag", $d['tag'] ) ),
+			'tag'    => $tag,
 			'title'  => $title,
 			'text'   => trim( (string) fde_field( "case_{$n}_text", $d['text'] ) ),
+			'points' => fde_svp_lines( (string) fde_field( "case_{$n}_points", $d['points'] ) ),
+			'accent' => false !== mb_strpos( $tag, '協業' ),
 			'image'  => fde_image_data( fde_field( "case_{$n}_image", null ) ),
 		];
 	}

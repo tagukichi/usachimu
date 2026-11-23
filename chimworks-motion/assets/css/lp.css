@@ -423,15 +423,6 @@
 /* ----------------------------------------------------------------------
    FV：ビジョンの下の一文とボタン
    ---------------------------------------------------------------------- */
-.hero__support {
-  margin: 18px 0 0;
-  max-width: 34em;
-  font-size: clamp(15.5px, 1.4vw, 17.5px);
-  font-weight: 600;
-  line-height: 1.9;
-  color: var(--ink-2);
-}
-
 .hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 28px; }
 
 .hero__more {
@@ -558,32 +549,81 @@
 
 .lp-stats__k { margin: 0; font-size: 14px; font-weight: 700; color: var(--mute); }
 
-.lp-cases__list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+/* 事例カードの横スライダー（ボタン・ドラッグ・スワイプで送る） */
+.svp-slider { --bleed: var(--gutter-sp); }
 
-@media (min-width: 720px)  { .lp-cases__list--2, .lp-cases__list--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1101px) { .lp-cases__list--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 720px)  { .svp-slider { --bleed: var(--gutter-mid); } }
+@media (min-width: 1101px) { .svp-slider { --bleed: 64px; } }
+
+.svp-slider__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(80vw, 420px);
+  gap: 24px;
+  margin-inline: calc(var(--bleed) * -1);
+  padding: 4px var(--bleed) 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--bleed);
+  scrollbar-width: none;
+  cursor: grab;
+  outline: none;
+}
+
+.svp-slider__track::-webkit-scrollbar { display: none; }
+
+.svp-slider__track.is-grabbing { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+
+.svp-slider__track:focus-visible { box-shadow: inset 0 0 0 2px var(--accent-text); border-radius: 12px; }
+
+.svp-slider__ui { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+
+.svp-slider__bar { position: relative; flex: 1; height: 2px; overflow: hidden; border-radius: 2px; background: var(--line); }
+
+.svp-slider__bar span { position: absolute; left: 0; top: 0; bottom: 0; width: 30%; border-radius: 2px; background: var(--ink); transition: transform .15s linear; }
+
+.svp-slider__btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background .25s ease, color .25s ease, opacity .25s ease;
+}
+
+.svp-slider__btn svg { width: 20px; height: 20px; }
+
+.svp-slider__btn:hover:not(:disabled) { background: var(--ink); color: #ffffff; }
+
+.svp-slider__btn:disabled { opacity: .25; cursor: default; }
+
+.svp-slider.is-static .svp-slider__ui { display: none; }
+
+.lp-cases .svp-slider__track { grid-auto-columns: min(84vw, 440px); gap: 20px; align-items: stretch; }
 
 .lp-case {
   display: flex;
   flex-direction: column;
   min-width: 0;
   overflow: hidden;
+  scroll-snap-align: start;
   border: 1px solid var(--line);
   border-radius: 22px;
   background: #ffffff;
+  user-select: none;
 }
 
 .lp-case__img { aspect-ratio: 16 / 10; overflow: hidden; background: var(--paper-2); }
-.lp-case__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.lp-case__img img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 
-.lp-case__body { padding: clamp(24px, 3vw, 32px); }
-
-/* 事例が 1 件のときは横長に（画像があれば左に） */
-@media (min-width: 900px) {
-  .lp-cases__list--1 .lp-case:has(.lp-case__img) { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
-  .lp-cases__list--1 .lp-case__img { aspect-ratio: auto; height: 100%; }
-  .lp-cases__list--1 .lp-case__body { padding: clamp(32px, 4vw, 48px); }
-}
+.lp-case__body { display: flex; flex-direction: column; flex: 1; padding: clamp(24px, 3vw, 32px); }
 
 .lp-case__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; }
 
@@ -591,9 +631,24 @@
 
 .lp-case__client { font-size: 14px; font-weight: 800; color: var(--ink-3); }
 
-.lp-case__title { margin: 14px 0 0; font-size: clamp(19px, 1.8vw, 24px); font-weight: 900; line-height: 1.45; color: var(--ink); }
+.lp-case__title { margin: 14px 0 0; font-size: clamp(19px, 1.7vw, 22px); font-weight: 900; line-height: 1.5; color: var(--ink); }
 
-.lp-case__text { margin: 12px 0 0; max-width: 44em; font-size: 15.5px; line-height: 1.9; color: var(--ink-3); }
+.lp-case__text { margin: 12px 0 0; font-size: 15px; line-height: 1.9; color: var(--ink-3); }
+
+/* 取り組んだこと（チェック付き） */
+.lp-case__points { list-style: none; margin: 18px 0 0; padding: 18px 0 0; display: grid; gap: 9px; border-top: 1px dashed var(--line); }
+.lp-case__points li { display: flex; align-items: flex-start; gap: 10px; font-size: 14.5px; font-weight: 700; line-height: 1.6; color: var(--ink-2); }
+.lp-case__points svg { flex: none; width: 20px; height: 20px; margin-top: .1em; padding: 4px; border-radius: 50%; background: var(--ink); color: #0ae448; }
+
+/* 協業の事例などを目立たせる（「ラベル」に「協業」を含むと黒いカード） */
+.lp-case--accent { border-color: var(--ink); background: var(--ink); }
+.lp-case--accent .lp-case__tag { background: #0ae448; color: var(--ink); }
+.lp-case--accent .lp-case__client { color: rgba(255, 255, 255, .7); }
+.lp-case--accent .lp-case__title { color: #ffffff; }
+.lp-case--accent .lp-case__text { color: rgba(255, 255, 255, .78); }
+.lp-case--accent .lp-case__points { border-top-color: rgba(255, 255, 255, .2); }
+.lp-case--accent .lp-case__points li { color: #ffffff; }
+.lp-case--accent .lp-case__points svg { background: #0ae448; color: var(--ink); }
 
 /* ----------------------------------------------------------------------
    よくある質問
@@ -647,13 +702,14 @@
 }
 
 /* 日本語の語の途中・行末 1〜2 文字だけの折り返しを避ける（未対応ブラウザは通常の折り返し） */
-.hero__support,
 .lp-pain__text,
 .lp-pain__answer-text,
 .lp-lead,
 .svp-card__text,
 .svp-pillar__text,
 .svp-step__text,
+.lp-case__title,
 .lp-case__text,
+.lp-case__points li,
 .lp-faq__q-text,
 .lp-faq__a p { word-break: auto-phrase; text-wrap: pretty; }

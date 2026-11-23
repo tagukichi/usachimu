@@ -1,6 +1,6 @@
 <?php
 /**
- * TOP — 実績（数字で見る実績 + 事例カード）。
+ * TOP — 実績（数字で見る実績 + 横にスライドする事例カード）。
  * 事例は TOP 固定ページの ACF「実績」タブの 6 枠（「A社」「B市」のような表記で、何をやったか）。
  *
  * @package fde-usachim
@@ -34,28 +34,46 @@ if ( ! $fde_cases && ! $fde_stats ) {
 		<?php endif; ?>
 
 		<?php if ( $fde_cases ) : ?>
-			<div class="lp-cases__list lp-cases__list--<?php echo esc_attr( (string) min( count( $fde_cases ), 3 ) ); ?>">
-				<?php foreach ( $fde_cases as $fde_case ) : ?>
-					<article class="lp-case">
-						<?php if ( '' !== $fde_case['image']['url'] ) : ?>
-							<div class="lp-case__img"><img src="<?php echo esc_url( $fde_case['image']['url'] ); ?>" alt="<?php echo esc_attr( $fde_case['image']['alt'] ); ?>" loading="lazy"></div>
-						<?php endif; ?>
-						<div class="lp-case__body">
-							<p class="lp-case__meta">
-								<?php if ( '' !== $fde_case['tag'] ) : ?>
-									<span class="lp-case__tag"><?php echo esc_html( $fde_case['tag'] ); ?></span>
-								<?php endif; ?>
-								<?php if ( '' !== $fde_case['client'] ) : ?>
-									<span class="lp-case__client"><?php echo esc_html( $fde_case['client'] ); ?></span>
-								<?php endif; ?>
-							</p>
-							<h3 class="lp-case__title"><?php echo esc_html( $fde_case['title'] ); ?></h3>
-							<?php if ( '' !== $fde_case['text'] ) : ?>
-								<p class="lp-case__text"><?php echo nl2br( esc_html( $fde_case['text'] ) ); ?></p>
+			<div class="svp-slider" data-slider>
+				<div class="svp-slider__track" data-slider-track tabindex="0" aria-label="事例（横にスクロールできます）">
+					<?php foreach ( $fde_cases as $fde_case ) : ?>
+						<article class="lp-case<?php echo $fde_case['accent'] ? ' lp-case--accent' : ''; ?>">
+							<?php if ( '' !== $fde_case['image']['url'] ) : ?>
+								<div class="lp-case__img"><img src="<?php echo esc_url( $fde_case['image']['url'] ); ?>" alt="<?php echo esc_attr( $fde_case['image']['alt'] ); ?>" loading="lazy" draggable="false"></div>
 							<?php endif; ?>
-						</div>
-					</article>
-				<?php endforeach; ?>
+							<div class="lp-case__body">
+								<p class="lp-case__meta">
+									<?php if ( '' !== $fde_case['tag'] ) : ?>
+										<span class="lp-case__tag"><?php echo esc_html( $fde_case['tag'] ); ?></span>
+									<?php endif; ?>
+									<?php if ( '' !== $fde_case['client'] ) : ?>
+										<span class="lp-case__client"><?php echo esc_html( $fde_case['client'] ); ?></span>
+									<?php endif; ?>
+								</p>
+								<h3 class="lp-case__title"><?php echo esc_html( $fde_case['title'] ); ?></h3>
+								<?php if ( '' !== $fde_case['text'] ) : ?>
+									<p class="lp-case__text"><?php echo nl2br( esc_html( $fde_case['text'] ) ); ?></p>
+								<?php endif; ?>
+								<?php if ( $fde_case['points'] ) : ?>
+									<ul class="lp-case__points">
+										<?php foreach ( $fde_case['points'] as $fde_point ) : ?>
+											<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><?php echo esc_html( $fde_point ); ?></span></li>
+										<?php endforeach; ?>
+									</ul>
+								<?php endif; ?>
+							</div>
+						</article>
+					<?php endforeach; ?>
+				</div>
+				<div class="svp-slider__ui">
+					<div class="svp-slider__bar" aria-hidden="true"><span data-slider-bar></span></div>
+					<button type="button" class="svp-slider__btn" data-slider-prev aria-label="前の事例へ">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg>
+					</button>
+					<button type="button" class="svp-slider__btn" data-slider-next aria-label="次の事例へ">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+					</button>
+				</div>
 			</div>
 		<?php endif; ?>
 	</div>
