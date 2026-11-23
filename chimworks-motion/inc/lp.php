@@ -427,7 +427,7 @@ function fde_svp_contact(): void {
 				<div class="svp-contact__copy">
 					<p class="svp-contact__eyebrow mono">Contact</p>
 					<h2 class="svp-contact__title">お問い合わせ</h2>
-					<p class="svp-contact__text"><?php echo nl2br( esc_html( '' !== $text ? $text : '業務のお困りごと、まずはお気軽にご相談ください。内容を確認のうえ、ご連絡します。' ) ); ?></p>
+					<p class="svp-contact__text"><?php echo nl2br( esc_html( '' !== $text ? $text : "業務のお困りごと、まずはお気軽にご相談ください。\n内容を確認のうえ、ご連絡します。" ) ); ?></p>
 				</div>
 				<div class="svp-contact__action">
 					<a class="svp-contact__btn" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener">

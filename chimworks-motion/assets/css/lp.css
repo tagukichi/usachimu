@@ -666,4 +666,5 @@
 .lp-case__text,
 .lp-case__points li,
 .lp-faq__q-text,
-.lp-faq__a p { word-break: auto-phrase; text-wrap: pretty; }
+.lp-faq__a p,
+.svp-contact__text { word-break: auto-phrase; text-wrap: pretty; }
