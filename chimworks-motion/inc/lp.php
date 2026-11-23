@@ -224,9 +224,6 @@ function fde_lp_defaults(): array {
 		),
 		'solution_tools' => 'Microsoft 365、Dify、Claude、ChatGPT、Copilot、Next.js、React、TypeScript、Python、Supabase、Vercel、Azure、Docker、WordPress',
 
-		'cases_title'   => '研修から、協業まで。',
-		'cases_lead'    => '組織の状況や目指す姿に合わせて、関わり方の深さを選べます。',
-
 		'faq_items'     => implode(
 			"\n",
 			[
@@ -249,47 +246,38 @@ function fde_lp_text( string $key ): string {
 }
 
 /**
- * 実績（ACF の 6 枠。タイトルが入っている枠だけ）。
- * 既定は「伴走の深さ」の順：研修・内製化（B）→ 伴走・業務改善（A）→ 協業・共同開発（C）。
+ * 実績（ACF の 6 枠。タイトルが入っている枠だけ）。1〜3 枠目には既定の事例を入れておく。
  * 画像は設定した事例だけに表示する。
  *
- * @return array<int,array{title:string,stage:string,catch:string,text:string,points:array<int,string>,image:array{url:string,alt:string,w:int,h:int}}>
+ * @return array<int,array{title:string,text:string,points:array<int,string>,image:array{url:string,alt:string,w:int,h:int}}>
  */
 function fde_lp_cases(): array {
 	$defaults = [
 		1 => [
-			'title'  => 'B株式会社様',
-			'stage'  => '研修・内製化',
-			'catch'  => '自分たちで改善し続けられる組織へ。',
-			'text'   => 'Google Workspaceの活用研修から始まり、Google Apps Scriptを使った社内ツールづくりに伴走しました。つくって終わりにせず、社員の方が自分たちでツールを開発・改善していけるよう、内製化までサポート。外部に頼らず業務の改善を続けられる体制づくりを支援しています。',
-			'points' => "Google Workspaceの活用研修\nApps Scriptによる社内ツール開発の伴走\n社内で開発を続けるための内製化支援",
-		],
-		2 => [
 			'title'  => 'A区様',
-			'stage'  => '伴走・業務改善',
-			'catch'  => '生成AIを、職員の「いつもの道具」に。',
 			'text'   => '都内の特別区で、新たに導入した生成AIの定着を支援しています。職員向けの勉強会で使い方を広げるとともに、各課へのヒアリングから紙や手作業が残る業務を洗い出し、デジタル化を一つずつ進めています。外部団体との調整の場にも同席し、将来のAI基盤のあり方についても検討・提案を行っています。',
 			'points' => "生成AIの勉強会・定着支援\n各課ヒアリングによるアナログ業務のDX\n外部団体との調整への参加\n将来のAI基盤の検討・提案",
 		],
+		2 => [
+			'title'  => 'B株式会社様',
+			'text'   => 'Google Workspaceの活用研修から始まり、Google Apps Scriptを使った社内ツールづくりに伴走しました。つくって終わりにせず、社員の方が自分たちでツールを開発・改善していけるよう、内製化までサポート。外部に頼らず業務の改善を続けられる体制づくりを支援しています。',
+			'points' => "Google Workspaceの活用研修\nApps Scriptによる社内ツール開発の伴走\n社内で開発を続けるための内製化支援",
+		],
 		3 => [
 			'title'  => 'C株式会社様',
-			'stage'  => '協業・共同開発',
-			'catch'  => '専門家と組み、業界のための新しいサービスを。',
 			'text'   => '既存業務のワークフローを分析し、一部の業務をソフトウェア化してDXを実現しました。さらに、業界に深い知見を持つ専門家とチームを組み、現場で培われた経験やノウハウ、業界全体が抱える課題をヒアリング。それらを形にする新しいサービスを共同で開発しています。支援にとどまらず、パートナーとして協業し、新しい価値をつくっている事例です。',
 			'points' => "ワークフロー分析と業務のソフトウェア化\n専門家・業界の課題のヒアリング\n業界に特化したサービスの開発",
 		],
 	];
 	$cases = [];
 	foreach ( range( 1, 6 ) as $n ) {
-		$d     = $defaults[ $n ] ?? [ 'title' => '', 'stage' => '', 'catch' => '', 'text' => '', 'points' => '' ];
+		$d     = $defaults[ $n ] ?? [ 'title' => '', 'text' => '', 'points' => '' ];
 		$title = trim( (string) fde_field( "case_{$n}_title", $d['title'] ) );
 		if ( '' === $title ) {
 			continue;
 		}
 		$cases[] = [
 			'title'  => $title,
-			'stage'  => trim( (string) fde_field( "case_{$n}_stage", $d['stage'] ) ),
-			'catch'  => trim( (string) fde_field( "case_{$n}_catch", $d['catch'] ) ),
 			'text'   => trim( (string) fde_field( "case_{$n}_text", $d['text'] ) ),
 			'points' => fde_svp_lines( (string) fde_field( "case_{$n}_points", $d['points'] ) ),
 			'image'  => fde_image_data( fde_field( "case_{$n}_image", null ) ),
