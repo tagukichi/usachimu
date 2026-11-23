@@ -582,13 +582,7 @@
 
 .lp-case__body { display: flex; flex-direction: column; flex: 1; padding: clamp(24px, 3vw, 32px); }
 
-.lp-case__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; }
-
-.lp-case__tag { padding: 4px 12px; border-radius: 999px; background: var(--ink); color: #0ae448; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
-
-.lp-case__client { font-size: 14px; font-weight: 800; color: var(--ink-3); }
-
-.lp-case__title { margin: 14px 0 0; font-size: clamp(19px, 1.7vw, 22px); font-weight: 900; line-height: 1.5; color: var(--ink); }
+.lp-case__title { margin: 0; font-size: clamp(19px, 1.7vw, 22px); font-weight: 900; line-height: 1.5; color: var(--ink); }
 
 .lp-case__text { margin: 12px 0 0; font-size: 15px; line-height: 1.9; color: var(--ink-3); }
 

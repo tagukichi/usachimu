@@ -28,14 +28,6 @@ if ( ! $fde_cases ) {
 								<div class="lp-case__img"><img src="<?php echo esc_url( $fde_case['image']['url'] ); ?>" alt="<?php echo esc_attr( $fde_case['image']['alt'] ); ?>" loading="lazy" draggable="false"></div>
 							<?php endif; ?>
 							<div class="lp-case__body">
-								<p class="lp-case__meta">
-									<?php if ( '' !== $fde_case['tag'] ) : ?>
-										<span class="lp-case__tag"><?php echo esc_html( $fde_case['tag'] ); ?></span>
-									<?php endif; ?>
-									<?php if ( '' !== $fde_case['client'] ) : ?>
-										<span class="lp-case__client"><?php echo esc_html( $fde_case['client'] ); ?></span>
-									<?php endif; ?>
-								</p>
 								<h3 class="lp-case__title"><?php echo esc_html( $fde_case['title'] ); ?></h3>
 								<?php if ( '' !== $fde_case['text'] ) : ?>
 									<p class="lp-case__text"><?php echo nl2br( esc_html( $fde_case['text'] ) ); ?></p>
