@@ -2,7 +2,7 @@
 /**
  * ACF field groups (CHIM WORKS).
  *
- * - 「TOPページ用」フィールド（FV / 事業内容 / 調速 / お問い合わせ）は、
+ * - 「TOPページ用」フィールド（FV / お悩み / 伴走支援 / 解決の手段 / 実績 / 調速 / よくある質問 / お問い合わせ）は、
  *   設定 → 表示設定 → ホームページに指定した固定ページの編集画面で編集します。
  * - 「テーマ設定」（options ページ）は ACF Pro 環境でのみ表示されます。
  *
@@ -108,6 +108,7 @@ add_action(
 		// (3) TOPページ用フィールド — 固定ページ（ホーム）に表示
 		// ============================================================
 		$top_fields = [];
+		$fde_d      = fde_lp_defaults();
 
 		// ---------- Hero ----------
 		$top_fields[] = fde_acf_tab( 'hero', __( 'Hero（FV）', 'fde-usachim' ) );
@@ -115,33 +116,65 @@ add_action(
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_a',     'hero_statement_l2_a', __( '2行目（薄色部分・任意）', 'fde-usachim' ), '' );
 		$top_fields[] = fde_acf_text( 'hero_stmt_l2_b',     'hero_statement_l2_b', __( '2行目（グラデーション強調部分）', 'fde-usachim' ), '社会の実現へ。' );
 		$top_fields[] = fde_acf_textarea( 'hero_lede',      'hero_lede', __( 'サブコピー（ビジョン）', 'fde-usachim' ), 2, '**強調** で太字にできます。' );
+		$top_fields[] = fde_acf_textarea( 'hero_support', 'hero_support', __( 'サブコピーの下の一文（伴走支援の説明）', 'fde-usachim' ), 2, '空欄なら：' . $fde_d['hero_support'] );
+		$top_fields[] = fde_acf_text( 'hero_cta', 'hero_cta', __( 'ボタンの文言（お問い合わせ欄へ移動）', 'fde-usachim' ), $fde_d['hero_cta'] );
 
-		// ---------- 事業内容 ----------
-		$top_fields[] = fde_acf_tab( 'services', __( '事業内容', 'fde-usachim' ) );
-		// 無料版 ACF のため繰り返しフィールドは使わず、4 枠（= 4 サービス）を用意。
-		// 空欄の項目はサービスの既定（inc/service-pages.php）を表示する。
-		// URL のフィールド名は以前のデータを引き継ぐ（1・2 枠目）
-		$fde_svc_url_names = [ 1 => 'svc_web_url', 2 => 'svc_dx_url', 3 => 'svc_3_url', 4 => 'svc_4_url' ];
-		$fde_n             = 0;
-		foreach ( fde_services() as $fde_service ) {
-			$n = ++$fde_n;
+		// ---------- こんなお悩み ----------
+		$fde_help = static function ( string $key, string $help = '' ) use ( $fde_d ): string {
+			return trim( $help . "\n【空欄のときの既定文】\n" . $fde_d[ $key ] );
+		};
+		$fde_area = static function ( string $key, string $label, string $help = '' ) use ( $fde_d, $fde_help ): array {
+			$f                 = fde_acf_textarea( $key, $key, $label, max( 2, substr_count( $fde_d[ $key ], "\n" ) + 2 ) );
+			$f['instructions'] = $fde_help( $key, $help );
+			return $f;
+		};
+		$fde_pipe = '1行に1つ。「見出し｜説明」のように全角「｜」で区切ります。空欄なら既定文を表示します。';
+
+		$top_fields[] = fde_acf_tab( 'pain', __( 'お悩み', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'pain_title', __( '見出し', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'pain_items', __( 'お悩み（1行に1つ。6つくらいがおすすめ）', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'pain_answer', __( 'お悩みの下の答え（改行はそのまま反映）', 'fde-usachim' ) );
+
+		// ---------- 伴走支援 ----------
+		$top_fields[] = fde_acf_tab( 'support', __( '伴走支援', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'support_lead', __( '説明文（改行はそのまま反映）', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'support_items', __( '伴走支援の特長（3つ）', 'fde-usachim' ), $fde_pipe );
+		$top_fields[] = $fde_area( 'flow_items', __( '伴走の流れ', 'fde-usachim' ), $fde_pipe );
+		$top_fields[] = $fde_area( 'flow_period', __( '期間の目安（流れの下に表示）', 'fde-usachim' ) );
+
+		// ---------- 解決の手段 ----------
+		$top_fields[] = fde_acf_tab( 'solutions', __( '解決の手段', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'solution_lead', __( '説明文', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'solution_items', __( '解決の手段（6つくらいがおすすめ）', 'fde-usachim' ), $fde_pipe );
+		$top_fields[] = $fde_area( 'solution_tools', __( '対応ツール・技術（「、」区切り。名前に合う公式ロゴが自動で付きます）', 'fde-usachim' ) );
+
+		// ---------- 実績 ----------
+		$top_fields[] = fde_acf_tab( 'cases', __( '実績', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'case_stats', __( '数字で見る実績（1行に1つ。「数字｜説明」）', 'fde-usachim' ) );
+		foreach ( range( 1, 6 ) as $n ) {
+			$top_fields[] = fde_acf_text( "case_{$n}_client", "case_{$n}_client", sprintf( __( '事例 %d — お客さまの表記（例：A社、B市）', 'fde-usachim' ), $n ), 1 === $n ? 'A区（都内の自治体）' : 'A社' );
+			$top_fields[] = fde_acf_text( "case_{$n}_tag", "case_{$n}_tag", sprintf( __( '事例 %d — 業種・種類のラベル（例：自治体、製造業）', 'fde-usachim' ), $n ) );
 			$top_fields[] = [
-				'key'          => "field_fde_svc_{$n}_title",
-				'label'        => sprintf( __( '事業 %d — タイトル', 'fde-usachim' ), $n ),
-				'name'         => "svc_{$n}_title",
+				'key'          => "field_fde_case_{$n}_title",
+				'label'        => sprintf( __( '事例 %d — 何をやったか（タイトル）', 'fde-usachim' ), $n ),
+				'name'         => "case_{$n}_title",
 				'type'         => 'text',
-				'placeholder'  => $fde_service['title'],
-				'instructions' => sprintf( __( '空欄なら「%s」', 'fde-usachim' ), $fde_service['title'] ),
+				'instructions' => 1 === $n ? __( '空欄なら既定の事例（職員向けの生成AI研修）を表示します。2〜6 は、タイトルを入れた枠だけ表示します。', 'fde-usachim' ) : '',
 			];
-			$top_fields[] = fde_acf_textarea( "svc_{$n}_note", "svc_{$n}_note", sprintf( __( '事業 %d — 補足テキスト（改行はそのまま反映）', 'fde-usachim' ), $n ), 2, sprintf( __( '空欄なら：%s', 'fde-usachim' ), $fde_service['note'] ) );
+			$top_fields[] = fde_acf_textarea( "case_{$n}_text", "case_{$n}_text", sprintf( __( '事例 %d — 内容（取り組んだこと・変わったこと）', 'fde-usachim' ), $n ), 3 );
 			$top_fields[] = [
-				'key'          => 'field_fde_' . $fde_svc_url_names[ $n ],
-				'label'        => sprintf( __( '事業 %d — リンク先 URL（通常は空欄）', 'fde-usachim' ), $n ),
-				'name'         => $fde_svc_url_names[ $n ],
-				'type'         => 'url',
-				'instructions' => sprintf( __( '空欄なら「%s」のサービスページ（/%s/）にリンクします。', 'fde-usachim' ), $fde_service['title'], $fde_service['slug'] ),
+				'key'           => "field_fde_case_{$n}_image",
+				'label'         => sprintf( __( '事例 %d — 画像（任意）', 'fde-usachim' ), $n ),
+				'name'          => "case_{$n}_image",
+				'type'          => 'image',
+				'return_format' => 'array',
+				'preview_size'  => 'medium',
 			];
 		}
+
+		// ---------- よくある質問 ----------
+		$top_fields[] = fde_acf_tab( 'faq', __( 'よくある質問', 'fde-usachim' ) );
+		$top_fields[] = $fde_area( 'faq_items', __( 'よくある質問（1行に1つ。「質問｜回答」）', 'fde-usachim' ) );
 
 		// ---------- 調速（LP の先頭を引用） ----------
 		// TOP の Product セクションと、システム開発ページの自社サービス欄で共通。
@@ -169,25 +202,17 @@ add_action(
 		$top_fields[] = fde_acf_text( 'chousoku_cta_label', 'chousoku_cta_label', __( 'ボタンの文言', 'fde-usachim' ), '調速のサービスサイトを見る' );
 
 		// ---------- お問い合わせ（Google フォーム） ----------
-		// 4 つのサービスページの下部に出るボタンの共通設定。URL が空のあいだはボタンを出さない。
+		// TOP の最後のお問い合わせ欄のボタン。
 		$top_fields[] = fde_acf_tab( 'contact', __( 'お問い合わせ', 'fde-usachim' ) );
 		$top_fields[] = [
 			'key'          => 'field_fde_contact_form_url',
 			'label'        => __( 'Google フォームの URL', 'fde-usachim' ),
 			'name'         => 'contact_form_url',
 			'type'         => 'url',
-			'instructions' => __( 'Google フォームの「送信」→ リンク（🔗）で表示される URL を貼り付けます。4 つのサービスページのお問い合わせボタンが、すべてこのフォームを開きます。空欄ならテーマに設定済みのフォームを使います。', 'fde-usachim' ),
-		];
-		$top_fields[] = [
-			'key'          => 'field_fde_contact_prefill_entry',
-			'label'        => __( '「お問い合わせの種類」の事前入力番号（任意）', 'fde-usachim' ),
-			'name'         => 'contact_prefill_entry',
-			'type'         => 'text',
-			'placeholder'  => 'entry.123456789',
-			'instructions' => __( '設定すると、各サービスページのボタンから開いたときに「お問い合わせの種類」がそのサービスで選ばれた状態になります。フォーム編集画面の「︙」→「事前入力した URL を取得」で種類を選んでリンクを作り、URL の中の「entry.数字」を貼り付けます。フォームの選択肢は「WEB制作」「業務効率化・DX支援」「システム開発」「AI研修・勉強会」と同じ表記にしてください。', 'fde-usachim' ),
+			'instructions' => __( 'Google フォームの「送信」→ リンク（🔗）で表示される URL を貼り付けます。TOP のお問い合わせボタンがこのフォームを開きます。空欄ならテーマに設定済みのフォームを使います。', 'fde-usachim' ),
 		];
 		$top_fields[] = fde_acf_text( 'contact_btn_label', 'contact_btn_label', __( 'ボタンの文言（空欄なら「お問い合わせフォームへ」）', 'fde-usachim' ), 'お問い合わせフォームへ' );
-		$top_fields[] = fde_acf_textarea( 'contact_text', 'contact_text', __( 'ボタンの上の一文（空欄なら既定文）', 'fde-usachim' ), 2, '空欄なら：ご相談・お見積もりのご依頼は、こちらのフォームからお送りください。内容を確認のうえ、ご連絡します。' );
+		$top_fields[] = fde_acf_textarea( 'contact_text', 'contact_text', __( 'ボタンの上の一文（空欄なら既定文）', 'fde-usachim' ), 2, '空欄なら：業務のお困りごと、まずはお気軽にご相談ください。内容を確認のうえ、ご連絡します。' );
 
 		acf_add_local_field_group(
 			[

@@ -185,8 +185,8 @@ function batchReveals(gsap, ScrollTrigger) {
   const els = document.querySelectorAll(
     ['.product__lead', '.product__main', '.product__media', '.product__point', '.svc-row', '.company-list__row', '.site-footer__top',
      '.blog2-card', '.blog-card', '.single-blog__main', '.single-blog__side',
-     '.svp-card', '.svp-pillar', '.svp-step', '.svp-work', '.svp-price', '.svp-record', '.svp-estimate',
-     '.svp-stack__row', '.svp-checks--grid li', '.svp-contact__box', '.company-table__row'].join(',')
+     '.lp-pain__item', '.lp-pain__answer', '.svp-card', '.svp-pillar', '.svp-step', '.lp-stats__item',
+     '.lp-case', '.lp-faq__item', '.svp-contact__box', '.company-table__row'].join(',')
   );
   if (!els.length) return;
 

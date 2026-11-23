@@ -141,8 +141,10 @@ function fde_tri_field( string $variant = 'br', int $count = 10, int $seed = 0 )
 function fde_main_nav_items(): array {
 	$home    = home_url( '/' );
 	$items   = [];
-	$items[] = [ 'label' => '事業内容', 'url' => $home . '#services' ];
-	$items[] = [ 'label' => '調速', 'url' => $home . '#product' ];
+	$items[] = [ 'label' => '伴走支援',   'url' => $home . '#support' ];
+	$items[] = [ 'label' => '解決の手段', 'url' => $home . '#solutions' ];
+	$items[] = [ 'label' => '実績',       'url' => $home . '#cases' ];
+	$items[] = [ 'label' => '調速',       'url' => $home . '#product' ];
 	$items[] = [ 'label' => 'Blog',       'url' => $home . '#blog' ];
 	$items[] = [ 'label' => '会社概要',   'url' => fde_company_url() ];
 	return $items;
