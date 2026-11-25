@@ -581,6 +581,8 @@
 
 .lp-case__body { display: flex; flex-direction: column; flex: 1; padding: clamp(24px, 3vw, 32px); }
 
+.lp-case__no { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: .14em; color: var(--accent-text); }
+
 .lp-case__title { margin: 0; font-size: clamp(19px, 1.7vw, 22px); font-weight: 900; line-height: 1.5; color: var(--ink); }
 
 .lp-case__text { margin: 12px 0 0; font-size: 15px; line-height: 1.9; color: var(--ink-3); }

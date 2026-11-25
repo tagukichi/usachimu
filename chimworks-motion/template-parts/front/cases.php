@@ -1,7 +1,7 @@
 <?php
 /**
  * TOP — 実績（支援した組織と取り組みを、横にスライドするカードで見せる）。
- * 事例は TOP 固定ページの ACF「実績」タブの 6 枠（「A社」「B市」のような表記で、何をやったか）。
+ * 各カードは「事例 01」＋業界の見出し。事例は TOP 固定ページの ACF「実績」タブの 6 枠。
  *
  * @package fde-usachim
  */
@@ -22,12 +22,13 @@ if ( ! $fde_cases ) {
 		<?php if ( $fde_cases ) : ?>
 			<div class="svp-slider" data-slider>
 				<div class="svp-slider__track" data-slider-track tabindex="0" aria-label="事例（横にスクロールできます）">
-					<?php foreach ( $fde_cases as $fde_case ) : ?>
+					<?php foreach ( $fde_cases as $fde_i => $fde_case ) : ?>
 						<article class="lp-case">
 							<?php if ( '' !== $fde_case['image']['url'] ) : ?>
 								<div class="lp-case__img"><img src="<?php echo esc_url( $fde_case['image']['url'] ); ?>" alt="<?php echo esc_attr( $fde_case['image']['alt'] ); ?>" loading="lazy" draggable="false"></div>
 							<?php endif; ?>
 							<div class="lp-case__body">
+								<p class="lp-case__no mono">事例 <?php echo esc_html( sprintf( '%02d', $fde_i + 1 ) ); ?></p>
 								<h3 class="lp-case__title"><?php echo esc_html( $fde_case['title'] ); ?></h3>
 								<?php if ( '' !== $fde_case['text'] ) : ?>
 									<p class="lp-case__text"><?php echo nl2br( esc_html( $fde_case['text'] ) ); ?></p>
